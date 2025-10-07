@@ -1,0 +1,208 @@
+<svg viewBox="0 0 1200 1600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define styles -->
+  <defs>
+    <style>
+      .box { fill: #fff; stroke: #333; stroke-width: 2; }
+      .user-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .bedrock-box { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .local-box { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; }
+      .db-box { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .output-box { fill: #fce4ec; stroke: #c2185b; stroke-width: 2; }
+      .arrow { fill: none; stroke: #666; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-bedrock { stroke: #f57c00; stroke-width: 2; }
+      .arrow-local { stroke: #388e3c; stroke-width: 2; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .text { font-family: Arial, sans-serif; font-size: 13px; text-anchor: middle; }
+      .small-text { font-family: Arial, sans-serif; font-size: 11px; text-anchor: middle; fill: #666; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; }
+      .cost { font-family: monospace; font-size: 10px; fill: #d32f2f; }
+      .free { font-family: monospace; font-size: 10px; fill: #388e3c; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="30" class="title" style="font-size: 20px;">🎯 DISH EXTRACTION WORKFLOW</text>
+  <text x="600" y="55" class="small-text">Local Python + AWS Bedrock Integration</text>
+
+  <!-- Legend -->
+  <rect x="50" y="70" width="20" height="20" class="user-box" />
+  <text x="80" y="85" class="small-text" style="text-anchor: start;">User Input</text>
+  
+  <rect x="180" y="70" width="20" height="20" class="bedrock-box" />
+  <text x="210" y="85" class="small-text" style="text-anchor: start;">AWS Bedrock (💰)</text>
+  
+  <rect x="350" y="70" width="20" height="20" class="local-box" />
+  <text x="380" y="85" class="small-text" style="text-anchor: start;">Local Python (Free ✅)</text>
+  
+  <rect x="540" y="70" width="20" height="20" class="db-box" />
+  <text x="570" y="85" class="small-text" style="text-anchor: start;">Data Storage</text>
+
+  <!-- Step 1: User Input -->
+  <rect x="450" y="120" width="300" height="80" rx="10" class="user-box" />
+  <text x="600" y="145" class="title">📱 USER INPUT</text>
+  <text x="600" y="168" class="text">Image / Menu Text / Voice</text>
+  <text x="600" y="188" class="small-text">Example: Photo of Phở bò</text>
+
+  <!-- Arrow to Bedrock Vision -->
+  <path d="M 600 200 L 600 240" class="arrow arrow-bedrock" />
+  <text x="650" y="225" class="label" style="fill: #f57c00;">API Call</text>
+
+  <!-- Step 2: AWS Bedrock Vision -->
+  <rect x="400" y="240" width="400" height="100" rx="10" class="bedrock-box" />
+  <text x="600" y="265" class="title">🤖 AWS BEDROCK - VISION MODEL</text>
+  <text x="600" y="288" class="text">Claude 3 Sonnet / Haiku</text>
+  <text x="600" y="308" class="small-text">Extract ingredients from image</text>
+  <text x="600" y="328" class="cost">Cost: ~$0.024 per image</text>
+
+  <!-- Output box for Vision -->
+  <rect x="850" y="260" width="300" height="60" rx="5" style="fill: #fff9c4; stroke: #f57c00; stroke-dasharray: 5,5;" />
+  <text x="1000" y="280" class="small-text" style="font-weight: bold;">Output:</text>
+  <text x="1000" y="300" class="small-text">["bánh phở", "thịt bò", "hành lá"]</text>
+
+  <!-- Arrow down -->
+  <path d="M 600 340 L 600 380" class="arrow arrow-local" />
+  <text x="650" y="365" class="label" style="fill: #388e3c;">Process</text>
+
+  <!-- Step 3: Ontology Service (Local) -->
+  <rect x="400" y="380" width="400" height="100" rx="10" class="local-box" />
+  <text x="600" y="405" class="title">🗂️ ONTOLOGY SERVICE (Local)</text>
+  <text x="600" y="428" class="text">Map text → Ingredient IDs</text>
+  <text x="600" y="448" class="small-text">"bánh phở" → ingre001, "thịt bò" → ingre002</text>
+  <text x="600" y="468" class="free">Free • &lt;10ms • Python dict lookup</text>
+
+  <!-- Knowledge Base connection -->
+  <rect x="50" y="390" width="280" height="80" rx="5" class="db-box" />
+  <text x="190" y="415" class="text" style="font-weight: bold;">📚 Knowledge Base</text>
+  <text x="190" y="435" class="small-text">ingredient_knowledge_base.json</text>
+  <text x="190" y="455" class="small-text">dish_knowledge_base.json</text>
+  <path d="M 330 430 L 400 430" class="arrow arrow-local" />
+
+  <!-- Output box for Ontology -->
+  <rect x="850" y="400" width="300" height="60" rx="5" style="fill: #e8f5e9; stroke: #388e3c; stroke-dasharray: 5,5;" />
+  <text x="1000" y="420" class="small-text" style="font-weight: bold;">Output:</text>
+  <text x="1000" y="440" class="small-text">[ingre001, ingre002, ingre003]</text>
+
+  <!-- Arrow down -->
+  <path d="M 600 480 L 600 520" class="arrow arrow-local" />
+  <text x="650" y="505" class="label" style="fill: #388e3c;">Validate</text>
+
+  <!-- Step 4: Validation Service (Local) -->
+  <rect x="400" y="520" width="400" height="120" rx="10" class="local-box" />
+  <text x="600" y="545" class="title">✅ VALIDATION SERVICE (Local)</text>
+  <text x="600" y="568" class="text">Co-occurrence + PMI Scoring</text>
+  <text x="600" y="588" class="small-text">Check unusual ingredients</text>
+  <text x="600" y="608" class="small-text">Adjust confidence scores</text>
+  <text x="600" y="628" class="free">Free • &lt;5ms • Math calculation</text>
+
+  <!-- Co-occurrence Matrix connection -->
+  <rect x="50" y="530" width="280" height="100" rx="5" class="db-box" />
+  <text x="190" y="555" class="text" style="font-weight: bold;">🔢 Co-occurrence Matrix</text>
+  <text x="190" y="575" class="small-text">matrix.json (pre-built)</text>
+  <text x="190" y="595" class="small-text">frequency.json</text>
+  <text x="190" y="615" class="small-text">PMI scores calculated</text>
+  <path d="M 330 580 L 400 580" class="arrow arrow-local" />
+
+  <!-- Output box for Validation -->
+  <rect x="850" y="540" width="300" height="80" rx="5" style="fill: #e8f5e9; stroke: #388e3c; stroke-dasharray: 5,5;" />
+  <text x="1000" y="560" class="small-text" style="font-weight: bold;">Output:</text>
+  <text x="1000" y="580" class="small-text">Adjusted confidence: [0.95, 0.87, 0.45]</text>
+  <text x="1000" y="600" class="small-text">⚠️ Warning: "bơ sữa" unusual</text>
+
+  <!-- Decision Diamond -->
+  <path d="M 600 640 L 700 700 L 600 760 L 500 700 Z" style="fill: #fff; stroke: #333; stroke-width: 2;" />
+  <text x="600" y="705" class="text" style="font-size: 12px;">Has warnings?</text>
+
+  <!-- YES branch (right) - to Bedrock Explain -->
+  <path d="M 700 700 L 800 700 L 800 790" class="arrow arrow-bedrock" />
+  <text x="760" y="695" class="label" style="fill: #f57c00;">YES</text>
+
+  <!-- Step 5a: Bedrock Explain (conditional) -->
+  <rect x="700" y="790" width="300" height="100" rx="10" class="bedrock-box" />
+  <text x="850" y="815" class="title" style="font-size: 14px;">🤖 BEDROCK - EXPLAIN</text>
+  <text x="850" y="838" class="text">Generate user-friendly explanation</text>
+  <text x="850" y="858" class="small-text">Why "bơ sữa" is unusual in Phở</text>
+  <text x="850" y="878" class="cost">Cost: ~$0.003 per 1K tokens</text>
+
+  <path d="M 850 890 L 850 940" class="arrow arrow-bedrock" />
+
+  <!-- NO branch (left) - Skip Bedrock -->
+  <path d="M 500 700 L 400 700 L 400 790" class="arrow arrow-local" />
+  <text x="440" y="695" class="label" style="fill: #388e3c;">NO</text>
+
+  <!-- Step 5b: Skip Explain -->
+  <rect x="250" y="790" width="300" height="100" rx="10" class="local-box" />
+  <text x="400" y="815" class="title" style="font-size: 14px;">⏭️ SKIP EXPLANATION</text>
+  <text x="400" y="838" class="text">No warnings detected</text>
+  <text x="400" y="858" class="small-text">All ingredients are common</text>
+  <text x="400" y="878" class="free">Free • Save API cost ✅</text>
+
+  <path d="M 400 890 L 400 940" class="arrow arrow-local" />
+
+  <!-- Merge paths -->
+  <path d="M 400 940 L 600 940" class="arrow" />
+  <path d="M 850 940 L 600 940" class="arrow" />
+
+  <!-- Step 6: Search Dishes (Local) -->
+  <path d="M 600 940 L 600 980" class="arrow arrow-local" />
+  <rect x="400" y="980" width="400" height="100" rx="10" class="local-box" />
+  <text x="600" y="1005" class="title">🔍 SEARCH DISHES (Local)</text>
+  <text x="600" y="1028" class="text">Match ingredients → Dishes</text>
+  <text x="600" y="1048" class="small-text">Find: Phở bò (90% match), Bún bò (70%)</text>
+  <text x="600" y="1068" class="free">Free • &lt;20ms • Dictionary search</text>
+
+  <!-- Arrow down -->
+  <path d="M 600 1080 L 600 1120" class="arrow arrow-bedrock" />
+  <text x="650" y="1105" class="label" style="fill: #f57c00;">Optional</text>
+
+  <!-- Step 7: RAG Enhancement (Optional) -->
+  <rect x="400" y="1120" width="400" height="100" rx="10" class="bedrock-box" />
+  <text x="600" y="1145" class="title">🧠 AWS BEDROCK - RAG</text>
+  <text x="600" y="1168" class="text">Knowledge Base + Embeddings</text>
+  <text x="600" y="1188" class="small-text">Enrich context with similar dishes</text>
+  <text x="600" y="1208" class="cost">Cost: ~$0.0001 per token (embeddings)</text>
+
+  <!-- Vector DB connection -->
+  <rect x="50" y="1130" width="280" height="80" rx="5" class="db-box" />
+  <text x="190" y="1155" class="text" style="font-weight: bold;">🗄️ Vector Database</text>
+  <text x="190" y="1175" class="small-text">OpenSearch / Pinecone</text>
+  <text x="190" y="1195" class="small-text">Dish embeddings</text>
+  <path d="M 330 1170 L 400 1170" class="arrow arrow-bedrock" />
+
+  <!-- Arrow down -->
+  <path d="M 600 1220 L 600 1280" class="arrow" />
+
+  <!-- Step 8: Final Output -->
+  <rect x="350" y="1280" width="500" height="200" rx="10" class="output-box" />
+  <text x="600" y="1305" class="title">📊 FINAL OUTPUT</text>
+  
+  <text x="380" y="1335" class="text" style="text-anchor: start; font-weight: bold;">✓ Validated Ingredients:</text>
+  <text x="390" y="1355" class="small-text" style="text-anchor: start;">• Bánh phở (conf: 0.95) ✅</text>
+  <text x="390" y="1375" class="small-text" style="text-anchor: start;">• Thịt bò (conf: 0.87) ✅</text>
+  <text x="390" y="1395" class="small-text" style="text-anchor: start;">• Bơ sữa (conf: 0.45) ⚠️</text>
+  
+  <text x="380" y="1425" class="text" style="text-anchor: start; font-weight: bold;">✓ Matched Dish: Phở bò (90%)</text>
+  <text x="380" y="1445" class="text" style="text-anchor: start; font-weight: bold;">✓ Suggestions: Hành lá, Ngò gai</text>
+  <text x="380" y="1465" class="text" style="text-anchor: start; font-weight: bold;">⚠️ Warning: "Bơ sữa unusual in Phở"</text>
+
+  <!-- Cost Summary Box -->
+  <rect x="50" y="1510" width="300" height="70" rx="5" style="fill: #fff3e0; stroke: #f57c00; stroke-width: 2;" />
+  <text x="200" y="1535" class="title" style="font-size: 14px; fill: #f57c00;">💰 TOTAL COST</text>
+  <text x="200" y="1555" class="text">Bedrock: ~$0.03/request</text>
+  <text x="200" y="1572" class="text">Local: $0 (Free)</text>
+
+  <!-- Time Summary Box -->
+  <rect x="400" y="1510" width="300" height="70" rx="5" style="fill: #e8f5e9; stroke: #388e3c; stroke-width: 2;" />
+  <text x="550" y="1535" class="title" style="font-size: 14px; fill: #388e3c;">⚡ TOTAL TIME</text>
+  <text x="550" y="1555" class="text">Bedrock: ~2-3 seconds</text>
+  <text x="550" y="1572" class="text">Local: &lt;50ms</text>
+
+  <!-- Performance Summary Box -->
+  <rect x="750" y="1510" width="400" height="70" rx="5" style="fill: #e3f2fd; stroke: #1976d2; stroke-width: 2;" />
+  <text x="950" y="1535" class="title" style="font-size: 14px; fill: #1976d2;">🎯 OPTIMIZATION</text>
+  <text x="950" y="1555" class="small-text">Use Bedrock: Vision, RAG, Explain (when needed)</text>
+  <text x="950" y="1572" class="small-text">Use Local: Validation, Search (always)</text>
+
+</svg>
