@@ -1,0 +1,215 @@
+{
+  "timestamp": "2025-10-09T23:08:27.033775",
+  "input": {
+    "user_query": "Tôi muốn nấu món thịt kho tàu"
+  },
+  "output": {
+    "status": "success",
+    "dish": {
+      "name": "Thịt kho tàu",
+      "prep_time": null,
+      "servings": null
+    },
+    "cart": {
+      "total_items": 12,
+      "items": [
+        {
+          "ingredient_id": "ingre06321",
+          "name_vi": "Thịt ba rọi heo",
+          "name_en": "Pork belly",
+          "quantity": 2.5,
+          "unit": "kg",
+          "required": true,
+          "category": "thit-ca",
+          "name_normalized": "thit ba roi heo",
+          "converted_quantity": "2500",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre06886",
+          "name_vi": "Trứng vịt",
+          "name_en": "Duck egg",
+          "quantity": 10.0,
+          "unit": "cái",
+          "required": true,
+          "category": "sua-trung",
+          "name_normalized": "trung vit",
+          "converted_quantity": "10.0",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre02211",
+          "name_vi": "Dừa tươi",
+          "name_en": "Coconut",
+          "quantity": 2.0,
+          "unit": "trái",
+          "required": true,
+          "category": "trai-cay",
+          "name_normalized": "dua tuoi",
+          "converted_quantity": "2.0",
+          "converted_unit": "trái"
+        },
+        {
+          "ingredient_id": "ingre07095",
+          "name_vi": "Tỏi",
+          "name_en": "Garlic",
+          "quantity": 10.0,
+          "unit": "tép",
+          "required": true,
+          "category": "gia-vi",
+          "name_normalized": "toi",
+          "converted_quantity": "10.0",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre02814",
+          "name_vi": "Hành tím",
+          "name_en": "Green onion",
+          "quantity": 5.0,
+          "unit": "củ",
+          "required": true,
+          "category": "rau-thom",
+          "name_normalized": "hanh tim",
+          "converted_quantity": "500",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre02787",
+          "name_vi": "Hành tây",
+          "name_en": "Onion",
+          "quantity": 0.5,
+          "unit": "củ",
+          "required": true,
+          "category": "rau-cu",
+          "name_normalized": "hanh tay",
+          "converted_quantity": "50",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre07992",
+          "name_vi": "Ớt",
+          "name_en": "Pepper",
+          "quantity": 4.0,
+          "unit": "trái",
+          "required": true,
+          "category": "gia-vi",
+          "name_normalized": "ot",
+          "converted_quantity": "40",
+          "converted_unit": "g"
+        },
+        {
+          "ingredient_id": "ingre02136",
+          "name_vi": "Dầu ăn",
+          "name_en": "Cooking oil",
+          "quantity": 3.0,
+          "unit": "muỗng canh",
+          "required": true,
+          "category": "dau-mo",
+          "name_normalized": "dau an",
+          "converted_quantity": "45",
+          "converted_unit": "ml"
+        },
+        {
+          "ingredient_id": "ingre02407",
+          "name_vi": "Giấm",
+          "name_en": "Vinegar",
+          "quantity": 1.0,
+          "unit": "muỗng canh",
+          "required": true,
+          "category": "gia-vi",
+          "name_normalized": "giam",
+          "converted_quantity": "15",
+          "converted_unit": "ml"
+        },
+        {
+          "ingredient_id": "ingre04701",
+          "name_vi": "Nước màu",
+          "name_en": "Food coloring",
+          "quantity": 1.0,
+          "unit": "muỗng cà phê",
+          "required": true,
+          "category": "khac",
+          "name_normalized": "nuoc mau",
+          "converted_quantity": "5",
+          "converted_unit": "ml"
+        },
+        {
+          "ingredient_id": "ingre04722",
+          "name_vi": "Nước mắm",
+          "name_en": "Fish Sauce",
+          "quantity": 1.0,
+          "unit": "chén",
+          "required": true,
+          "category": "gia-vi",
+          "name_normalized": "nuoc mam",
+          "converted_quantity": "240",
+          "converted_unit": "ml"
+        },
+        {
+          "ingredient_id": "ingre02357",
+          "name_vi": "Gia vị thông dụng",
+          "name_en": "Common spice",
+          "quantity": 1.0,
+          "unit": "ít",
+          "required": true,
+          "category": "gia-vi",
+          "name_normalized": "gia vi thong dung",
+          "converted_quantity": "1.0",
+          "converted_unit": "g"
+        }
+      ]
+    },
+    "suggestions": [
+      {
+        "ingredient_id": "ingre04174",
+        "name_vi": "mắm cá linh",
+        "quantity": "",
+        "unit": "",
+        "score": 10.73,
+        "reason": "Thường đi kèm với món này",
+        "converted_quantity": "",
+        "converted_unit": "tùy thích"
+      },
+      {
+        "ingredient_id": "ingre01483",
+        "name_vi": "cá bạc má",
+        "quantity": "",
+        "unit": "",
+        "score": 10.3,
+        "reason": "Thường đi kèm với món này",
+        "converted_quantity": "",
+        "converted_unit": "tùy thích"
+      },
+      {
+        "ingredient_id": "ingre00025",
+        "name_vi": "bao tử cá basa",
+        "quantity": "",
+        "unit": "",
+        "score": 8.9,
+        "reason": "Thường đi kèm với món này",
+        "converted_quantity": "",
+        "converted_unit": "tùy thích"
+      }
+    ],
+    "similar_dishes": [
+      {
+        "dish_id": "dish6220",
+        "dish_name": "Thịt kho tàu",
+        "match_count": 12,
+        "match_ratio": 1.0
+      },
+      {
+        "dish_id": "dish6020",
+        "dish_name": "Cá cờ kho tiêu",
+        "match_count": 7,
+        "match_ratio": 0.875
+      },
+      {
+        "dish_id": "dish3936",
+        "dish_name": "Cá ồ nướng muối ớt",
+        "match_count": 6,
+        "match_ratio": 0.8571428571428571
+      }
+    ]
+  }
+}

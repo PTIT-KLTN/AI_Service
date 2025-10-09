@@ -1,127 +1,83 @@
 import json
 import math
 from collections import defaultdict
-from typing import Dict, List
 from pathlib import Path
 
 class ValidationService:
-    """Co-occurrence validation service"""
-    
     _instance = None
     
     def __new__(cls):
-        if cls._instance is None:
+        if not cls._instance:
             cls._instance = super().__new__(cls)
             cls._instance._initialized = False
         return cls._instance
     
     def __init__(self):
-        """Singleton - chỉ load ma trận 1 lần"""
         if self._initialized:
             return
-            
-        self.matrix_path = Path("app/data/cooccurrence")
-        self.cooccurrence_matrix = defaultdict(lambda: defaultdict(int))
-        self.ingredient_frequency = defaultdict(int)
-        self.total_dishes = 0
         
-        self._load_matrix()
+        path = Path("app/data/cooccurrence")
+        self.matrix = defaultdict(lambda: defaultdict(int))
+        self.frequency = defaultdict(int)
+        self.total = 0
+        
+        try:
+            with open(path / "matrix.json", 'r') as f:
+                self.matrix = defaultdict(lambda: defaultdict(int), json.load(f))
+            with open(path / "frequency.json", 'r') as f:
+                self.frequency = defaultdict(int, json.load(f))
+            with open(path / "metadata.json", 'r') as f:
+                self.total = json.load(f)['total_dishes']
+        except:
+            pass
+        
         self._initialized = True
     
-    def _load_matrix(self):
-        """Load ma trận từ file"""
-        try:
-            with open(self.matrix_path / "matrix.json", 'r') as f:
-                data = json.load(f)
-                self.cooccurrence_matrix = defaultdict(lambda: defaultdict(int), data)
-            
-            with open(self.matrix_path / "frequency.json", 'r') as f:
-                self.ingredient_frequency = defaultdict(int, json.load(f))
-            
-            with open(self.matrix_path / "metadata.json", 'r') as f:
-                meta = json.load(f)
-                self.total_dishes = meta['total_dishes']
-            
-            print(f"✅ Loaded matrix: {len(self.ingredient_frequency)} ingredients")
-        except FileNotFoundError:
-            print("⚠️  Matrix not found. Run build_cooccurrence.py first!")
-    
-    def validate(self, ingredients: List[Dict], threshold_unusual: float = -2.0, 
-                 threshold_common: float = 1.0) -> Dict:
-        """
-        Validate danh sách nguyên liệu
+    def check_missing(self, required: list, user: list = None) -> dict:
+        required_ids = {ing['id']: ing for ing in required}
+        user_ids = {ing['id']: ing for ing in (user or [])}
         
-        Args:
-            ingredients: [{"id": "ingre001", "confidence": 0.85}, ...]
-            
-        Returns:
-            {"adjusted_ingredients": [...], "warnings": [...], "suggestions": [...]}
-        """
-        if self.total_dishes == 0:
-            return {"adjusted_ingredients": ingredients, "warnings": [], "suggestions": []}
+        missing = []
+        available = []
         
-        ing_ids = [ing['id'] for ing in ingredients]
-        adjusted = []
-        warnings = []
+        for ing_id, ing in required_ids.items():
+            if ing_id in user_ids:
+                available.append({**ing, 'user_quantity': user_ids[ing_id].get('quantity'), 
+                                'user_unit': user_ids[ing_id].get('unit')})
+            else:
+                missing.append(ing)
         
-        for ing in ingredients:
-            ing_id = ing['id']
-            confidence = ing.get('confidence', 0.0)
-            
-            # Tính PMI trung bình
-            pmi_scores = [self._get_pmi(ing_id, other) for other in ing_ids if other != ing_id]
-            avg_pmi = sum(pmi_scores) / len(pmi_scores) if pmi_scores else 0.0
-            
-            # Adjust confidence
-            adjustment = 0.0
-            status = 'normal'
-            
-            if avg_pmi < threshold_unusual:
-                adjustment = -0.2
-                status = 'unusual'
-                warnings.append(f"⚠️ {ing.get('name', ing_id)} không phổ biến (PMI: {avg_pmi:.2f})")
-            elif avg_pmi > threshold_common:
-                adjustment = 0.15
-                status = 'common'
-            
-            adjusted.append({
-                **ing,
-                'confidence': min(1.0, max(0.0, confidence + adjustment)),
-                'original_confidence': confidence,
-                'pmi_score': round(avg_pmi, 3),
-                'status': status
-            })
-        
-        suggestions = self._suggest_missing(ing_ids, top_n=3)
+        suggestions = self._suggest(list(required_ids.keys()))
         
         return {
-            'adjusted_ingredients': adjusted,
-            'warnings': warnings,
+            'required': required,
+            'missing': missing,
+            'available': available,
             'suggestions': suggestions
         }
     
-    def _get_pmi(self, ing_id_1: str, ing_id_2: str) -> float:
-        """Tính PMI score"""
-        if ing_id_1 not in self.ingredient_frequency or ing_id_2 not in self.ingredient_frequency:
+    def _suggest(self, ing_ids: list) -> list:
+        if not self.total:
+            return []
+        
+        candidates = defaultdict(float)
+        for ing_id in ing_ids:
+            for co_id, count in self.matrix[ing_id].items():
+                if co_id not in ing_ids and count >= 3:
+                    candidates[co_id] += self._pmi(ing_id, co_id)
+        
+        top = sorted(candidates.items(), key=lambda x: x[1], reverse=True)[:3]
+        return [{'id': i, 'score': round(s, 2)} for i, s in top]
+    
+    def _pmi(self, id1: str, id2: str) -> float:
+        if id1 not in self.frequency or id2 not in self.frequency:
             return 0.0
         
-        cooccur = self.cooccurrence_matrix[ing_id_1].get(ing_id_2, 0)
-        p_xy = cooccur / self.total_dishes if self.total_dishes > 0 else 0
-        p_x = self.ingredient_frequency[ing_id_1] / self.total_dishes
-        p_y = self.ingredient_frequency[ing_id_2] / self.total_dishes
+        co = self.matrix[id1].get(id2, 0)
+        p_xy = co / self.total if self.total else 0
+        p_x = self.frequency[id1] / self.total
+        p_y = self.frequency[id2] / self.total
         
         if p_xy > 0 and p_x > 0 and p_y > 0:
             return math.log(p_xy / (p_x * p_y))
         return 0.0
-    
-    def _suggest_missing(self, ingredient_ids: List[str], top_n: int = 3) -> List[Dict]:
-        """Gợi ý nguyên liệu thiếu"""
-        candidates = defaultdict(float)
-        
-        for ing_id in ingredient_ids:
-            for co_id, count in self.cooccurrence_matrix[ing_id].items():
-                if co_id not in ingredient_ids and count >= 3:
-                    candidates[co_id] += self._get_pmi(ing_id, co_id)
-        
-        top = sorted(candidates.items(), key=lambda x: x[1], reverse=True)[:top_n]
-        return [{'id': ing_id, 'score': round(score, 3)} for ing_id, score in top]
