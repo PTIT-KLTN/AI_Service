@@ -81,3 +81,40 @@ class ValidationService:
         if p_xy > 0 and p_x > 0 and p_y > 0:
             return math.log(p_xy / (p_x * p_y))
         return 0.0
+    
+    def suggest_ingredients(
+        self,
+        seed_ids,
+        allowed_categories=None,
+        ban_ids=None,
+        top_k=5,
+        ingredients=None,
+    ):
+        allowed_categories = set(allowed_categories or [])
+        ban_ids = set(ban_ids or [])
+        ing_map = ingredients or {}
+
+        # Ứng viên: ưu tiên từ ing_map; nếu trống, fallback sang tần suất (PMI)
+        candidate_ids = list(ing_map.keys()) if ing_map else list(self.frequency.keys())
+
+        candidates = {}
+        for cid in candidate_ids:
+            if cid in ban_ids or cid in seed_ids:
+                continue
+
+            cat = ing_map.get(cid, {}).get('category')
+            cat_ok = (not allowed_categories) or (cat in allowed_categories)
+
+            pmi_vals = [self._pmi(cid, sid) for sid in seed_ids if cid != sid]
+            if not pmi_vals:
+                continue
+            pmi_avg = sum(pmi_vals) / len(pmi_vals)
+
+            prior = 1.0 if cat_ok else 0.0
+            score = 0.7 * pmi_avg + 0.3 * prior
+
+            if score > 0:
+                candidates[cid] = score
+
+        top = sorted(candidates.items(), key=lambda x: x[1], reverse=True)[:top_k]
+        return [{'id': i, 'score': round(s, 2)} for i, s in top]

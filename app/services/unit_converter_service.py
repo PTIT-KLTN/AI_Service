@@ -65,6 +65,12 @@ class UnitConverterService:
             'nước', 'dầu', 'mắm', 'tương', 'sữa', 'giấm', 
             'rượu', 'nước cốt', 'nước dừa', 'nước mía'
         ]
+
+        self.count_units = {
+            'cái','chiếc','quả','trái','nhánh','cọng','nắm','miếng','tép','lá','con',
+            'ổ','ổ bánh','ổ mì','bó','gói','lát'
+        }
+
     
     def normalize_ingredients(self, ingredients: list) -> list:
         """
@@ -90,7 +96,7 @@ class UnitConverterService:
         """
         quantity = str(item.get('quantity', '')).strip()
         unit = str(item.get('unit', '')).strip().lower()
-        name = str(item.get('name_vi', '')).strip().lower()
+        name = str(item.get('name_vi') or item.get('name') or '').strip().lower()
         
         # Không có số lượng
         if not quantity or quantity == '':
@@ -101,6 +107,11 @@ class UnitConverterService:
             qty_value = self._parse_quantity(quantity)
         except:
             return {'quantity': quantity, 'unit': unit}
+        
+        # Giữ nguyên nếu là đơn vị đếm hoặc unit rỗng
+        if (not unit) or (unit in self.count_units):
+            return {'quantity': quantity, 'unit': unit or 'tùy thích'}
+
         
         # Kiểm tra liquid
         is_liquid = any(keyword in name for keyword in self.liquid_keywords)
