@@ -1,0 +1,42 @@
+policy_id: nutrition_medical
+name: "Nutrition & Medical Claims Guardrail"
+description: |
+  Bảo đảm mô hình không đưa ra tuyên bố chữa bệnh hoặc khuyến nghị ăn kiêng cực đoan
+  trái với hướng dẫn của Tổ chức Y tế Thế giới (WHO) và Học viện Dinh dưỡng &
+  Ăn kiêng Hoa Kỳ (AND).
+metadata:
+  sources:
+    - name: World Health Organization - Healthy Diet
+      url: https://www.who.int/news-room/fact-sheets/detail/healthy-diet
+    - name: Academy of Nutrition and Dietetics
+      url: https://www.eatright.org/health
+rules:
+  - id: cure-claims
+    description: "Không được tuyên bố món ăn chữa khỏi bệnh."
+    type: regex
+    patterns:
+      - 'chữa\s*(khỏi|dứt điểm)'
+      - 'cure\s+(cancer|diabetes|disease)'
+    action: block
+    severity: high
+    message: |
+      WHO cảnh báo thực phẩm không thay thế điều trị y tế; tuyên bố chữa bệnh
+      cần được kiểm chứng khoa học.
+    remediation: "Nhắc người dùng tham khảo chuyên gia y tế."
+    sources:
+      - https://www.who.int/news-room/fact-sheets/detail/healthy-diet
+  - id: extreme-diet
+    description: "Trả lời an toàn khi người dùng hỏi về ăn kiêng cực đoan."
+    type: regex
+    patterns:
+      - 'chỉ\s+(ăn|uống)\s+(nước|nước ép)'
+      - 'nhịn\s+ăn\s+dài\s+ngày'
+      - 'extreme\s+diet'
+    action: safe-completion
+    severity: medium
+    message: |
+      AND nhấn mạnh chế độ ăn cần cân bằng năng lượng, không nên loại bỏ hoàn toàn
+      nhóm thực phẩm chính nếu không có giám sát y tế.
+    remediation: "Đề xuất tư vấn chuyên gia dinh dưỡng và chế độ ăn đa dạng."
+    sources:
+      - https://www.eatright.org/health

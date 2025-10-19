@@ -3,12 +3,14 @@ import boto3
 import os
 from dotenv import load_dotenv
 import base64
+from typing import Optional
+from app.services.bedrock_client import GuardrailedBedrockClient
 
 load_dotenv()
 
 class BedrockModelService:
-    def __init__(self, region: str = 'us-east-1'):
-        self.bedrock_runtime = boto3.client('bedrock-runtime', region_name=region)
+    def __init__(self, region: str = 'us-east-1', bedrock_client: Optional[GuardrailedBedrockClient] = None):
+        self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
         self.model_id = os.getenv('INVOKE_MODEL_ID')
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
     
@@ -39,10 +41,14 @@ class BedrockModelService:
             "temperature": 0.1
         })
         
-        response = self.bedrock_runtime.invoke_model(modelId=self.model_id, body=body)
+        response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
         content = json.loads(response['body'].read())['content'][0]['text'].strip()
 
-        return self._parse_content(content)
+        parsed = self._parse_content(content)
+        guardrail_info = response.get('guardrail')
+        if guardrail_info:
+            parsed['guardrail'] = guardrail_info
+        return parsed
     
     def extract_dish_from_image(self, image_data, description: str = "", image_mime: str = "image/png") -> dict:
         """Extract dish information from an image (base64 string or raw bytes)."""
@@ -55,9 +61,14 @@ class BedrockModelService:
         image_b64 = self._ensure_base64(image_data)
         body = json.dumps(_build_vision_request(description, image_b64, image_mime))
 
-        response = self.bedrock_runtime.invoke_model(modelId=self.vision_model_id, body=body)
+        response = self.bedrock_client.invoke_model(model_id=self.vision_model_id, body=body)
         content = json.loads(response['body'].read())['content'][0]['text'].strip()
-        return self._parse_content(content)
+        parsed = self._parse_content(content)
+        
+        guardrail_info = response.get('guardrail')
+        if guardrail_info:
+            parsed['guardrail'] = guardrail_info
+        return parsed
         
     def _parse_content(self, content: str) -> dict:
         if content.startswith('```'):

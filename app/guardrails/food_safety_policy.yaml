@@ -1,0 +1,76 @@
+policy_id: food_safety
+name: "Food Safety Guardrail"
+description: |
+  Chính sách kiểm duyệt nội dung ẩm thực dựa trên hướng dẫn an toàn thực phẩm
+  của USDA Food Safety and Inspection Service và CDC. Mục tiêu là loại bỏ
+  các gợi ý có nguy cơ gây ngộ độc, như tiêu thụ thịt sống, ủ ở nhiệt độ phòng
+  quá lâu hay đóng hộp không an toàn.
+metadata:
+  sources:
+    - name: USDA Food Safety and Inspection Service
+      url: https://www.fsis.usda.gov/food-safety
+    - name: Centers for Disease Control and Prevention (CDC)
+      url: https://www.cdc.gov/foodsafety/
+rules:
+  - id: raw-meat-consumption
+    description: "Chặn hướng dẫn ăn hoặc chế biến thịt/ trứng sống."
+    type: regex
+    patterns:
+      - 'thịt(\s+|\W)*(sống|tái|chưa chín)'
+      - 'thit(\s+|\W)*(song|tai|chua\s+chin)'
+      - 'ăn\s+gỏi\s+(bò|cá|thịt)'
+      - 'an\s+goi\s+(bo|ca|thit)'
+      - 'raw\s+(meat|beef|pork|egg|fish)'
+    action: block
+    severity: high
+    message: |
+      USDA cảnh báo thịt hoặc trứng chưa chín có thể chứa Salmonella, E.coli
+      và các tác nhân gây bệnh nguy hiểm; cần nấu tối thiểu tới nhiệt độ an toàn.
+    remediation: "Gợi ý các phương pháp nấu chín hoàn toàn và sử dụng nhiệt kế thực phẩm."
+    sources:
+      - https://www.fsis.usda.gov/food-safety
+  - id: room-temp-marination
+    description: "Ngăn ngừa ướp hoặc rã đông thịt ở nhiệt độ phòng trong thời gian dài."
+    type: regex
+    patterns:
+      - 'ướp\s+.*(nhiệt độ phòng|ngoài tủ lạnh)'
+      - 'uop\s+.*(nhiet do phong|ngoai tu lanh)'
+      - 'để\s+qua\s+đêm\s+.*(bàn|ngoài)'
+      - 'de\s+qua\s+dem\s+.*(ban|ngoai)'
+      - 'leave\s+.*at\s+room\s+temperature'
+    action: safe-completion
+    severity: high
+    message: |
+      Theo CDC, vi khuẩn phát triển nhanh trong "danger zone" 4°C–60°C; không
+      ướp hoặc rã đông thịt ở nhiệt độ phòng quá 2 giờ.
+    remediation: "Khuyên bảo bảo quản trong tủ lạnh (≤4°C) hoặc ướp trong hộp kín có đá lạnh."
+    sources:
+      - https://www.cdc.gov/foodsafety/keep-food-safe.html
+  - id: unsafe-canning
+    description: "Ngăn hướng dẫn đóng hộp gia dụng không đảm bảo áp suất/tiệt trùng."
+    type: regex
+    patterns:
+      - 'đóng\s+hộp\s+(tại nhà|tự làm)'
+      - 'canning\s+at\s+home\s+without\s+pressure'
+    action: safe-completion
+    severity: medium
+    message: |
+      CDC khuyến cáo đồ ăn có độ acid thấp phải được đóng hộp bằng nồi áp suất
+      đạt 116–121°C để tránh Clostridium botulinum.
+    remediation: "Hướng dẫn liên hệ cơ quan khuyến nông hoặc sử dụng thiết bị chuẩn."
+    sources:
+      - https://www.cdc.gov/botulism/prevention.html
+  - id: unsafe-fermentation
+    description: "Cảnh báo phương pháp lên men không an toàn hoặc thiếu vệ sinh."
+    type: regex
+    patterns:
+      - 'lên\s+men\s+(tại nhà|tự nhiên)\s+.*không\s+(rửa|tiệt trùng)'
+      - 'ferment\s+.*without\s+sterilizing'
+    action: safe-completion
+    severity: medium
+    message: |
+      USDA khuyến nghị dụng cụ phải được tiệt trùng và bảo đảm nồng độ muối/axit
+      phù hợp để ức chế vi khuẩn gây bệnh.
+    remediation: "Khuyên vệ sinh thiết bị và tham khảo công thức đã thẩm định."
+    sources:
+      - https://nchfp.uga.edu/how/can_06/fermented.html

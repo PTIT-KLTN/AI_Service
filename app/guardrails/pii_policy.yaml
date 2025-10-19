@@ -1,0 +1,47 @@
+policy_id: pii
+name: "PII Scrubbing Guardrail"
+description: |
+  Bảo vệ dữ liệu cá nhân theo khuyến nghị của NIST Privacy Framework, tự động ẩn
+  số điện thoại, địa chỉ và email khi người dùng dán nội dung công thức.
+metadata:
+  sources:
+    - name: NIST Privacy Framework
+      url: https://www.nist.gov/privacy-framework
+rules:
+  - id: phone-number
+    description: "Ẩn số điện thoại trong nội dung người dùng."
+    type: regex
+    patterns:
+      - '(?:(?:\+?84|0)[1-9][0-9]{8,9})'
+      - '(?:(?:\+?1)[-\s.]?(?:[2-9][0-9]{2})[-\s.]?[0-9]{3}[-\s.]?[0-9]{4})'
+    action: redact
+    severity: medium
+    redaction: "[SỐ ĐIỆN THOẠI ĐÃ ẨN]"
+    message: "Thông tin liên hệ cá nhân phải được bảo vệ theo NIST Privacy Framework."
+    remediation: "Thông báo đã ẩn số điện thoại trước khi xử lý."
+    sources:
+      - https://www.nist.gov/privacy-framework
+  - id: email-address
+    description: "Ẩn email cá nhân."
+    type: regex
+    patterns:
+      - '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+    action: redact
+    severity: medium
+    redaction: "[EMAIL ĐÃ ẨN]"
+    message: "Email cá nhân không được lưu trữ trái phép."
+    remediation: "Thay thế bằng token chung."
+    sources:
+      - https://www.nist.gov/privacy-framework
+  - id: address
+    description: "Ẩn địa chỉ cụ thể."
+    type: regex
+    patterns:
+      - '\\b(?:số|so)\s+[0-9]{1,4}\s+(?:đường|pho|street)\\b.*'
+    action: redact
+    severity: low
+    redaction: "[ĐỊA CHỈ ĐÃ ẨN]"
+    message: "Địa chỉ cá nhân cần được làm mờ."
+    remediation: "Thông báo người dùng kiểm tra dữ liệu trước khi chia sẻ."
+    sources:
+      - https://www.nist.gov/privacy-framework
