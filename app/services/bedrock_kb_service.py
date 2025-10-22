@@ -13,11 +13,6 @@ s3 = boto3.client('s3')
 
 
 class BedrockKBService:
-    """
-    RAG → lấy citations → chọn *một* source uri tốt nhất → đọc đúng JSON gốc → trả nguyên liệu đầy đủ
-    mà không lẫn dữ liệu từ món khác.
-    Public API giữ nguyên: get_dish_recipe(dish_name: str) -> dict
-    """
     def __init__(self, region: str = 'us-east-1'):
         self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
         self.kb_id = os.getenv('BEDROCK_KB_ID')
@@ -75,12 +70,6 @@ class BedrockKBService:
         return list(counts.items())
 
     def _pick_best_uri(self, dish_name: str, uri_counts: List[Tuple[str, int]]) -> Optional[str]:
-        """
-        Chọn 1 URI:
-          1) Ưu tiên count cao
-          2) Kiểm tra fuzzy match với dish_name trong file (>=0.6)
-          3) Nếu chưa đủ, thử ứng viên tiếp theo; cuối cùng rơi về top-1 theo count
-        """
         if not uri_counts:
             return None
 
@@ -113,14 +102,6 @@ class BedrockKBService:
     # --------------------- Ingredient extract --------------------
 
     def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """
-        Chỉ lấy theo các schema hợp lý thay vì quét bừa.
-        Ưu tiên thứ tự:
-          - j['ingredients']
-          - j['data']['ingredients']
-          - j['recipe']['ingredients']
-        Mỗi item: {'name'|'name_vi'|'name_en', 'quantity'|'qty', 'unit'}
-        """
         candidates: List[Any] = []
         if isinstance(j.get('ingredients'), list):
             candidates.append(j['ingredients'])
@@ -178,11 +159,11 @@ class BedrockKBService:
                     'knowledgeBaseConfiguration': {
                         'knowledgeBaseId': self.kb_id,
                         'modelArn': self.model_id,
-                        # 'retrievalConfiguration': {
-                        #     'vectorSearchConfiguration': {
-                        #         'numberOfResults': 24  # đủ để gom chunk của 1 file
-                        #     }
-                        # },
+                        'retrievalConfiguration': {
+                            'vectorSearchConfiguration': {
+                                'numberOfResults': 24  # đủ để gom chunk của 1 file
+                            }
+                        },
                     },
                 },
             )
