@@ -1,55 +1,32 @@
-# bedrock_kb_service.py  (version: pinecone-only, cleaned)
+import boto3
 import os
 import json
 import unicodedata
 from difflib import SequenceMatcher
-import boto3
-
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
-
-from pinecone import Pinecone
+from collections import Counter
+from typing import Dict, List, Any, Optional, Tuple
 from dotenv import load_dotenv
+
 load_dotenv()
 
-s3 = boto3.client("s3")
+s3 = boto3.client('s3')
 
 
 class BedrockKBService:
-    """
-    Pinecone-first (only) retrieval cho công thức:
-      1) Nhúng truy vấn tên món bằng Bedrock Titan Embeddings
-      2) Query Pinecone (top_k, filter theo namespace/metadata nếu cần)
-      3) Chọn ứng viên tốt nhất bằng fuzzy title
-      4) Đọc JSON gốc từ S3 (metadata.s3_uri) và trích 'ingredients'
-    """
+    def __init__(self, region: str = 'us-east-1'):
+        self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
+        self.kb_id = os.getenv('BEDROCK_KB_ID')
+        self.model_id = os.getenv('MODEL_ID')
 
-    def __init__(self, region: str = "us-east-1"):
-        self.region = region
-
-        # Pinecone
-        api_key = os.environ["PINECONE_API_KEY"]
-        index_name = os.environ["PINECONE_INDEX"]
-        self.namespace = os.getenv("PINECONE_NAMESPACE", "vi")
-
-        self.pc = Pinecone(api_key=api_key)
-        self.index = self.pc.Index(index_name)
-
-        # Bedrock runtime
-        self.embedding_model_id = os.getenv(
-            "EMBEDDING_MODEL_ID", "amazon.titan-embed-text-v1"
-        )
-        self.bedrock_runtime = boto3.client("bedrock-runtime", region_name=region)
-
-    # --------------------------- utils ---------------------------
+    # --------------------------- Utils ---------------------------
 
     @staticmethod
     def _read_json_from_s3_uri(s3_uri: str) -> Dict[str, Any]:
-        assert s3_uri.startswith("s3://"), f"Invalid S3 URI: {s3_uri}"
-        _, _, path = s3_uri.partition("s3://")
-        bucket, _, key = path.partition("/")
+        assert s3_uri.startswith('s3://'), f"Invalid S3 URI: {s3_uri}"
+        _, _, path = s3_uri.partition('s3://')
+        bucket, _, key = path.partition('/')
         obj = s3.get_object(Bucket=bucket, Key=key)
-        body = obj["Body"].read().decode("utf-8")
+        body = obj['Body'].read().decode('utf-8')
         return json.loads(body)
 
     @staticmethod
@@ -59,15 +36,15 @@ class BedrockKBService:
         nfkd = unicodedata.normalize("NFKD", s)
         return "".join(ch for ch in nfkd if not unicodedata.combining(ch))
 
-    @classmethod
-    def _norm(cls, s: Optional[str]) -> str:
-        if not s:
+    @staticmethod
+    def _norm(s: Optional[str]) -> str:
+        if s is None:
             return ""
-        return cls._strip_accents(s).lower().strip()
+        return BedrockKBService._strip_accents(s).lower().strip()
 
-    @classmethod
-    def _similar(cls, a: str, b: str) -> float:
-        return SequenceMatcher(None, cls._norm(a), cls._norm(b)).ratio()
+    @staticmethod
+    def _similar(a: str, b: str) -> float:
+        return SequenceMatcher(None, BedrockKBService._norm(a), BedrockKBService._norm(b)).ratio()
 
     @staticmethod
     def _num(v):
@@ -76,116 +53,164 @@ class BedrockKBService:
         except Exception:
             return v
 
-    def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
+    # ----------------- Citations / URI picking -------------------
 
-        paths = []
-        if isinstance(j.get("ingredients"), list):
-            paths.append(j["ingredients"])
-        if isinstance(j.get("data"), dict) and isinstance(j["data"].get("ingredients"), list):
-            paths.append(j["data"]["ingredients"])
-        if isinstance(j.get("recipe"), dict) and isinstance(j["recipe"].get("ingredients"), list):
-            paths.append(j["recipe"]["ingredients"])
+    @staticmethod
+    def _uris_with_counts(resp: Dict[str, Any]) -> List[Tuple[str, int]]:
+        counts = Counter()
+        for c in resp.get('citations', []):
+            for ref in c.get('retrievedReferences', []):
+                md = ref.get('metadata') or {}
+                uri = (
+                    md.get('x-amz-bedrock-kb-source-uri')
+                    or (((ref.get('location') or {}).get('s3Location') or {}).get('uri'))
+                )
+                if uri:
+                    counts[uri] += 1
+        return list(counts.items())
+
+    def _pick_best_uri(self, dish_name: str, uri_counts: List[Tuple[str, int]]) -> Optional[str]:
+        if not uri_counts:
+            return None
+
+        # sắp theo count giảm dần
+        uri_counts = sorted(uri_counts, key=lambda x: (-x[1], x[0]))
+
+        best_fallback = uri_counts[0][0]
+        for uri, _cnt in uri_counts:
+            try:
+                j = self._read_json_from_s3_uri(uri)
+            except Exception:
+                continue
+
+            title = (
+                j.get('dish_name')
+                or j.get('name_vi')
+                or j.get('name')
+                or j.get('title')
+            )
+            if not title:
+                # không có tiêu đề để so, thử ứng viên khác
+                continue
+
+            if self._similar(dish_name, title) >= 0.6:
+                return uri
+
+        # không tìm được match đủ ngưỡng → fallback URI có count cao nhất
+        return best_fallback
+
+    # --------------------- Ingredient extract --------------------
+
+    def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
+        candidates: List[Any] = []
+        if isinstance(j.get('ingredients'), list):
+            candidates.append(j['ingredients'])
+        if isinstance(j.get('data'), dict) and isinstance(j['data'].get('ingredients'), list):
+            candidates.append(j['data']['ingredients'])
+        if isinstance(j.get('recipe'), dict) and isinstance(j['recipe'].get('ingredients'), list):
+            candidates.append(j['recipe']['ingredients'])
+
+        # nếu vẫn chưa có gì, đừng vét cạn toàn JSON để tránh lẫn
+        if not candidates:
+            return []
 
         items: List[Dict[str, Any]] = []
-        for arr in paths:
+        for arr in candidates:
             for it in arr:
                 if not isinstance(it, dict):
                     continue
-                name = it.get("name_vi") or it.get("name") or it.get("name_en")
-                qty = it.get("quantity", it.get("qty"))
-                unit = it.get("unit") or it.get("unit_vi") or it.get("unit_en")
+                name = it.get('name_vi') or it.get('name') or it.get('name_en')
+                qty = it.get('quantity', it.get('qty'))
+                unit = it.get('unit') or it.get('unit_vi') or it.get('unit_en')
                 if name is None:
                     continue
                 items.append({
-                    "name": str(name).strip(),
-                    "quantity": self._num(qty),
-                    "unit": unit,
+                    'name': str(name).strip(),
+                    'quantity': self._num(qty),
+                    'unit': unit
                 })
 
-        # dedupe theo (name, unit, quantity) đã normalize
-        seen, uniq = set(), []
+        # lọc trùng theo tên đã normalize + đơn vị + quantity
+        seen = set()
+        uniq = []
         for ing in items:
-            k = (self._norm(ing["name"]), self._norm(ing.get("unit") or ""), str(ing.get("quantity")))
+            k = (self._norm(ing['name']), self._norm(ing.get('unit') or ''), str(ing.get('quantity')))
             if k in seen:
                 continue
             seen.add(k)
             uniq.append(ing)
         return uniq
 
-    # ---------------------- embedding & query ----------------------
-
-    def _embed_text(self, text: str) -> List[float]:
-        payload = {"inputText": text}
-        resp = self.bedrock_runtime.invoke_model(
-            modelId=self.embedding_model_id,
-            body=json.dumps(payload),
-        )
-        body = resp["body"].read()
-        if isinstance(body, (bytes, bytearray)):
-            body = body.decode("utf-8")
-        data = json.loads(body)
-        emb = data.get("embedding") or data.get("vector") or []
-        return emb if isinstance(emb, list) else []
-
-    def _pinecone_query(self, dish_name: str) -> Optional[dict]:
-        vec = self._embed_text(dish_name)
-        if not vec:
-            return None
-
-        # nếu metadata đã index có 'type'/'lang' hãy bật filter dưới
-        pine_filter = None
-        # pine_filter = {"type": {"$eq": "recipe"}, "lang": {"$eq": "vi"}}
-
-        res = self.index.query(
-            namespace=self.namespace,
-            vector=vec,
-            top_k=8,
-            include_metadata=True,
-            filter=pine_filter,
-        )
-        matches = res.get("matches") or []
-        if not matches:
-            return None
-
-        # chọn ứng viên có title giống nhất với dish_name; fallback lấy match đầu
-        best, best_sim = None, -1.0
-        fallback = None
-
-        for m in matches:
-            md = m.get("metadata") or {}
-            title = md.get("dish_name") or md.get("name_vi") or md.get("name") or md.get("title")
-            s3_uri = md.get("s3_uri") or md.get("uri")
-            if not s3_uri:
-                continue
-            if fallback is None:
-                fallback = (s3_uri, title)
-
-            sim = self._similar(dish_name, title) if title else 0.0
-            if sim > best_sim:
-                best_sim = sim
-                best = (s3_uri, title)
-
-        target = best or fallback
-        if not target:
-            return None
-
-        s3_uri, title = target
-        j = self._read_json_from_s3_uri(s3_uri)
-        display_title = j.get("dish_name") or j.get("name_vi") or j.get("name") or title or dish_name
-        ings = self._extract_ingredients_from_json(j)
-        if not ings:
-            return None
-        return {"dish_name": display_title, "ingredients": ings}
-
-    # --------------------------- public ---------------------------
+    # ------------------------ Public API -------------------------
 
     def get_dish_recipe(self, dish_name: str) -> dict:
-        """
-        Trả về {'dish_name': str, 'ingredients': List[dict]}.
-        Không merge nhiều món; chỉ đọc đúng JSON từ S3 ứng với vector match.
-        """
-        result = self._pinecone_query(dish_name)
-        if result:
-            return result
-        # Không fallback KB nữa: trả rỗng nếu không tìm được
-        return {"dish_name": dish_name, "ingredients": []}
+        query = (
+            f"Tìm đúng món: {dish_name}\n"
+            "Trả về JSON với dạng:\n"
+            "{ \"dish_name\": \"...\", \"ingredients\": [{\"name\":\"...\",\"quantity\":...,\"unit\":\"...\"}] }\n"
+            "Bắt buộc kèm citations nguồn để tôi lấy URI file gốc."
+        )
+
+        try:
+            resp = self.bedrock_agent.retrieve_and_generate(
+                input={'text': query},
+                retrieveAndGenerateConfiguration={
+                    'type': 'KNOWLEDGE_BASE',
+                    'knowledgeBaseConfiguration': {
+                        'knowledgeBaseId': self.kb_id,
+                        'modelArn': self.model_id,
+                        'retrievalConfiguration': {
+                            'vectorSearchConfiguration': {
+                                'numberOfResults': 24  # đủ để gom chunk của 1 file
+                            }
+                        },
+                    },
+                },
+            )
+
+            uri_counts = self._uris_with_counts(resp)
+            best_uri = self._pick_best_uri(dish_name, uri_counts)
+
+            if best_uri:
+                try:
+                    j = self._read_json_from_s3_uri(best_uri)
+                    title = j.get('dish_name') or j.get('name_vi') or j.get('name') or dish_name
+                    ings = self._extract_ingredients_from_json(j)
+                    if ings:
+                        return {'dish_name': title, 'ingredients': ings}
+                except Exception:
+                    pass  # nếu đọc lỗi, tiếp tục fallback
+
+            # --- Fallback: parse text output của LLM ---
+            answer = resp.get('output', {}).get('text', '').strip()
+
+            # bóc codeblock nếu có
+            if '```' in answer:
+                buf, in_code = [], False
+                for line in answer.splitlines():
+                    if '```' in line:
+                        in_code = not in_code
+                        continue
+                    if in_code:
+                        buf.append(line)
+                answer = "\n".join(buf).strip()
+
+            parsed = json.loads(answer) if answer else {}
+            if isinstance(parsed, dict) and 'ingredients' in parsed:
+                cleaned = []
+                for it in parsed['ingredients']:
+                    if isinstance(it, dict):
+                        cleaned.append({
+                            'name': it.get('name') or it.get('name_vi') or it.get('name_en'),
+                            'quantity': self._num(it.get('quantity')),
+                            'unit': it.get('unit')
+                        })
+                parsed['ingredients'] = cleaned
+                if not parsed.get('dish_name'):
+                    parsed['dish_name'] = dish_name
+                return parsed
+
+            return {'dish_name': dish_name, 'ingredients': []}
+
+        except Exception:
+            return {'dish_name': dish_name, 'ingredients': []}

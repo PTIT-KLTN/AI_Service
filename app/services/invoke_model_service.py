@@ -41,7 +41,7 @@ class BedrockModelService:
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
             "max_tokens": 1024,
-            "temperature": 0.2,
+            "temperature": 0.1,
             "messages": [{
                 "role": "user",
                 "content": [{"type": "text", "text": prompt}]
@@ -172,5 +172,5 @@ def _build_vision_request(description: str, image_b64: str, image_mime: str) -> 
             ],
         }],
         "temperature": 0.1,
-        "max_tokens": 1000,
+        "max_tokens": 1024,
     }
