@@ -41,14 +41,27 @@ class BedrockModelService:
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
             "max_tokens": 1024,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.2
+            "temperature": 0.2,
+            "messages": [{
+                "role": "user",
+                "content": [{"type": "text", "text": prompt}]
+            }]
         })
-        
-        response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
-        content = json.loads(response['body'].read())['content'][0]['text'].strip()
 
-        parsed = self._parse_content(content)
+        response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
+        resp_json = json.loads(response['body'].read() or b'{}')
+
+        text = ""
+        content_arr = resp_json.get('content') or []
+        if isinstance(content_arr, list) and content_arr:
+            first = content_arr[0] or {}
+            if isinstance(first, dict):
+                text = (first.get('text') or "").strip()
+
+        if not text:
+            text = json.dumps(resp_json, ensure_ascii=False)
+
+        parsed = self._parse_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
@@ -65,17 +78,21 @@ class BedrockModelService:
         body = json.dumps(_build_vision_request(description, image_b64, image_mime))
 
         response = self.bedrock_client.invoke_model(model_id=self.vision_model_id, body=body)
-        content = json.loads(response['body'].read())['content'][0]['text'].strip()
-        parsed = self._parse_content(content)
-        
+        resp_json = json.loads(response['body'].read() or b'{}')
+        text = ""
+        content_arr = resp_json.get('content') or []
+        if isinstance(content_arr, list) and content_arr:
+            first = content_arr[0] or {}
+            if isinstance(first, dict):
+                text = (first.get('text') or "").strip()
+
+        if not text:
+            text = json.dumps(resp_json, ensure_ascii=False)
+
+        parsed = self._parse_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
-            if guardrail_info.get('violations'):
-                parsed.setdefault('warnings', []).extend(
-                    violation.get('message', 'Guardrail đã kích hoạt')
-                    for violation in guardrail_info.get('violations', [])
-                )
         return parsed
         
         

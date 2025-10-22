@@ -20,22 +20,21 @@ class ShoppingCartPipeline:
         self.ontology = OntologyService()
         self.conflicts = ConflictDetectionService()
 
+
     def process(self, user_input: str) -> dict:
         # Extract dish name + extra ingredients
         extracted = self.extractor.extract_dish_name(user_input)
-        
         print(f"Extracted from text: {extracted}")
-        # if not extracted.get('dish_name'):
-        #     return {'error': 'Không tìm thấy tên món ăn'}
-        
-        return self._build_response(extracted)
-    
+        return self._build_response(extracted, user_input)
+
+
     def process_image(self, image_b64: str, description: str = "", image_mime: str = "image/png") -> dict:
         extracted = self.extractor.extract_dish_from_image(image_b64, description, image_mime)
         return self._build_response(extracted)
 
 
-    def _build_response(self, extracted: dict) -> dict:
+    def _build_response(self, extracted: dict, user_query: str = "") -> dict:
+
         if not extracted:
             return {'status': 'error', 'error': 'Không có dữ liệu trích xuất.'}
 
@@ -121,6 +120,39 @@ class ShoppingCartPipeline:
         warnings.extend(conflict_warnings)
         insights = self.conflicts.build_explanations(dish_name, conflict_results)
         
+        # ===== Contextual Grounding  =====
+        assistant_text = extracted.get('response') or ""
+        if assistant_text and recipe_ing:
+            # Build nguồn từ RAG 
+            src_lines = []
+            for it in recipe_ing:
+                nm = it.get('name_vi') or it.get('name') or ''
+                qty = it.get('quantity', '')
+                unit = it.get('unit', '')
+                line = f"- {nm}".strip()
+                if qty or unit:
+                    line += f" ({qty} {unit})".strip()
+                src_lines.append(line)
+            source_text = f"Công thức {dish_name}:\n" + "\n".join(src_lines)
+
+            # Gọi apply_guardrail 
+            ar_resp = self.extractor.bedrock_client.apply_contextual_grounding(
+                source_text=source_text,
+                user_query=user_query or f"Món {dish_name}",
+                model_output=assistant_text
+            )
+
+            assessments = (ar_resp or {}).get("assessments") or []
+            if assessments:
+                # Nếu guardrail -> thay bằng safe-completion 
+                assistant_text = "Xin lỗi, tôi chỉ có thể trả lời dựa trên nội dung công thức/kiến thức đã cung cấp."
+                warnings.append({
+                    'message': 'Contextual grounding flagged the response; returned safe completion.',
+                    'severity': 'warning',
+                    'source': 'guardrail',
+                    'details': ar_resp,
+                })
+
         return {
             'status': 'success',
             'dish': {
@@ -136,7 +168,7 @@ class ShoppingCartPipeline:
             'similar_dishes': similar[:3],
             'warnings': self._unique_warnings(warnings),
             'insights': insights,
-            'assistant_response': extracted.get('response'),
+            'assistant_response': assistant_text, 
             'guardrail': guardrail_info,
         }
 

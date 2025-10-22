@@ -105,22 +105,48 @@ class GuardrailedBedrockClient:
         analysis_text = self._extract_textual_content(raw_text)
         violations = self.policy_evaluator.evaluate(prompt_text, analysis_text)
         action = self._resolve_action(violations)
-        sanitized_text = raw_text
+
+        try:
+            original_json = json.loads(raw_text)
+        except Exception:
+            original_json = None
 
         if violations:
             if action in {'block', 'safe-completion'}:
-                sanitized_text = self.policy_evaluator.build_safe_completion(violations)
+                safe_text = self.policy_evaluator.build_safe_completion(violations)
+                sanitized_json = {
+                    "content": [
+                        {"type": "text", "text": safe_text}
+                    ]
+                }
+                sanitized_bytes = json.dumps(sanitized_json, ensure_ascii=False).encode("utf-8")
+                sanitized_text = None 
             elif action == 'redact':
-                sanitized_text = self.policy_evaluator.redact_text(raw_text, violations)
+                redacted_text = self.policy_evaluator.redact_text(raw_text, violations)
+                sanitized_json = {
+                    "content": [
+                        {"type": "text", "text": redacted_text}
+                    ]
+                }
+                sanitized_bytes = json.dumps(sanitized_json, ensure_ascii=False).encode("utf-8")
+                sanitized_text = None
+            else:
+                sanitized_json = original_json
+                sanitized_bytes = None
+        else:
+            sanitized_json = original_json
+            sanitized_bytes = None
 
         guardrail_info = {
             'enabled': bool(violations),
             'action': action,
-            'violations': [violation.to_dict() for violation in violations],
+            'violations': [violation.to_dict() for violation in violations] if violations else [],
             'timestamp': datetime.utcnow().isoformat() + 'Z',
         }
-
         request_id = self._request_id_from_response(response)
+        if request_id:
+            guardrail_info['request_id'] = request_id
+
         if violations:
             log_payload = {
                 'event': 'guardrail_violation',
@@ -132,11 +158,15 @@ class GuardrailedBedrockClient:
             }
             self.logger.warning(json.dumps(log_payload, ensure_ascii=False))
 
-        response['body'] = io.BytesIO(sanitized_text.encode('utf-8'))
-        response['guardrail'] = guardrail_info
-        if request_id:
-            response['guardrail']['request_id'] = request_id
+        # Build response
+        if sanitized_bytes is not None:
+            response['body'] = io.BytesIO(sanitized_bytes)
+        elif sanitized_json is not None:
+            response['body'] = io.BytesIO(json.dumps(sanitized_json, ensure_ascii=False).encode("utf-8"))
+        else:
+            response['body'] = io.BytesIO((raw_text or "").encode("utf-8"))
 
+        response['guardrail'] = guardrail_info
         return response
 
     def _extract_textual_content(self, raw_text: str) -> str:
@@ -190,3 +220,23 @@ class GuardrailedBedrockClient:
             if request_id:
                 return str(request_id)
         return None
+    
+    def apply_contextual_grounding(self, source_text: str, user_query: str, model_output: str) -> dict:
+
+        gid = os.getenv("BEDROCK_GUARDRAIL_ID")
+        gver = os.getenv("BEDROCK_GUARDRAIL_VERSION")
+        if not (gid and gver):
+            return {"skipped": True, "reason": "no-guardrail-config"}
+
+        content = [
+            {"text": {"text": source_text, "qualifiers": ["grounding_source"]}},
+            {"text": {"text": user_query,  "qualifiers": ["query"]}},
+            {"text": {"text": model_output,"qualifiers": ["guard_content"]}},
+        ]
+        return self.runtime.apply_guardrail(
+            guardrailIdentifier=gid,
+            guardrailVersion=gver,
+            source="OUTPUT",
+            content=content,
+            outputScope="INTERVENTIONS"
+        )
