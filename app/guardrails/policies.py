@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Tuple
 
 
@@ -56,59 +55,44 @@ class ConfidenceScorer:
         return ConfidenceBreakdown(score=round(total, 2), breakdown=breakdown, penalties=penalties)
 
     # ---------------------------- RAG -----------------------------
-
     def _score_rag(self, rag_meta: Dict[str, Any]) -> Tuple[float, List[str]]:
         penalties: List[str] = []
+
+        # 1) Similarity: trọng số lớn nhất
         similarity = float(rag_meta.get('max_similarity', 0.0) or 0.0)
-        similarity_component = _clamp(similarity, 0.0, 1.0) * 20.0
+        SIM_W = 32.0
+        similarity_component = _clamp(similarity, 0.0, 1.0) * SIM_W
 
-        bm25 = rag_meta.get('bm25_score') or rag_meta.get('bm25') or 0.0
-        bm25_component = _clamp(float(bm25) / 60.0, 0.0, 1.0) * 5.0
-
-        sources = int(rag_meta.get('sources', 0) or 0)
-        if sources >= 3:
-            sources_component = 8.0
-        elif sources == 2:
-            sources_component = 6.0
-        elif sources == 1:
-            sources_component = 4.0
-        else:
-            sources_component = 0.0
-            penalties.append('RAG không cung cấp nguồn tham khảo đáng tin cậy.')
-
-        recency_days = rag_meta.get('recency_days')
-        if recency_days is None and rag_meta.get('latest_source_date'):
+        # 2) Consistency: ưu tiên dùng margin (top1 - top2). Fallback: dùng 'consistency' cũ.
+        CONS_W = 8.0
+        margin = None
+        if 'sim_margin' in rag_meta:
             try:
-                latest = datetime.fromisoformat(str(rag_meta['latest_source_date']).replace('Z', '+00:00'))
-                recency_days = (datetime.now(timezone.utc) - latest).days
-            except ValueError:
-                recency_days = None
-        if recency_days is None:
-            recency_component = 2.5
+                margin = float(rag_meta.get('sim_margin') or 0.0)
+            except Exception:
+                margin = None
+        if margin is None:
+            top2 = rag_meta.get('second_best_similarity') or rag_meta.get('top2_similarity')
+            if top2 is not None:
+                try:
+                    margin = max(0.0, float(similarity) - float(top2))
+                except Exception:
+                    margin = None
+
+        if margin is not None:
+            norm = _clamp(margin / 0.15, 0.0, 1.0)
+            consistency_component = norm * CONS_W
         else:
-            recency_days = max(0, float(recency_days))
-            if recency_days <= 30:
-                recency_component = 5.0
-            elif recency_days <= 90:
-                recency_component = 4.0
-            elif recency_days <= 180:
-                recency_component = 3.0
-            elif recency_days <= 365:
-                recency_component = 1.5
-            else:
-                recency_component = 0.5
-                penalties.append('Nguồn tham khảo quá cũ (>1 năm).')
+            consistency = float(rag_meta.get('consistency', 1.0) or 0.0)
+            consistency_component = _clamp(consistency, 0.0, 1.0) * CONS_W
 
-        consistency = float(rag_meta.get('consistency', 1.0) or 0.0)
-        consistency_component = _clamp(consistency, 0.0, 1.0) * 5.0
-        if consistency_component < 2.5:
-            penalties.append('Các nguồn RAG thiếu nhất quán.')
+        # 3) Recency: luôn trung lập (không phạt/không thưởng theo thời gian)
+        BASE_NEUTRAL = 2.5
 
-        rag_score = similarity_component + bm25_component + sources_component + recency_component + consistency_component
+        rag_score = similarity_component + consistency_component + BASE_NEUTRAL
         return _clamp(rag_score, 0.0, 40.0), penalties
 
     # ---------------------------- LLM -----------------------------
-
     def _score_llm(self, llm_meta: Dict[str, Any]) -> Tuple[float, List[str]]:
         penalties: List[str] = []
         json_valid = bool(llm_meta.get('json_valid', False))
@@ -142,7 +126,6 @@ class ConfidenceScorer:
         return _clamp(llm_score, 0.0, 30.0), penalties
 
     # ------------------------ Entity Resolution -------------------
-
     def _score_entity_resolution(self, entity_meta: Dict[str, Any]) -> Tuple[float, List[str]]:
         penalties: List[str] = []
         match_ratio = entity_meta.get('match_ratio')
@@ -158,7 +141,6 @@ class ConfidenceScorer:
         return _clamp(entity_score, 0.0, 15.0), penalties
 
     # -------------------------- Guardrails ------------------------
-
     def _penalize_guardrails(self, guard_meta: Dict[str, Any]) -> Tuple[float, List[str]]:
         if not guard_meta:
             return 0.0, []
@@ -185,7 +167,6 @@ class ConfidenceScorer:
         return penalty, penalties
 
     # ---------------------------- Domain --------------------------
-
     def _penalize_domain(self, domain_meta: Dict[str, Any]) -> Tuple[float, List[str]]:
         penalty = 0.0
         penalties: List[str] = []

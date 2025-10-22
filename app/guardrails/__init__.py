@@ -1,4 +1,4 @@
-from .policies import (
+from app.guardrails.policies import (
     GuardrailPolicyEvaluator,
     GuardrailViolation,
 )
