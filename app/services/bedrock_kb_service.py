@@ -3,12 +3,13 @@ import os
 import json
 import unicodedata
 from difflib import SequenceMatcher
-from typing import Dict, List, Any, Optional
-
 import boto3
+
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
 from pinecone import Pinecone
 from dotenv import load_dotenv
-
 load_dotenv()
 
 s3 = boto3.client("s3")

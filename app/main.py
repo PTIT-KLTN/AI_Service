@@ -1,10 +1,13 @@
 from dotenv import load_dotenv
+from typing import Dict, List
+
 from app.services.invoke_model_service import BedrockModelService
 from app.services.bedrock_kb_service import BedrockKBService
 from app.services.validation_service import ValidationService
 from app.services.ontology_service import OntologyService
 from app.services.unit_converter_service import UnitConverterService 
 from app.utils import fuzzy_score, tokenize
+from app.services.conflict_service import ConflictDetectionService
 
 load_dotenv()
 
@@ -15,12 +18,9 @@ class ShoppingCartPipeline:
         self.converter = UnitConverterService()
         self.validator = ValidationService()
         self.ontology = OntologyService()
+        self.conflicts = ConflictDetectionService()
 
     def process(self, user_input: str) -> dict:
-        """
-        Process: "Tôi muốn ăn bún bò Huế với trứng cút"
-        -> Lấy công thức bún bò Huế + thêm trứng cút vào
-        """
         # Extract dish name + extra ingredients
         extracted = self.extractor.extract_dish_name(user_input)
         
@@ -31,23 +31,46 @@ class ShoppingCartPipeline:
         return self._build_response(extracted)
     
     def process_image(self, image_b64: str, description: str = "", image_mime: str = "image/png") -> dict:
-        """Process pipeline when the primary input is an image."""
         extracted = self.extractor.extract_dish_from_image(image_b64, description, image_mime)
         return self._build_response(extracted)
 
 
     def _build_response(self, extracted: dict) -> dict:
-        """Build the final response payload from extracted data."""
-        if not extracted or not extracted.get('dish_name'):
-            return {'error': 'Không tìm thấy tên món ăn'}
-        
-        dish_name = extracted['dish_name']
+        if not extracted:
+            return {'status': 'error', 'error': 'Không có dữ liệu trích xuất.'}
+
+        guardrail_info = extracted.get('guardrail')
+        warnings = self._normalize_warnings(extracted.get('warnings'))
+        warnings.extend(self._guardrail_warnings(guardrail_info))
+
+        # Get dish name
+        dish_name = extracted.get('dish_name')
         extra_ingredients = extracted.get('ingredients', [])
+
+        if not dish_name:
+            status = 'guardrail_blocked' if guardrail_info and guardrail_info.get('action') != 'allow' else 'error'
+            response_text = extracted.get('response')
+            payload = {
+                'status': status,
+                'dish': {'name': None},
+                'warnings': self._unique_warnings(warnings),
+                'response': response_text,
+                'guardrail': guardrail_info,
+            }
+            if status == 'error':
+                payload['error'] = 'Không tìm thấy tên món ăn'
+                payload.setdefault('response', 'Không tìm thấy tên món ăn')
+            return payload
         
         # Get recipe
         recipe = self._get_recipe(dish_name)
         if not recipe.get('ingredients'):
-            return {'error': f'Không tìm thấy công thức cho "{dish_name}"'}
+            if not dish_name:
+                return {
+                'status': 'error',
+                'error': f'Không tìm thấy công thức cho "{dish_name}"',
+                'warnings': self._unique_warnings(warnings),
+            }
         
         recipe_ing = self._normalize_recipe_items(recipe.get('ingredients', []))
         extra_norm = self._normalize_extra(extra_ingredients)
@@ -74,6 +97,29 @@ class ShoppingCartPipeline:
             [item['ingredient_id'] for item in all_ingredients], 
             min_match=3
         )
+
+        # Conflict detection warnings
+        ingredient_names: List[str] = []
+        ingredient_names.extend([item.get('name_vi') or item.get('name') or '' for item in cart_items])
+        ingredient_names.extend(
+            [
+                ing.get('name', '')
+                for ing in extra_ingredients
+                if isinstance(ing, dict)
+            ]
+        )
+        conflict_results = self.conflicts.check_conflicts(dish_name, ingredient_names)
+        conflict_warnings = [
+            {
+                'message': conflict.get('message', ''),
+                'severity': conflict.get('severity', 'warning'),
+                'source': 'conflict',
+                'details': conflict,
+            }
+            for conflict in conflict_results
+        ]
+        warnings.extend(conflict_warnings)
+        insights = self.conflicts.build_explanations(dish_name, conflict_results)
         
         return {
             'status': 'success',
@@ -87,8 +133,61 @@ class ShoppingCartPipeline:
                 'items': cart_items
             },
             'suggestions': suggestions,
-            'similar_dishes': similar[:3]
+            'similar_dishes': similar[:3],
+            'warnings': self._unique_warnings(warnings),
+            'insights': insights,
+            'assistant_response': extracted.get('response'),
+            'guardrail': guardrail_info,
         }
+
+    def _normalize_warnings(self, warnings) -> List[Dict[str, object]]:
+        normalized: List[Dict[str, object]] = []
+        for warning in warnings or []:
+            if isinstance(warning, dict):
+                message = warning.get('message') or warning.get('text') or ''
+                severity = warning.get('severity', 'warning')
+                source = warning.get('source', 'model')
+                details = {k: v for k, v in warning.items() if k not in {'message', 'text', 'severity', 'source'}}
+                normalized.append({
+                    'message': message,
+                    'severity': severity,
+                    'source': source,
+                    'details': details,
+                })
+            else:
+                normalized.append({
+                    'message': str(warning),
+                    'severity': 'warning',
+                    'source': 'model',
+                })
+        return normalized
+
+    def _guardrail_warnings(self, guardrail_info) -> List[Dict[str, object]]:
+        if not guardrail_info:
+            return []
+        violations = guardrail_info.get('violations') or []
+        formatted = []
+        for violation in violations:
+            if isinstance(violation, dict):
+                formatted.append({
+                    'message': violation.get('message', 'Guardrail đã kích hoạt.'),
+                    'severity': violation.get('severity', 'warning'),
+                    'source': violation.get('policy_id', 'guardrail'),
+                    'details': violation,
+                })
+        return formatted
+
+    @staticmethod
+    def _unique_warnings(warnings: List[Dict[str, object]]) -> List[Dict[str, object]]:
+        seen = set()
+        unique: List[Dict[str, object]] = []
+        for warning in warnings:
+            key = (warning.get('source'), warning.get('message'))
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append(warning)
+        return unique
 
     def _get_recipe(self, dish_name: str) -> dict:
         """Get recipe từ RAG hoặc local KB"""

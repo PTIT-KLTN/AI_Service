@@ -181,12 +181,13 @@ result = pipeline.process(user_input)
 
 ## 🧪 Testing
 
-Chạy test với dữ liệu mẫu:
+Chạy test với dữ liệu mẫu (bao gồm kiểm thử guardrail và cảnh báo tương khắc nguyên liệu):
 ```bash
 python test_rag.py
 ```
 
-Kết quả test sẽ được lưu trong `test_output.json`
+Kết quả test (pipeline + guardrail) sẽ được lưu trong `test_output.json`.
+Các bước thiết lập Guardrail trên Amazon Bedrock được mô tả chi tiết trong `docs/bedrock_guardrail_setup.md`.
 
 ## 🔧 Cấu hình
 

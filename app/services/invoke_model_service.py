@@ -4,7 +4,10 @@ import os
 from dotenv import load_dotenv
 import base64
 from typing import Optional
+
 from app.services.bedrock_client import GuardrailedBedrockClient
+from app.services.ontology_service import OntologyService
+from app.utils import fuzzy_score
 
 load_dotenv()
 
@@ -13,7 +16,8 @@ class BedrockModelService:
         self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
         self.model_id = os.getenv('INVOKE_MODEL_ID')
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
-    
+
+
     def extract_dish_name(self, description: str) -> dict:
         prompt = f"""Trích xuất tên món ăn CHÍNH và nguyên liệu THÊM VÀO (không phải trong công thức gốc).
 
@@ -36,9 +40,9 @@ class BedrockModelService:
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 1000,
+            "max_tokens": 1024,
             "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.1
+            "temperature": 0.2
         })
         
         response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
@@ -51,7 +55,6 @@ class BedrockModelService:
         return parsed
     
     def extract_dish_from_image(self, image_data, description: str = "", image_mime: str = "image/png") -> dict:
-        """Extract dish information from an image (base64 string or raw bytes)."""
         if not self.vision_model_id:
             raise ValueError('VISION_MODEL_ID environment variable is not configured')
 
@@ -68,7 +71,13 @@ class BedrockModelService:
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
+            if guardrail_info.get('violations'):
+                parsed.setdefault('warnings', []).extend(
+                    violation.get('message', 'Guardrail đã kích hoạt')
+                    for violation in guardrail_info.get('violations', [])
+                )
         return parsed
+        
         
     def _parse_content(self, content: str) -> dict:
         if content.startswith('```'):
@@ -77,12 +86,30 @@ class BedrockModelService:
         try:
             data = json.loads(content)
         except Exception:
-            return {"dish_name": None, "ingredients": []}
+            fallback_warning = 'Kết quả mô hình không phải JSON hợp lệ.'
+            return {
+                "dish_name": None,
+                "ingredients": [],
+                "warnings": [fallback_warning],
+                "response": content.strip() if isinstance(content, str) else None,
+            }
         
+        # Get dish_name and ingredients
         dish_name = data.get('dish_name')
         ingredients = data.get('ingredients', []) if isinstance(data.get('ingredients', []), list) else []
-        return {"dish_name": dish_name, "ingredients": ingredients}
+
+        # Get warning data
+        warnings = data.get('warnings', []) if isinstance(data.get('warnings'), list) else []
+        response_text = data.get('response') if isinstance(data.get('response'), str) else None
+        return {
+            "dish_name": dish_name,
+            "ingredients": ingredients,
+            "warnings": warnings,
+            "response": response_text,
+            "violations": data.get('violations') if isinstance(data.get('violations'), list) else [],
+        }
     
+
     def _ensure_base64(self, image_data) -> str:
         if isinstance(image_data, str):
             return image_data
