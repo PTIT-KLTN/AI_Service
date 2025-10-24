@@ -12,7 +12,7 @@ from app.utils import fuzzy_score
 load_dotenv()
 
 class BedrockModelService:
-    def __init__(self, region: str = 'us-east-1', bedrock_client: Optional[GuardrailedBedrockClient] = None):
+    def __init__(self, region: str | None = None, bedrock_client: Optional[GuardrailedBedrockClient] = None):
         self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
         self.model_id = os.getenv('INVOKE_MODEL_ID')
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
@@ -65,6 +65,10 @@ class BedrockModelService:
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
+
+        guardrail_messages = response.get('guardrail_messages')
+        if guardrail_messages:
+            parsed['guardrail_messages'] = guardrail_messages
         return parsed
     
     def extract_dish_from_image(self, image_data, description: str = "", image_mime: str = "image/png") -> dict:
@@ -93,6 +97,10 @@ class BedrockModelService:
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
+
+        guardrail_messages = response.get('guardrail_messages')
+        if guardrail_messages:
+            parsed['guardrail_messages'] = guardrail_messages
         return parsed
         
         

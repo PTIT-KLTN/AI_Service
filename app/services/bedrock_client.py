@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
 
 import boto3
 
@@ -137,10 +137,24 @@ class GuardrailedBedrockClient:
             sanitized_json = original_json
             sanitized_bytes = None
 
+        violation_codes: List[str] = []
+        violation_messages: List[Dict[str, Any]] = []
+        for violation in violations or []:
+            policy_id = violation.policy_id or 'guardrail'
+            rule_id = violation.rule_id or ''
+            code = f"{policy_id}:{rule_id}".rstrip(':')
+            violation_codes.append(code)
+            violation_messages.append({
+                'message': violation.message,
+                'severity': violation.severity or 'warning',
+                'policy_id': policy_id,
+            })
+
         guardrail_info = {
-            'enabled': bool(violations),
+            'triggered': bool(violations),
             'action': action,
-            'violations': [violation.to_dict() for violation in violations] if violations else [],
+            'violation_count': len(violations) if violations else 0,
+            'violation_codes': violation_codes,
             'timestamp': datetime.utcnow().isoformat() + 'Z',
         }
         request_id = self._request_id_from_response(response)
@@ -151,7 +165,7 @@ class GuardrailedBedrockClient:
             log_payload = {
                 'event': 'guardrail_violation',
                 'request_id': request_id,
-                'violation_types': [f"{v.policy_id}:{v.rule_id}" for v in violations],
+                'violation_types': violation_codes,
                 'action': action,
                 'environment': self.environment,
                 'timestamp': guardrail_info['timestamp'],
@@ -167,6 +181,8 @@ class GuardrailedBedrockClient:
             response['body'] = io.BytesIO((raw_text or "").encode("utf-8"))
 
         response['guardrail'] = guardrail_info
+        if violation_messages:
+            response['guardrail_messages'] = violation_messages
         return response
 
     def _extract_textual_content(self, raw_text: str) -> str:
@@ -223,9 +239,9 @@ class GuardrailedBedrockClient:
     
     def apply_contextual_grounding(self, source_text: str, user_query: str, model_output: str) -> dict:
 
-        gid = os.getenv("BEDROCK_GUARDRAIL_ID")
-        gver = os.getenv("BEDROCK_GUARDRAIL_VERSION")
-        if not (gid and gver):
+        g_id = os.getenv("BEDROCK_GUARDRAIL_ID")
+        g_ver = os.getenv("BEDROCK_GUARDRAIL_VERSION")
+        if not (g_id and g_ver):
             return {"skipped": True, "reason": "no-guardrail-config"}
 
         content = [
@@ -234,8 +250,8 @@ class GuardrailedBedrockClient:
             {"text": {"text": model_output,"qualifiers": ["guard_content"]}},
         ]
         return self.runtime.apply_guardrail(
-            guardrailIdentifier=gid,
-            guardrailVersion=gver,
+            guardrailIdentifier=g_id,
+            guardrailVersion=g_ver,
             source="OUTPUT",
             content=content,
             outputScope="INTERVENTIONS"

@@ -24,7 +24,7 @@ class ShoppingCartPipeline:
     def process(self, user_input: str) -> dict:
         # Extract dish name + extra ingredients
         extracted = self.extractor.extract_dish_name(user_input)
-        print(f"Extracted from text: {extracted}")
+        # print(f"Extracted from text: {extracted}")
         return self._build_response(extracted, user_input)
 
 
@@ -40,7 +40,8 @@ class ShoppingCartPipeline:
 
         guardrail_info = extracted.get('guardrail')
         warnings = self._normalize_warnings(extracted.get('warnings'))
-        warnings.extend(self._guardrail_warnings(guardrail_info))
+        warnings.extend(self._guardrail_warnings(guardrail_info, extracted.get('guardrail_messages')))
+
 
         # Get dish name
         dish_name = extracted.get('dish_name')
@@ -194,18 +195,26 @@ class ShoppingCartPipeline:
                 })
         return normalized
 
-    def _guardrail_warnings(self, guardrail_info) -> List[Dict[str, object]]:
+    def _guardrail_warnings(self, guardrail_info, guardrail_messages=None) -> List[Dict[str, object]]:
         if not guardrail_info:
             return []
-        violations = guardrail_info.get('violations') or []
-        formatted = []
-        for violation in violations:
-            if isinstance(violation, dict):
+        formatted: List[Dict[str, object]] = []
+        for entry in guardrail_messages or []:
+            if not isinstance(entry, dict):
+                continue
+            formatted.append({
+                'message': entry.get('message', 'Guardrail đã kích hoạt.'),
+                'severity': entry.get('severity', 'warning'),
+                'source': entry.get('policy_id', 'guardrail'),
+            })
+
+        if not formatted:
+            codes = guardrail_info.get('violation_codes') or []
+            for code in codes:
                 formatted.append({
-                    'message': violation.get('message', 'Guardrail đã kích hoạt.'),
-                    'severity': violation.get('severity', 'warning'),
-                    'source': violation.get('policy_id', 'guardrail'),
-                    'details': violation,
+                    'message': f'Guardrail kích hoạt: {code}',
+                    'severity': 'warning',
+                    'source': 'guardrail',
                 })
         return formatted
 
@@ -223,9 +232,9 @@ class ShoppingCartPipeline:
 
     def _get_recipe(self, dish_name: str) -> dict:
         """Get recipe từ RAG hoặc local KB"""
-        print(f"Fetching RAG recipe for dish: {dish_name}")
+        # print(f"Fetching RAG recipe for dish: {dish_name}")
         recipe = self.kb_service.get_dish_recipe(dish_name)
-        print(f"RAG recipe for {dish_name}: {recipe}")
+        # print(f"RAG recipe for {dish_name}: {recipe}")
         if recipe.get('ingredients'):
             print("Recipe found in RAG KB")
             return recipe

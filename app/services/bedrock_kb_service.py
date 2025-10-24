@@ -90,13 +90,11 @@ class BedrockKBService:
                 or j.get('title')
             )
             if not title:
-                # không có tiêu đề để so, thử ứng viên khác
                 continue
 
             if self._similar(dish_name, title) >= 0.6:
                 return uri
 
-        # không tìm được match đủ ngưỡng → fallback URI có count cao nhất
         return best_fallback
 
     # --------------------- Ingredient extract --------------------
