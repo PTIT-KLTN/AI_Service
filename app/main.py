@@ -77,7 +77,7 @@ class ShoppingCartPipeline:
         # Merge: công thức + nguyên liệu thêm
         all_ingredients = recipe_ing + [it for it in extra_norm if it.get('ingredient_id')]
         if not all_ingredients:
-            return {'error': 'Không map được nguyên liệu nào từ công thức sang ontology'}
+            return {'error': 'Không có nguyên liệu hợp lệ'}
         
         # Convert units
         cart_items = self.converter.normalize_ingredients(all_ingredients)
