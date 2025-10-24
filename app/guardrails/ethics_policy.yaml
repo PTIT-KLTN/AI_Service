@@ -1,53 +1,32 @@
 policy_id: illegal_ethics
-name: "Illegal & Unethical Food Content"
+name: "Extreme Edge Cases (AWS không cover)"
 description: |
-  Chính sách loại bỏ nội dung vi phạm pháp luật hoặc đạo đức, dựa trên hướng
-  dẫn của Công ước về Đa dạng Sinh học và khuyến cáo của Bộ Y tế Việt Nam về
-  vệ sinh an toàn thực phẩm.
+  Chính sách chỉ giữ lại các edge cases CỰC HIẾM mà AWS Bedrock Guardrails không cover.
+  
+  ⚠️ NOTE: Phần lớn nội dung đạo đức đã được AWS Denied Topics handle:
+    - Wildlife meat → AWS Denied Topic #6 "Wildlife consumption or trade"
+    - Fugu → AWS Denied Topic #5 "Fugu preparation at home" + Word Filter "fugu"
+    - Food safety → AWS Denied Topics #1-4 + AWS Policy "FoodSafety_Core"
+  
+  Policy này chỉ tập trung vào nội dung CỰC ĐOAN mà AWS không explicit cover.
 metadata:
   sources:
-    - name: Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES)
-      url: https://www.cites.org/
     - name: Bộ Y tế Việt Nam - Cục An toàn thực phẩm
       url: https://vfa.gov.vn/
+  aws_overlap: false  # Không trùng với AWS Denied Topics
+  rationale: "Extreme taboo content, very rare but need explicit blocking"
 rules:
-  - id: wildlife-meat
-    description: "Chặn nội dung hướng dẫn săn bắt, chế biến động vật hoang dã."
-    type: regex
-    patterns:
-      - 'thịt\s+(hổ|gấu|tê tê|động vật hoang dã)'
-      - 'wild\s+(animal|game)\s+meat'
-    action: block
-    severity: high
-    message: |
-      Săn bắt và tiêu thụ động vật hoang dã bị cấm theo CITES và pháp luật Việt Nam.
-    remediation: "Khuyến cáo sử dụng nguồn protein hợp pháp và bền vững."
-    sources:
-      - https://www.cites.org/
   - id: human-meat
-    description: "Ngăn nội dung phản cảm, phi đạo đức như chế biến thịt người."
+    description: "Ngăn nội dung phi đạo đức cực đoan như chế biến thịt người."
     type: regex
     patterns:
       - 'thịt\s+người'
       - 'human\s+flesh'
+      - 'human\s+meat'
     action: block
     severity: high
     message: |
-      Nội dung vi phạm chuẩn mực đạo đức và có thể cấu thành tội hình sự.
-    remediation: "Từ chối và nhắc lại tiêu chuẩn đạo đức."
+      Nội dung vi phạm nghiêm trọng chuẩn mực đạo đức và pháp luật.
+    remediation: "Từ chối hoàn toàn và báo cáo nếu cần."
     sources:
       - https://vfa.gov.vn/
-  - id: fugu-guidance
-    description: "Chặn hướng dẫn tự chế biến cá nóc (fugu) thiếu kiểm soát."
-    type: regex
-    patterns:
-      - '(fugu|cá\s+nóc)\s+(tự|ở nhà|tại nhà)'
-      - 'prepare\s+fugu\s+at\s+home'
-    action: safe-completion
-    severity: high
-    message: |
-      Bộ Y tế Nhật Bản và WHO cảnh báo tetrodotoxin trong cá nóc có thể gây tử vong;
-      chỉ đầu bếp được cấp phép mới được xử lý.
-    remediation: "Khuyên người dùng không tự chế biến và tìm dịch vụ hợp pháp."
-    sources:
-      - https://www.who.int/news-room/fact-sheets/detail/food-safety

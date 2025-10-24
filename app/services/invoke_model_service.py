@@ -8,35 +8,46 @@ from typing import Optional
 from app.services.bedrock_client import GuardrailedBedrockClient
 from app.services.ontology_service import OntologyService
 from app.utils import fuzzy_score
+from app.utils.json_utils import parse_json_content
 
 load_dotenv()
 
 class BedrockModelService:
-    def __init__(self, region: str = 'us-east-1', bedrock_client: Optional[GuardrailedBedrockClient] = None):
+    def __init__(self, region: str | None = None, bedrock_client: Optional[GuardrailedBedrockClient] = None):
         self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
         self.model_id = os.getenv('INVOKE_MODEL_ID')
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
 
 
     def extract_dish_name(self, description: str) -> dict:
-        prompt = f"""Trích xuất tên món ăn CHÍNH và nguyên liệu THÊM VÀO (không phải trong công thức gốc).
+        prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO, và nguyên liệu cần LOẠI TRỪ.
 
-                    Ví dụ:
-                    - "Tôi muốn ăn bún bò Huế với trứng cút" 
-                    → dish_name: "Bún bò Huế", ingredients: [{{"name": "trứng cút"}}]
-                    
-                    - "Nấu phở bò"
-                    → dish_name: "Phở bò", ingredients: []
+Ví dụ:
+- "Tôi muốn ăn bún bò Huế với trứng cút" 
+→ dish_name: "Bún bò Huế", ingredients: [{{"name": "trứng cút"}}], excluded_ingredients: []
 
-                    Mô tả: "{description}"
+- "Nấu phở bò"
+→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: []
 
-                    Trả về JSON:
-                    {{
-                        "dish_name": "tên món chính",
-                        "ingredients": [{{"name": "nguyên liệu thêm", "quantity": "", "unit": ""}}]
-                    }}
+- "Tôi muốn ăn phở bò cùng với một nước mắm chấm kèm"
+→ dish_name: "Phở bò", ingredients: [{{"name": "nước mắm chấm kèm"}}], excluded_ingredients: []
 
-                    Chỉ trả về JSON."""
+- "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
+→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: [{{"name": "đậu phộng", "reason": "dị ứng"}}, {{"name": "hành lá", "reason": "người dùng không muốn"}}]
+
+- "Cho tôi món phở chay, bỏ hành lá và ngò rí"
+→ dish_name: "Phở chay", ingredients: [], excluded_ingredients: [{{"name": "hành lá"}}, {{"name": "ngò rí"}}]
+
+Mô tả: "{description}"
+
+Trả về JSON:
+{{
+    "dish_name": "tên món chính",
+    "ingredients": [{{"name": "nguyên liệu thêm", "quantity": "", "unit": ""}}],
+    "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
+}}
+
+Chỉ trả về JSON."""
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
@@ -61,10 +72,14 @@ class BedrockModelService:
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
 
-        parsed = self._parse_content(text)
+        parsed = parse_json_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
+
+        guardrail_messages = response.get('guardrail_messages')
+        if guardrail_messages:
+            parsed['guardrail_messages'] = guardrail_messages
         return parsed
     
     def extract_dish_from_image(self, image_data, description: str = "", image_mime: str = "image/png") -> dict:
@@ -89,44 +104,17 @@ class BedrockModelService:
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
 
-        parsed = self._parse_content(text)
+        parsed = parse_json_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
+
+        guardrail_messages = response.get('guardrail_messages')
+        if guardrail_messages:
+            parsed['guardrail_messages'] = guardrail_messages
         return parsed
         
         
-    def _parse_content(self, content: str) -> dict:
-        if content.startswith('```'):
-            content = '\n'.join(content.split('\n')[1:-1]).lstrip('json')
-        
-        try:
-            data = json.loads(content)
-        except Exception:
-            fallback_warning = 'Kết quả mô hình không phải JSON hợp lệ.'
-            return {
-                "dish_name": None,
-                "ingredients": [],
-                "warnings": [fallback_warning],
-                "response": content.strip() if isinstance(content, str) else None,
-            }
-        
-        # Get dish_name and ingredients
-        dish_name = data.get('dish_name')
-        ingredients = data.get('ingredients', []) if isinstance(data.get('ingredients', []), list) else []
-
-        # Get warning data
-        warnings = data.get('warnings', []) if isinstance(data.get('warnings'), list) else []
-        response_text = data.get('response') if isinstance(data.get('response'), str) else None
-        return {
-            "dish_name": dish_name,
-            "ingredients": ingredients,
-            "warnings": warnings,
-            "response": response_text,
-            "violations": data.get('violations') if isinstance(data.get('violations'), list) else [],
-        }
-    
-
     def _ensure_base64(self, image_data) -> str:
         if isinstance(image_data, str):
             return image_data

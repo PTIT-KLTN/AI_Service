@@ -1,15 +1,15 @@
 import boto3
 import os
 import json
-import unicodedata
-from difflib import SequenceMatcher
 from collections import Counter
 from typing import Dict, List, Any, Optional, Tuple
 from dotenv import load_dotenv
 
-load_dotenv()
+from app.utils.json_utils import read_json_from_s3_uri
+from app.utils.string_utils import norm_text, similarity_ratio
+from app.utils.number_utils import parse_number
 
-s3 = boto3.client('s3')
+load_dotenv()
 
 
 class BedrockKBService:
@@ -17,41 +17,6 @@ class BedrockKBService:
         self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
         self.kb_id = os.getenv('BEDROCK_KB_ID')
         self.model_id = os.getenv('MODEL_ID')
-
-    # --------------------------- Utils ---------------------------
-
-    @staticmethod
-    def _read_json_from_s3_uri(s3_uri: str) -> Dict[str, Any]:
-        assert s3_uri.startswith('s3://'), f"Invalid S3 URI: {s3_uri}"
-        _, _, path = s3_uri.partition('s3://')
-        bucket, _, key = path.partition('/')
-        obj = s3.get_object(Bucket=bucket, Key=key)
-        body = obj['Body'].read().decode('utf-8')
-        return json.loads(body)
-
-    @staticmethod
-    def _strip_accents(s: str) -> str:
-        if not isinstance(s, str):
-            s = str(s)
-        nfkd = unicodedata.normalize("NFKD", s)
-        return "".join(ch for ch in nfkd if not unicodedata.combining(ch))
-
-    @staticmethod
-    def _norm(s: Optional[str]) -> str:
-        if s is None:
-            return ""
-        return BedrockKBService._strip_accents(s).lower().strip()
-
-    @staticmethod
-    def _similar(a: str, b: str) -> float:
-        return SequenceMatcher(None, BedrockKBService._norm(a), BedrockKBService._norm(b)).ratio()
-
-    @staticmethod
-    def _num(v):
-        try:
-            return float(v)
-        except Exception:
-            return v
 
     # ----------------- Citations / URI picking -------------------
 
@@ -79,7 +44,7 @@ class BedrockKBService:
         best_fallback = uri_counts[0][0]
         for uri, _cnt in uri_counts:
             try:
-                j = self._read_json_from_s3_uri(uri)
+                j = read_json_from_s3_uri(uri)
             except Exception:
                 continue
 
@@ -90,13 +55,11 @@ class BedrockKBService:
                 or j.get('title')
             )
             if not title:
-                # không có tiêu đề để so, thử ứng viên khác
                 continue
 
-            if self._similar(dish_name, title) >= 0.6:
+            if similarity_ratio(dish_name, title) >= 0.6:
                 return uri
 
-        # không tìm được match đủ ngưỡng → fallback URI có count cao nhất
         return best_fallback
 
     # --------------------- Ingredient extract --------------------
@@ -126,7 +89,7 @@ class BedrockKBService:
                     continue
                 items.append({
                     'name': str(name).strip(),
-                    'quantity': self._num(qty),
+                    'quantity': parse_number(qty),
                     'unit': unit
                 })
 
@@ -134,7 +97,7 @@ class BedrockKBService:
         seen = set()
         uniq = []
         for ing in items:
-            k = (self._norm(ing['name']), self._norm(ing.get('unit') or ''), str(ing.get('quantity')))
+            k = (norm_text(ing['name']), norm_text(ing.get('unit') or ''), str(ing.get('quantity')))
             if k in seen:
                 continue
             seen.add(k)
@@ -173,7 +136,7 @@ class BedrockKBService:
 
             if best_uri:
                 try:
-                    j = self._read_json_from_s3_uri(best_uri)
+                    j = read_json_from_s3_uri(best_uri)
                     title = j.get('dish_name') or j.get('name_vi') or j.get('name') or dish_name
                     ings = self._extract_ingredients_from_json(j)
                     if ings:
@@ -202,7 +165,7 @@ class BedrockKBService:
                     if isinstance(it, dict):
                         cleaned.append({
                             'name': it.get('name') or it.get('name_vi') or it.get('name_en'),
-                            'quantity': self._num(it.get('quantity')),
+                            'quantity': parse_number(it.get('quantity')),
                             'unit': it.get('unit')
                         })
                 parsed['ingredients'] = cleaned

@@ -1,236 +1,8 @@
 {
-  "timestamp": "2025-10-24T08:44:52.336018Z",
+  "timestamp": "2025-10-24T12:44:18.659190Z",
   "pipeline_tests": [
     {
       "input": "Tôi muốn nấu món thịt kho tàu.",
-      "output": {
-        "status": "success",
-        "dish": {
-          "name": "thịt kho tàu",
-          "prep_time": null,
-          "servings": null
-        },
-        "cart": {
-          "total_items": 11,
-          "items": [
-            {
-              "ingredient_id": "ingre06272",
-              "name_vi": "Thị ba chỉ",
-              "quantity": 300.0,
-              "unit": "gr",
-              "converted_quantity": "300.0",
-              "converted_unit": "g",
-              "category": "fresh_meat"
-            },
-            {
-              "ingredient_id": "ingre06816",
-              "name_vi": "Trứng cút",
-              "quantity": 20.0,
-              "unit": "quả",
-              "converted_quantity": "20.0",
-              "converted_unit": "quả",
-              "category": "snacks"
-            },
-            {
-              "ingredient_id": "ingre02673",
-              "name_vi": "Hành lá",
-              "quantity": 1.0,
-              "unit": "nhánh",
-              "converted_quantity": "1.0",
-              "converted_unit": "nhánh",
-              "category": "vegetables"
-            },
-            {
-              "ingredient_id": "ingre08053",
-              "name_vi": "Ớt sừng",
-              "quantity": 1.0,
-              "unit": "quả",
-              "converted_quantity": "1.0",
-              "converted_unit": "quả",
-              "category": "seasonings"
-            },
-            {
-              "ingredient_id": "ingre02316",
-              "name_vi": "Gia vị thịt kho",
-              "quantity": 1.0,
-              "unit": "gói",
-              "converted_quantity": "1.0",
-              "converted_unit": "gói",
-              "category": "seasonings"
-            },
-            {
-              "ingredient_id": "ingre04687",
-              "name_vi": "Nước mắm",
-              "quantity": 1.0,
-              "unit": "muỗng cà phê",
-              "converted_quantity": "5",
-              "converted_unit": "ml",
-              "category": "others"
-            },
-            {
-              "ingredient_id": "ingre04636",
-              "name_vi": "Nước hàng",
-              "quantity": 1.0,
-              "unit": "muỗng cà phê",
-              "converted_quantity": "5",
-              "converted_unit": "ml",
-              "category": "others"
-            },
-            {
-              "ingredient_id": "ingre00497",
-              "name_vi": "Bột ngọt",
-              "quantity": 1.0,
-              "unit": "ít",
-              "converted_quantity": "1.0",
-              "converted_unit": "g",
-              "category": "others"
-            },
-            {
-              "ingredient_id": "ingre06644",
-              "name_vi": "Tiêu xay",
-              "quantity": 1.0,
-              "unit": "ít",
-              "converted_quantity": "1.0",
-              "converted_unit": "g",
-              "category": "seasonings"
-            },
-            {
-              "ingredient_id": "ingre03735",
-              "name_vi": "Muối",
-              "quantity": 1.0,
-              "unit": "ít",
-              "converted_quantity": "1.0",
-              "converted_unit": "g",
-              "category": "seasonings"
-            },
-            {
-              "ingredient_id": "ingre01972",
-              "name_vi": "Dầu ăn",
-              "quantity": 1.0,
-              "unit": "ít",
-              "converted_quantity": "1.0",
-              "converted_unit": "ml",
-              "category": "fresh_fruits"
-            }
-          ]
-        },
-        "suggestions": [
-          {
-            "ingredient_id": "ingre06663",
-            "name_vi": "tiêu/hạt nêm",
-            "quantity": "",
-            "unit": "",
-            "score": 0.9,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          },
-          {
-            "ingredient_id": "ingre02852",
-            "name_vi": "hánh tím",
-            "quantity": "",
-            "unit": "",
-            "score": 0.89,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          },
-          {
-            "ingredient_id": "ingre06308",
-            "name_vi": "thịt bò dẻ sườn",
-            "quantity": "",
-            "unit": "",
-            "score": 0.85,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          },
-          {
-            "ingredient_id": "ingre05359",
-            "name_vi": "rau răm",
-            "quantity": "",
-            "unit": "",
-            "score": 0.85,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          },
-          {
-            "ingredient_id": "ingre06446",
-            "name_vi": "thịt mỡ heo",
-            "quantity": "",
-            "unit": "",
-            "score": 0.83,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          }
-        ],
-        "similar_dishes": [
-          {
-            "dish_id": "dish6053",
-            "dish_name": "Thịt kho tàu trứng cút",
-            "match_count": 6,
-            "match_ratio": 0.5454545454545454,
-            "weighted_score": 0.6666666666666666,
-            "matched_roles": [
-              "core_produce",
-              "core_protein",
-              "flavor_enhancer"
-            ],
-            "required_roles": [
-              "core_produce",
-              "core_protein"
-            ],
-            "role_coverage": 1.0
-          },
-          {
-            "dish_id": "dish6067",
-            "dish_name": "Cá rô kho tiêu",
-            "match_count": 3,
-            "match_ratio": 0.3,
-            "weighted_score": 0.3,
-            "matched_roles": [
-              "core_produce",
-              "flavor_enhancer"
-            ],
-            "required_roles": [
-              "core_produce",
-              "core_protein"
-            ],
-            "role_coverage": 0.5
-          },
-          {
-            "dish_id": "dish6647",
-            "dish_name": "Cơm nguội bọc trứng cút chiên",
-            "match_count": 3,
-            "match_ratio": 0.3333333333333333,
-            "weighted_score": 0.29411764705882354,
-            "matched_roles": [
-              "core_produce",
-              "flavor_enhancer"
-            ],
-            "required_roles": [
-              "core_produce",
-              "core_staple"
-            ],
-            "role_coverage": 0.5
-          }
-        ],
-        "warnings": [],
-        "insights": [],
-        "assistant_response": "",
-        "guardrail": {
-          "enabled": false,
-          "action": "allow",
-          "violations": [],
-          "timestamp": "2025-10-24T08:44:26.663033Z",
-          "request_id": "ce419bb1-ee3f-4450-b623-861f7a2bb528"
-        }
-      }
-    },
-    {
-      "input": "Toi muon nau mon thit kho tau.",
       "output": {
         "status": "success",
         "dish": {
@@ -454,11 +226,263 @@
         "insights": [],
         "assistant_response": "",
         "guardrail": {
-          "enabled": false,
+          "triggered": false,
           "action": "allow",
-          "violations": [],
-          "timestamp": "2025-10-24T08:44:41.919084Z",
-          "request_id": "1138a8b2-92c3-477b-95ab-17b7fc7b3a57"
+          "violation_count": 0,
+          "violation_codes": [],
+          "timestamp": "2025-10-24T12:43:16.200605Z",
+          "request_id": "f76613f3-839b-4775-b025-84a9f6659e0d"
+        }
+      }
+    },
+    {
+      "input": "Toi muon nau mon pho bo.",
+      "output": {
+        "status": "success",
+        "dish": {
+          "name": "phở bò",
+          "prep_time": null,
+          "servings": null
+        },
+        "cart": {
+          "total_items": 13,
+          "items": [
+            {
+              "ingredient_id": "ingre05872",
+              "name_vi": "Sườn bò",
+              "quantity": 1.0,
+              "unit": "kg",
+              "converted_quantity": "1000",
+              "converted_unit": "g",
+              "category": "fresh_meat"
+            },
+            {
+              "ingredient_id": "ingre00139",
+              "name_vi": "Bánh phở",
+              "quantity": 1.0,
+              "unit": "kg",
+              "converted_quantity": "1000",
+              "converted_unit": "g",
+              "category": "grains_staples"
+            },
+            {
+              "ingredient_id": "ingre02758",
+              "name_vi": "Hành tây lớn",
+              "quantity": 1.0,
+              "unit": "củ",
+              "converted_quantity": "100",
+              "converted_unit": "g",
+              "category": "vegetables"
+            },
+            {
+              "ingredient_id": "ingre02427",
+              "name_vi": "Gừng",
+              "quantity": 2.0,
+              "unit": "củ",
+              "converted_quantity": "160",
+              "converted_unit": "g",
+              "category": "vegetables"
+            },
+            {
+              "ingredient_id": "ingre06911",
+              "name_vi": "Táo đỏ",
+              "quantity": 50.0,
+              "unit": "gr",
+              "converted_quantity": "50.0",
+              "converted_unit": "g",
+              "category": "fresh_fruits"
+            },
+            {
+              "ingredient_id": "ingre02673",
+              "name_vi": "Hành lá",
+              "quantity": 5.0,
+              "unit": "nhánh",
+              "converted_quantity": "5.0",
+              "converted_unit": "nhánh",
+              "category": "vegetables"
+            },
+            {
+              "ingredient_id": "ingre04343",
+              "name_vi": "Ngò rí",
+              "quantity": 3.0,
+              "unit": "nhánh",
+              "converted_quantity": "3.0",
+              "converted_unit": "nhánh",
+              "category": "vegetables"
+            },
+            {
+              "ingredient_id": "ingre05420",
+              "name_vi": "Rau ăn kèm",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "vegetables"
+            },
+            {
+              "ingredient_id": "ingre07583",
+              "name_vi": "Đường",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "seasonings"
+            },
+            {
+              "ingredient_id": "ingre02535",
+              "name_vi": "Hạt nêm",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "seasonings"
+            },
+            {
+              "ingredient_id": "ingre03735",
+              "name_vi": "Muối",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "seasonings"
+            },
+            {
+              "ingredient_id": "ingre06612",
+              "name_vi": "Tiêu",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "seasonings"
+            },
+            {
+              "ingredient_id": "ingre00497",
+              "name_vi": "Bột ngọt",
+              "quantity": 1.0,
+              "unit": "ít",
+              "converted_quantity": "1.0",
+              "converted_unit": "g",
+              "category": "others"
+            }
+          ]
+        },
+        "suggestions": [
+          {
+            "ingredient_id": "ingre05232",
+            "name_vi": "rau cải ngọt",
+            "quantity": "",
+            "unit": "",
+            "score": 1.0,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          },
+          {
+            "ingredient_id": "ingre02307",
+            "name_vi": "gia vị nấu phở nêm sẵn",
+            "quantity": "",
+            "unit": "",
+            "score": 0.99,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          },
+          {
+            "ingredient_id": "ingre06397",
+            "name_vi": "thịt gầu bò",
+            "quantity": "",
+            "unit": "",
+            "score": 0.93,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          },
+          {
+            "ingredient_id": "ingre07119",
+            "name_vi": "tỏi ớt băm nhuyễn",
+            "quantity": "",
+            "unit": "",
+            "score": 0.92,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          },
+          {
+            "ingredient_id": "ingre01673",
+            "name_vi": "các loại rau thơm",
+            "quantity": "",
+            "unit": "",
+            "score": 0.88,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          }
+        ],
+        "similar_dishes": [
+          {
+            "dish_id": "dish3327",
+            "dish_name": "Phở sườn bò",
+            "match_count": 9,
+            "match_ratio": 0.6923076923076923,
+            "weighted_score": 0.8,
+            "matched_roles": [
+              "core_produce",
+              "core_protein",
+              "core_staple",
+              "flavor_enhancer"
+            ],
+            "required_roles": [
+              "core_produce",
+              "core_protein",
+              "core_staple"
+            ],
+            "role_coverage": 1.0
+          },
+          {
+            "dish_id": "dish5856",
+            "dish_name": "Da heo kho tiêu",
+            "match_count": 3,
+            "match_ratio": 0.6,
+            "weighted_score": 0.4444444444444444,
+            "matched_roles": [
+              "core_produce",
+              "flavor_enhancer"
+            ],
+            "required_roles": [
+              "core_produce",
+              "core_protein"
+            ],
+            "role_coverage": 0.5
+          },
+          {
+            "dish_id": "dish8589",
+            "dish_name": "Cháo sườn bò",
+            "match_count": 5,
+            "match_ratio": 0.45454545454545453,
+            "weighted_score": 0.42857142857142855,
+            "matched_roles": [
+              "core_produce",
+              "core_protein",
+              "flavor_enhancer"
+            ],
+            "required_roles": [
+              "core_produce",
+              "core_protein",
+              "core_staple"
+            ],
+            "role_coverage": 0.6666666666666666
+          }
+        ],
+        "warnings": [],
+        "insights": [],
+        "assistant_response": "",
+        "guardrail": {
+          "triggered": false,
+          "action": "allow",
+          "violation_count": 0,
+          "violation_codes": [],
+          "timestamp": "2025-10-24T12:44:07.624560Z",
+          "request_id": "bb9bb163-9d38-43a4-a902-745f208d9699"
         }
       }
     }

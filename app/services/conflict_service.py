@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import re
-import unicodedata
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
+
+from app.utils.string_utils import norm_text
 
 
 class ConflictDetectionService:
@@ -16,20 +17,20 @@ class ConflictDetectionService:
 
 
     def check_conflicts(self, dish_name: str, ingredient_names: Iterable[str]) -> List[Dict[str, object]]:
-        dish_norm = self._norm(dish_name)
+        dish_norm = norm_text(dish_name)
         normalized_ingredients = {
-            self._norm(name): name for name in ingredient_names if name
+            norm_text(name): name for name in ingredient_names if name
         }
         results: List[Dict[str, object]] = []
 
         for entry in self._conflicts:
-            dishes = [self._norm(d) for d in entry.get("dishes", []) if d]
+            dishes = [norm_text(d) for d in entry.get("dishes", []) if d]
             if dishes and not any(d in dish_norm or dish_norm in d for d in dishes):
                 continue
 
             hits: List[str] = []
             for candidate in entry.get("conflicts", []):
-                cand_norm = self._norm(candidate)
+                cand_norm = norm_text(candidate)
                 if not cand_norm:
                     continue
                 tokens = [token for token in cand_norm.split() if token]
@@ -90,14 +91,7 @@ class ConflictDetectionService:
             return []
         if isinstance(payload, list):
             return [entry for entry in payload if isinstance(entry, dict)]
-        return []
-
-    @staticmethod
-    def _norm(text: Optional[str]) -> str:
-        if not text:
-            return ""
-        normalized = unicodedata.normalize("NFKD", str(text))
-        return "".join(ch for ch in normalized if not unicodedata.combining(ch)).lower().strip()
+            return []
 
 
 __all__ = ["ConflictDetectionService"]
