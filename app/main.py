@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from typing import Dict, List
+import json
 
 from app.services.invoke_model_service import BedrockModelService
 from app.services.bedrock_kb_service import BedrockKBService
@@ -59,6 +60,7 @@ class ShoppingCartPipeline:
         # Get dish name
         dish_name = extracted.get('dish_name')
         extra_ingredients = extracted.get('ingredients', [])
+        excluded_ingredients = extracted.get('excluded_ingredients', [])
 
         if not dish_name:
             status = 'guardrail_blocked' if guardrail_info and guardrail_info.get('action') != 'allow' else 'error'
@@ -87,6 +89,10 @@ class ShoppingCartPipeline:
         
         recipe_ing = self._normalize_recipe_items(recipe.get('ingredients', []))
         extra_norm = self._normalize_extra(extra_ingredients)
+        
+        # Filter out excluded ingredients
+        if excluded_ingredients:
+            recipe_ing = self._filter_excluded_ingredients(recipe_ing, excluded_ingredients)
         
         # Merge: công thức + nguyên liệu thêm
         all_ingredients = recipe_ing + [it for it in extra_norm if it.get('ingredient_id')]
@@ -259,27 +265,54 @@ class ShoppingCartPipeline:
     
     def _normalize_extra(self, extra_ingredients: list) -> list:
         """
-        Map extra ingredients sang ontology format
+        Map extra ingredients sang ontology format - SỬ DỤNG FUZZY MATCHING
         Input: [{"name": "trứng cút", "quantity": "", "unit": ""}]
         Output: [{"ingredient_id": "ing_xxx", "name_vi": "Trứng cút", ...}]
         """
         normalized = []
         
         for item in extra_ingredients:
-            name = item.get('name', '').lower().strip()
+            name = item.get('name', '').strip()
+            if not name:
+                continue
             
-            # Tìm trong ontology
-            for ing_id, ing_data in self.ontology.ingredients.items():
-                if ing_data.get('name_vi', '').lower() == name:
-                    normalized.append({
-                        'ingredient_id': ing_id,
-                        'name_vi': ing_data['name_vi'],
-                        'quantity': item.get('quantity', ''),
-                        'unit': item.get('unit', '')
-                    })
-                    break
+            # Sử dụng fuzzy matching như recipe ingredients
+            matched_id = self._resolve_name_to_ingredient_id(name)
+            if matched_id:
+                ing_data = self.ontology.ingredients.get(matched_id, {})
+                normalized.append({
+                    'ingredient_id': matched_id,
+                    'name_vi': ing_data.get('name_vi', name),
+                    'quantity': item.get('quantity', ''),
+                    'unit': item.get('unit', '')
+                })
         
         return normalized
+    
+    def _filter_excluded_ingredients(self, recipe_items: list, excluded: list) -> list:
+        """
+        Filter out excluded ingredients from recipe using fuzzy matching
+        Input excluded: [{"name": "hành lá", "reason": "dị ứng"}]
+        """
+        if not excluded:
+            return recipe_items
+        
+        # Resolve excluded names to ingredient_ids using fuzzy matching
+        excluded_ids = set()
+        for exc in excluded:
+            name = exc.get('name', '').strip()
+            if name:
+                matched_id = self._resolve_name_to_ingredient_id(name)
+                if matched_id:
+                    excluded_ids.add(matched_id)
+        
+        # Filter recipe items
+        filtered = [
+            item for item in recipe_items
+            if item.get('ingredient_id') not in excluded_ids
+        ]
+        
+        return filtered
     
     def _get_suggestions(self, current_ids: list, dish_name: str = "") -> list:
         allowed_cats = self._allowed_categories_for_dish(dish_name)

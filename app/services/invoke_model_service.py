@@ -20,24 +20,34 @@ class BedrockModelService:
 
 
     def extract_dish_name(self, description: str) -> dict:
-        prompt = f"""Trích xuất tên món ăn CHÍNH và nguyên liệu THÊM VÀO (không phải trong công thức gốc).
+        prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO, và nguyên liệu cần LOẠI TRỪ.
 
-                    Ví dụ:
-                    - "Tôi muốn ăn bún bò Huế với trứng cút" 
-                    → dish_name: "Bún bò Huế", ingredients: [{{"name": "trứng cút"}}]
-                    
-                    - "Nấu phở bò"
-                    → dish_name: "Phở bò", ingredients: []
+Ví dụ:
+- "Tôi muốn ăn bún bò Huế với trứng cút" 
+→ dish_name: "Bún bò Huế", ingredients: [{{"name": "trứng cút"}}], excluded_ingredients: []
 
-                    Mô tả: "{description}"
+- "Nấu phở bò"
+→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: []
 
-                    Trả về JSON:
-                    {{
-                        "dish_name": "tên món chính",
-                        "ingredients": [{{"name": "nguyên liệu thêm", "quantity": "", "unit": ""}}]
-                    }}
+- "Tôi muốn ăn phở bò cùng với một nước mắm chấm kèm"
+→ dish_name: "Phở bò", ingredients: [{{"name": "nước mắm chấm kèm"}}], excluded_ingredients: []
 
-                    Chỉ trả về JSON."""
+- "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
+→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: [{{"name": "đậu phộng", "reason": "dị ứng"}}, {{"name": "hành lá", "reason": "người dùng không muốn"}}]
+
+- "Cho tôi món phở chay, bỏ hành lá và ngò rí"
+→ dish_name: "Phở chay", ingredients: [], excluded_ingredients: [{{"name": "hành lá"}}, {{"name": "ngò rí"}}]
+
+Mô tả: "{description}"
+
+Trả về JSON:
+{{
+    "dish_name": "tên món chính",
+    "ingredients": [{{"name": "nguyên liệu thêm", "quantity": "", "unit": ""}}],
+    "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
+}}
+
+Chỉ trả về JSON."""
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",

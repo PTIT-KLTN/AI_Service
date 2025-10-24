@@ -44,6 +44,7 @@ def parse_json_content(content: str) -> dict:
     # Extract dish_name and ingredients
     dish_name = data.get('dish_name')
     ingredients = data.get('ingredients', []) if isinstance(data.get('ingredients', []), list) else []
+    excluded_ingredients = data.get('excluded_ingredients', []) if isinstance(data.get('excluded_ingredients', []), list) else []
 
     # Extract warnings
     warnings = data.get('warnings', []) if isinstance(data.get('warnings'), list) else []
@@ -52,6 +53,7 @@ def parse_json_content(content: str) -> dict:
     return {
         "dish_name": dish_name,
         "ingredients": ingredients,
+        "excluded_ingredients": excluded_ingredients,
         "warnings": warnings,
         "response": response_text,
         "violations": data.get('violations') if isinstance(data.get('violations'), list) else [],

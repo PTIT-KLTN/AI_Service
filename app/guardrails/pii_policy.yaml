@@ -1,12 +1,29 @@
 policy_id: pii
-name: "PII Scrubbing Guardrail"
+name: "PII Backup Layer (Vietnam-specific)"
 description: |
-  Bảo vệ dữ liệu cá nhân theo khuyến nghị của NIST Privacy Framework, tự động ẩn
-  số điện thoại, địa chỉ và email khi người dùng dán nội dung công thức.
+  ⚠️ BACKUP LAYER ONLY - AWS Bedrock PII Filters là primary layer.
+  
+  AWS đã handle đầy đủ:
+    - Email detection & masking
+    - Phone number detection & masking
+    - Generic address patterns
+  
+  Policy này CHỈ là lớp backup thứ 2 cho:
+    1. Vietnam-specific phone formats (+84, 0xxx) mà AWS có thể miss
+    2. Vietnamese address format ("số X đường Y") 
+    3. Edge cases trong Vietnamese text
+  
+  📊 Recommendation: Monitor AWS PII detection rate. Nếu AWS handle tốt 
+  (>95% cases), có thể xóa file này sau 1 tháng.
+  
+  Tham khảo NIST Privacy Framework cho best practices PII protection.
 metadata:
   sources:
     - name: NIST Privacy Framework
       url: https://www.nist.gov/privacy-framework
+  aws_overlap: true  
+  rationale: "Vietnam-specific phone formats (+84, 0xxx) và address patterns"
+  status: "backup_layer" 
 rules:
   - id: phone-number
     description: "Ẩn số điện thoại trong nội dung người dùng."

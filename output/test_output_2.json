@@ -1,21 +1,17 @@
 {
-  "timestamp": "2025-10-24T18:15:27.744188Z",
-  "pipeline_tests": [],
-  "guardrail_tests": [
+  "timestamp": "2025-10-24T17:02:00.341684Z",
+  "pipeline_tests": [
     {
-      "prompt": [
-        1,
-        "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò."
-      ],
+      "input": "Làm thế nào để nấu phở bò ngon? Cho tôi công thức nhé.",
       "output": {
         "status": "success",
         "dish": {
-          "name": "Phở bò",
+          "name": "phở bò",
           "prep_time": null,
           "servings": null
         },
         "cart": {
-          "total_items": 12,
+          "total_items": 13,
           "items": [
             {
               "ingredient_id": "ingre05872",
@@ -61,6 +57,15 @@
               "converted_quantity": "50.0",
               "converted_unit": "g",
               "category": "fresh_fruits"
+            },
+            {
+              "ingredient_id": "ingre02673",
+              "name_vi": "Hành lá",
+              "quantity": 5.0,
+              "unit": "nhánh",
+              "converted_quantity": "5.0",
+              "converted_unit": "nhánh",
+              "category": "vegetables"
             },
             {
               "ingredient_id": "ingre04343",
@@ -133,7 +138,7 @@
             "name_vi": "rau cải ngọt",
             "quantity": "",
             "unit": "",
-            "score": 1.03,
+            "score": 1.0,
             "reason": "Phù hợp với món & chưa có trong giỏ",
             "converted_quantity": "",
             "converted_unit": "tùy thích"
@@ -143,17 +148,7 @@
             "name_vi": "gia vị nấu phở nêm sẵn",
             "quantity": "",
             "unit": "",
-            "score": 0.94,
-            "reason": "Phù hợp với món & chưa có trong giỏ",
-            "converted_quantity": "",
-            "converted_unit": "tùy thích"
-          },
-          {
-            "ingredient_id": "ingre02289",
-            "name_vi": "gia vị lẩu bò",
-            "quantity": "",
-            "unit": "",
-            "score": 0.91,
+            "score": 0.99,
             "reason": "Phù hợp với món & chưa có trong giỏ",
             "converted_quantity": "",
             "converted_unit": "tùy thích"
@@ -163,7 +158,7 @@
             "name_vi": "thịt gầu bò",
             "quantity": "",
             "unit": "",
-            "score": 0.91,
+            "score": 0.93,
             "reason": "Phù hợp với món & chưa có trong giỏ",
             "converted_quantity": "",
             "converted_unit": "tùy thích"
@@ -171,6 +166,16 @@
           {
             "ingredient_id": "ingre07119",
             "name_vi": "tỏi ớt băm nhuyễn",
+            "quantity": "",
+            "unit": "",
+            "score": 0.92,
+            "reason": "Phù hợp với món & chưa có trong giỏ",
+            "converted_quantity": "",
+            "converted_unit": "tùy thích"
+          },
+          {
+            "ingredient_id": "ingre01673",
+            "name_vi": "các loại rau thơm",
             "quantity": "",
             "unit": "",
             "score": 0.88,
@@ -183,9 +188,9 @@
           {
             "dish_id": "dish3327",
             "dish_name": "Phở sườn bò",
-            "match_count": 8,
-            "match_ratio": 0.6153846153846154,
-            "weighted_score": 0.72,
+            "match_count": 9,
+            "match_ratio": 0.6923076923076923,
+            "weighted_score": 0.8,
             "matched_roles": [
               "core_produce",
               "core_protein",
@@ -200,11 +205,27 @@
             "role_coverage": 1.0
           },
           {
+            "dish_id": "dish5856",
+            "dish_name": "Da heo kho tiêu",
+            "match_count": 3,
+            "match_ratio": 0.6,
+            "weighted_score": 0.4444444444444444,
+            "matched_roles": [
+              "core_produce",
+              "flavor_enhancer"
+            ],
+            "required_roles": [
+              "core_produce",
+              "core_protein"
+            ],
+            "role_coverage": 0.5
+          },
+          {
             "dish_id": "dish8589",
             "dish_name": "Cháo sườn bò",
-            "match_count": 4,
-            "match_ratio": 0.36363636363636365,
-            "weighted_score": 0.3333333333333333,
+            "match_count": 5,
+            "match_ratio": 0.45454545454545453,
+            "weighted_score": 0.42857142857142855,
             "matched_roles": [
               "core_produce",
               "core_protein",
@@ -216,22 +237,6 @@
               "core_staple"
             ],
             "role_coverage": 0.6666666666666666
-          },
-          {
-            "dish_id": "dish4725",
-            "dish_name": "Đậu bắp xào tôm",
-            "match_count": 3,
-            "match_ratio": 0.3,
-            "weighted_score": 0.3,
-            "matched_roles": [
-              "core_produce",
-              "flavor_enhancer"
-            ],
-            "required_roles": [
-              "core_produce",
-              "core_protein"
-            ],
-            "role_coverage": 0.5
           }
         ],
         "warnings": [],
@@ -242,10 +247,11 @@
           "action": "allow",
           "violation_count": 0,
           "violation_codes": [],
-          "timestamp": "2025-10-24T18:15:16.673547Z",
-          "request_id": "ef13b8d8-b7be-4c8a-b22a-c17b15e258f0"
+          "timestamp": "2025-10-24T17:01:49.221361Z",
+          "request_id": "56c829c6-eaa8-4eb1-bdd6-3bae14ae89af"
         }
       }
     }
-  ]
+  ],
+  "guardrail_tests": []
 }
