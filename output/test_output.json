@@ -1,0 +1,65 @@
+{
+  "timestamp": "2025-10-24T11:03:23.420569Z",
+  "pipeline_tests": [
+    {
+      "input": "Cho mình bún bò Huế phiên bản chay, thêm nấm đông cô.",
+      "output": {
+        "status": "guardrail_blocked",
+        "dish": {
+          "name": null
+        },
+        "warnings": [
+          {
+            "message": "Phát hiện từ khóa nghi ngờ prompt injection.",
+            "severity": "high",
+            "source": "model",
+            "details": {
+              "policy_id": "prompt_injection",
+              "rule_id": "keyword-filter",
+              "remediation": "Từ chối và giữ nguyên ràng buộc an toàn."
+            }
+          },
+          {
+            "message": "Phát hiện từ khóa nghi ngờ prompt injection.",
+            "severity": "high",
+            "source": "prompt_injection",
+            "details": {
+              "policy_id": "prompt_injection",
+              "rule_id": "keyword-filter",
+              "action": "safe-completion",
+              "severity": "high",
+              "message": "Phát hiện từ khóa nghi ngờ prompt injection.",
+              "remediation": "Từ chối và giữ nguyên ràng buộc an toàn.",
+              "matches": [
+                "min"
+              ],
+              "policy_name": "Prompt Injection Filter"
+            }
+          }
+        ],
+        "response": "Xin lỗi, tôi không thể hỗ trợ yêu cầu này vì vi phạm chính sách an toàn: Prompt Injection Filter: Phát hiện từ khóa nghi ngờ prompt injection.",
+        "guardrail": {
+          "enabled": true,
+          "action": "safe-completion",
+          "violations": [
+            {
+              "policy_id": "prompt_injection",
+              "rule_id": "keyword-filter",
+              "action": "safe-completion",
+              "severity": "high",
+              "message": "Phát hiện từ khóa nghi ngờ prompt injection.",
+              "remediation": "Từ chối và giữ nguyên ràng buộc an toàn.",
+              "matches": [
+                "min"
+              ],
+              "policy_name": "Prompt Injection Filter"
+            }
+          ],
+          "timestamp": "2025-10-24T11:03:23.398823Z",
+          "request_id": "43c4894c-5084-48f3-9b74-eeb7969abf20"
+        }
+      }
+    }
+  ],
+  "guardrail_tests": []
+}
