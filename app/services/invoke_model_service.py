@@ -8,6 +8,7 @@ from typing import Optional
 from app.services.bedrock_client import GuardrailedBedrockClient
 from app.services.ontology_service import OntologyService
 from app.utils import fuzzy_score
+from app.utils.json_utils import parse_json_content
 
 load_dotenv()
 
@@ -61,7 +62,7 @@ class BedrockModelService:
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
 
-        parsed = self._parse_content(text)
+        parsed = parse_json_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
@@ -93,7 +94,7 @@ class BedrockModelService:
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
 
-        parsed = self._parse_content(text)
+        parsed = parse_json_content(text)
         guardrail_info = response.get('guardrail')
         if guardrail_info:
             parsed['guardrail'] = guardrail_info
@@ -104,37 +105,6 @@ class BedrockModelService:
         return parsed
         
         
-    def _parse_content(self, content: str) -> dict:
-        if content.startswith('```'):
-            content = '\n'.join(content.split('\n')[1:-1]).lstrip('json')
-        
-        try:
-            data = json.loads(content)
-        except Exception:
-            fallback_warning = 'Kết quả mô hình không phải JSON hợp lệ.'
-            return {
-                "dish_name": None,
-                "ingredients": [],
-                "warnings": [fallback_warning],
-                "response": content.strip() if isinstance(content, str) else None,
-            }
-        
-        # Get dish_name and ingredients
-        dish_name = data.get('dish_name')
-        ingredients = data.get('ingredients', []) if isinstance(data.get('ingredients', []), list) else []
-
-        # Get warning data
-        warnings = data.get('warnings', []) if isinstance(data.get('warnings'), list) else []
-        response_text = data.get('response') if isinstance(data.get('response'), str) else None
-        return {
-            "dish_name": dish_name,
-            "ingredients": ingredients,
-            "warnings": warnings,
-            "response": response_text,
-            "violations": data.get('violations') if isinstance(data.get('violations'), list) else [],
-        }
-    
-
     def _ensure_base64(self, image_data) -> str:
         if isinstance(image_data, str):
             return image_data

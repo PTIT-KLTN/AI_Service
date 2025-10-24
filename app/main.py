@@ -40,7 +40,20 @@ class ShoppingCartPipeline:
 
         guardrail_info = extracted.get('guardrail')
         warnings = self._normalize_warnings(extracted.get('warnings'))
-        warnings.extend(self._guardrail_warnings(guardrail_info, extracted.get('guardrail_messages')))
+        
+        # Add guardrails messages
+        guardrail_messages = extracted.get('guardrail_messages')
+        if guardrail_messages:
+            has_guardrail_warnings = any(
+                w.get('details', {}).get('policy_id')
+                for w in warnings
+            )
+
+            if not has_guardrail_warnings:
+                warnings.extend(self._guardrail_warnings(guardrail_info, guardrail_messages))
+
+        elif guardrail_info and guardrail_info.get('triggered'):
+            warnings.extend(self._guardrail_warnings(guardrail_info, None))
 
 
         # Get dish name
@@ -403,10 +416,17 @@ class ShoppingCartPipeline:
     def _allowed_categories_for_dish(self, dish_name: str) -> set:
         cats = set()
         dish = self.ontology.get_dish_by_name(dish_name) or {}
+        
+        # Lấy category từ ingredient knowledge base
         for it in dish.get('ingredients', []):
-            cat = it.get('category')
-            if cat:
-                cats.add(cat)
+            ing_id = it.get('ingredient_id')
+            if ing_id:
+                ing_data = self.ontology.get_ingredient(ing_id)
+                if ing_data:
+                    cat = ing_data.get('category')
+                    if cat:
+                        cats.add(cat)
+        
         if cats:
             return cats
 

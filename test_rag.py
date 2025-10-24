@@ -20,8 +20,8 @@ def run_pipeline_cases() -> List[Dict[str, Any]]:
 
     cases = [
         # "Tôi muốn nấu món thịt kho tàu.",
-        # "Toi muon nau mon thit kho tau.",
-        # "Cho mình bún bò Huế phiên bản chay, thêm nấm đông cô.",
+        # "Toi muon nau mon pho bo.",
+        # "Cho tôi bún bò Huế phiên bản chay, thêm nấm đông cô.",
         # "Mình muốn nấu món thịt kho tàu chuẩn miền Nam.",
         # "Recipe cho 'gỏi cuốn' (summer rolls), thêm tôm sú.",
     ]
@@ -84,7 +84,7 @@ def main() -> None:
         "guardrail_tests": guardrail_results,
     }
 
-    with open("output/test_output.json", "w", encoding="utf-8") as f:
+    with open("output/unsafe.json", "w", encoding="utf-8") as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
 
     print("\n✅ Đã lưu kết quả vào: test_output.json")

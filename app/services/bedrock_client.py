@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional, List
 import boto3
 
 from app.guardrails import GuardrailPolicyEvaluator
+from app.utils.json_utils import extract_prompt_from_body, extract_textual_content
 
 
 class GuardrailViolationError(RuntimeError):
@@ -52,7 +53,7 @@ class GuardrailedBedrockClient:
             invoke_kwargs.setdefault('guardrailVersion', guardrail_version)
 
         response = self.runtime.invoke_model(modelId=model_id, body=body, **invoke_kwargs)
-        prompt_text = self._extract_prompt_from_body(body)
+        prompt_text = extract_prompt_from_body(body)
         processed = self._apply_guardrails(prompt_text, response)
 
         return processed
@@ -65,32 +66,6 @@ class GuardrailedBedrockClient:
         enabled_flag = os.getenv('ENABLE_GUARDRAILS')
         return enabled_flag == '1' or (enabled_flag or '').lower() in {'true', 'yes'}
 
-    def _extract_prompt_from_body(self, body: str) -> str:
-        if not body:
-            return ''
-        try:
-            payload = json.loads(body)
-        except (json.JSONDecodeError, TypeError):
-            return ''
-
-        prompt_parts = []
-        if isinstance(payload, dict):
-            if isinstance(payload.get('prompt'), str):
-                prompt_parts.append(payload['prompt'])
-            messages = payload.get('messages')
-            if isinstance(messages, list):
-                for message in messages:
-                    content = message.get('content') if isinstance(message, dict) else None
-                    if isinstance(content, list):
-                        for part in content:
-                            if isinstance(part, dict) and part.get('type') == 'text':
-                                text = part.get('text')
-                                if text:
-                                    prompt_parts.append(str(text))
-                    elif isinstance(content, str):
-                        prompt_parts.append(content)
-        return '\n'.join(prompt_parts)
-
     def _apply_guardrails(self, prompt_text: str, response: Dict[str, Any]) -> Dict[str, Any]:
         body_obj = response.get('body')
         if hasattr(body_obj, 'read'):
@@ -102,7 +77,7 @@ class GuardrailedBedrockClient:
         else:
             raw_text = str(raw or '')
 
-        analysis_text = self._extract_textual_content(raw_text)
+        analysis_text = extract_textual_content(raw_text)
         violations = self.policy_evaluator.evaluate(prompt_text, analysis_text)
         action = self._resolve_action(violations)
 
@@ -184,27 +159,6 @@ class GuardrailedBedrockClient:
         if violation_messages:
             response['guardrail_messages'] = violation_messages
         return response
-
-    def _extract_textual_content(self, raw_text: str) -> str:
-        try:
-            data = json.loads(raw_text)
-        except (TypeError, json.JSONDecodeError):
-            return raw_text
-
-        texts: list[str] = []
-
-        def _walk(node: Any) -> None:
-            if isinstance(node, str):
-                texts.append(node)
-            elif isinstance(node, dict):
-                for value in node.values():
-                    _walk(value)
-            elif isinstance(node, (list, tuple)):
-                for item in node:
-                    _walk(item)
-
-        _walk(data)
-        return '\n'.join(texts) if texts else raw_text
 
     def _resolve_action(self, violations: Optional[Any]) -> str:
         if not violations:

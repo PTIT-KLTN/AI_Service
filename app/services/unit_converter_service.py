@@ -1,4 +1,5 @@
 import re
+from app.utils.number_utils import parse_quantity
 
 class UnitConverterService:
     def __init__(self):
@@ -104,7 +105,7 @@ class UnitConverterService:
         
         # Parse quantity (có thể là số hoặc phân số)
         try:
-            qty_value = self._parse_quantity(quantity)
+            qty_value = parse_quantity(quantity)
         except:
             return {'quantity': quantity, 'unit': unit}
         
@@ -154,23 +155,3 @@ class UnitConverterService:
             return {'quantity': quantity, 'unit': 'ml'}
         else:
             return {'quantity': quantity, 'unit': 'g'}
-    
-    def _parse_quantity(self, quantity_str: str) -> float:
-        """
-        Parse số lượng: "1", "1.5", "1/2", "2 1/2"
-        """
-        quantity_str = quantity_str.strip()
-        
-        # Phân số: 1/2, 3/4
-        if '/' in quantity_str:
-            parts = quantity_str.split()
-            if len(parts) == 2:  # 2 1/2
-                whole = float(parts[0])
-                frac = parts[1].split('/')
-                return whole + float(frac[0]) / float(frac[1])
-            else:  # 1/2
-                frac = quantity_str.split('/')
-                return float(frac[0]) / float(frac[1])
-        
-        # Số thập phân: 1.5, 2.0
-        return float(quantity_str)
