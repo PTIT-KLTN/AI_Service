@@ -1,0 +1,343 @@
+{
+  "status": "success",
+  "dish": {
+    "name": "Canh chua cá lóc",
+    "prep_time": null,
+    "servings": null
+  },
+  "cart": {
+    "total_items": 12,
+    "items": [
+      {
+        "ingredient_id": "ingre01513",
+        "name_vi": "Cá diêu hồng",
+        "quantity": 1.0,
+        "unit": "con",
+        "converted_quantity": "1.0",
+        "converted_unit": "con",
+        "category": "seafood_&_fish_balls"
+      },
+      {
+        "ingredient_id": "ingre05383",
+        "name_vi": "Rau thì là",
+        "quantity": 50.0,
+        "unit": "gr",
+        "converted_quantity": "50.0",
+        "converted_unit": "g",
+        "category": "vegetables"
+      },
+      {
+        "ingredient_id": "ingre01354",
+        "name_vi": "Cà chua",
+        "quantity": 300.0,
+        "unit": "gr",
+        "converted_quantity": "300.0",
+        "converted_unit": "g",
+        "category": "vegetables"
+      },
+      {
+        "ingredient_id": "ingre02768",
+        "name_vi": "Hành tím",
+        "quantity": 1.0,
+        "unit": "củ",
+        "converted_quantity": "100",
+        "converted_unit": "g",
+        "category": "vegetables"
+      },
+      {
+        "ingredient_id": "ingre04671",
+        "name_vi": "Nước me",
+        "quantity": 2.0,
+        "unit": "muỗng canh",
+        "converted_quantity": "30",
+        "converted_unit": "ml",
+        "category": "beverages"
+      },
+      {
+        "ingredient_id": "ingre01972",
+        "name_vi": "Dầu ăn",
+        "quantity": 3.0,
+        "unit": "muỗng canh",
+        "converted_quantity": "45",
+        "converted_unit": "ml",
+        "category": "fresh_fruits"
+      },
+      {
+        "ingredient_id": "ingre04687",
+        "name_vi": "Nước mắm",
+        "quantity": 1.0,
+        "unit": "muỗng cà phê",
+        "converted_quantity": "5",
+        "converted_unit": "ml",
+        "category": "others"
+      },
+      {
+        "ingredient_id": "ingre03735",
+        "name_vi": "Muối",
+        "quantity": 1.0,
+        "unit": "ít",
+        "converted_quantity": "1.0",
+        "converted_unit": "g",
+        "category": "seasonings"
+      },
+      {
+        "ingredient_id": "ingre07583",
+        "name_vi": "Đường",
+        "quantity": 1.0,
+        "unit": "ít",
+        "converted_quantity": "1.0",
+        "converted_unit": "g",
+        "category": "seasonings"
+      },
+      {
+        "ingredient_id": "ingre02535",
+        "name_vi": "Hạt nêm",
+        "quantity": 1.0,
+        "unit": "ít",
+        "converted_quantity": "1.0",
+        "converted_unit": "g",
+        "category": "seasonings"
+      },
+      {
+        "ingredient_id": "ingre00497",
+        "name_vi": "Bột ngọt",
+        "quantity": 1.0,
+        "unit": "ít",
+        "converted_quantity": "1.0",
+        "converted_unit": "g",
+        "category": "others"
+      },
+      {
+        "ingredient_id": "ingre01079",
+        "name_vi": "chanh",
+        "quantity": "",
+        "unit": "",
+        "converted_quantity": "",
+        "converted_unit": "tùy thích",
+        "category": "fresh_fruits"
+      }
+    ]
+  },
+  "suggestions": [
+    {
+      "ingredient_id": "ingre03802",
+      "name_vi": "muối ớt sấy",
+      "quantity": "",
+      "unit": "",
+      "score": 1.17,
+      "reason": "Phù hợp với món & chưa có trong giỏ",
+      "converted_quantity": "",
+      "converted_unit": "tùy thích"
+    },
+    {
+      "ingredient_id": "ingre05213",
+      "name_vi": "rau canh chua",
+      "quantity": "",
+      "unit": "",
+      "score": 1.17,
+      "reason": "Phù hợp với món & chưa có trong giỏ",
+      "converted_quantity": "",
+      "converted_unit": "tùy thích"
+    },
+    {
+      "ingredient_id": "ingre05284",
+      "name_vi": "rau lá cần tàu",
+      "quantity": "",
+      "unit": "",
+      "score": 1.17,
+      "reason": "Phù hợp với món & chưa có trong giỏ",
+      "converted_quantity": "",
+      "converted_unit": "tùy thích"
+    },
+    {
+      "ingredient_id": "ingre02807",
+      "name_vi": "hành tím/ tỏi băm",
+      "quantity": "",
+      "unit": "",
+      "score": 0.94,
+      "reason": "Phù hợp với món & chưa có trong giỏ",
+      "converted_quantity": "",
+      "converted_unit": "tùy thích"
+    },
+    {
+      "ingredient_id": "ingre05342",
+      "name_vi": "rau nhút",
+      "quantity": "",
+      "unit": "",
+      "score": 0.94,
+      "reason": "Phù hợp với món & chưa có trong giỏ",
+      "converted_quantity": "",
+      "converted_unit": "tùy thích"
+    }
+  ],
+  "similar_dishes": [
+    {
+      "dish_id": "dish0011",
+      "dish_name": "Canh riêu cá",
+      "match_count": 6,
+      "match_ratio": 0.5454545454545454,
+      "weighted_score": 0.6666666666666666,
+      "matched_roles": [
+        "core_produce",
+        "core_protein",
+        "flavor_enhancer"
+      ],
+      "required_roles": [
+        "core_produce",
+        "core_protein"
+      ],
+      "role_coverage": 1.0
+    },
+    {
+      "dish_id": "dish0632",
+      "dish_name": "Canh cá diêu hồng nấu ngót",
+      "match_count": 3,
+      "match_ratio": 0.3333333333333333,
+      "weighted_score": 0.47058823529411764,
+      "matched_roles": [
+        "core_produce",
+        "core_protein"
+      ],
+      "required_roles": [
+        "core_produce",
+        "core_protein"
+      ],
+      "role_coverage": 1.0
+    },
+    {
+      "dish_id": "dish6830",
+      "dish_name": "Tóp mỡ sốt cà chua",
+      "match_count": 3,
+      "match_ratio": 0.375,
+      "weighted_score": 0.4666666666666667,
+      "matched_roles": [
+        "core_produce",
+        "flavor_enhancer"
+      ],
+      "required_roles": [
+        "core_produce",
+        "core_protein"
+      ],
+      "role_coverage": 0.5
+    }
+  ],
+  "warnings": [
+    {
+      "message": "Liệt kê trong danh mục kỵ nhau.",
+      "severity": "low",
+      "source": "conflict",
+      "details": {
+        "id": "khoai-mi-oi",
+        "severity": "low",
+        "message": "Liệt kê trong danh mục kỵ nhau.",
+        "advice": "Tránh ăn cùng lúc.",
+        "conflicting_items": [
+          "Muối"
+        ],
+        "sources": [
+          {
+            "name": "CDC Quảng Ninh",
+            "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+          }
+        ],
+        "replacement_suggestions": [
+          {
+            "ingredient_id": "ingre00040",
+            "name_vi": "Blueberries",
+            "name_en": "Blueberries",
+            "category": "fresh_fruits"
+          },
+          {
+            "ingredient_id": "ingre00230",
+            "name_vi": "bầu",
+            "name_en": "bầu",
+            "category": "fresh_fruits"
+          },
+          {
+            "ingredient_id": "ingre00372",
+            "name_vi": "bơ chín",
+            "name_en": "bơ chín",
+            "category": "fresh_fruits"
+          },
+          {
+            "ingredient_id": "ingre00404",
+            "name_vi": "bơ sáp chín",
+            "name_en": "bơ sáp chín",
+            "category": "fresh_fruits"
+          },
+          {
+            "ingredient_id": "ingre00422",
+            "name_vi": "bưởi",
+            "name_en": "bưởi",
+            "category": "fresh_fruits"
+          }
+        ]
+      }
+    },
+    {
+      "message": "Không nên ăn chung (SKĐS).",
+      "severity": "low",
+      "source": "conflict",
+      "details": {
+        "id": "oc-buou-bi-dao-muop-moc-nhi-duong-tac-ke",
+        "severity": "low",
+        "message": "Không nên ăn chung (SKĐS).",
+        "advice": "Tránh phối hợp.",
+        "conflicting_items": [
+          "Đường"
+        ],
+        "sources": [
+          {
+            "name": "SKĐS",
+            "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+          }
+        ],
+        "replacement_suggestions": [
+          {
+            "ingredient_id": "ingre00498",
+            "name_vi": "bọt sữa milkfoam",
+            "name_en": "bọt sữa milkfoam",
+            "category": "beverages"
+          },
+          {
+            "ingredient_id": "ingre00581",
+            "name_vi": "bột cafe hòa tan",
+            "name_en": "bột cafe hòa tan",
+            "category": "beverages"
+          },
+          {
+            "ingredient_id": "ingre00620",
+            "name_vi": "bột cà phê",
+            "name_en": "bột cà phê",
+            "category": "beverages"
+          },
+          {
+            "ingredient_id": "ingre00621",
+            "name_vi": "bột cà phê espresso",
+            "name_en": "bột cà phê espresso",
+            "category": "beverages"
+          },
+          {
+            "ingredient_id": "ingre00622",
+            "name_vi": "bột cà phê hoà tan",
+            "name_en": "bột cà phê hoà tan",
+            "category": "beverages"
+          }
+        ]
+      }
+    }
+  ],
+  "insights": [
+    "Canh chua cá lóc không nên kết hợp với Muối vì Liệt kê trong danh mục kỵ nhau.. Tránh ăn cùng lúc.",
+    "Canh chua cá lóc không nên kết hợp với Đường vì Không nên ăn chung (SKĐS).. Tránh phối hợp."
+  ],
+  "assistant_response": "",
+  "guardrail": {
+    "triggered": false,
+    "action": "allow",
+    "violation_count": 0,
+    "violation_codes": [],
+    "timestamp": "2025-10-26T15:26:05.328678Z",
+    "request_id": "5f1d9cbc-05c2-43a2-976a-b6c8d5e0627e"
+  }
+}
