@@ -118,16 +118,25 @@ class ShoppingCartPipeline:
         )
 
         # Conflict detection warnings
-        ingredient_names: List[str] = []
-        ingredient_names.extend([item.get('name_vi') or item.get('name') or '' for item in cart_items])
-        ingredient_names.extend(
-            [
-                ing.get('name', '')
-                for ing in extra_ingredients
-                if isinstance(ing, dict)
-            ]
-        )
-        conflict_results = self.conflicts.check_conflicts(dish_name, ingredient_names)
+        conflict_ingredients = []
+        
+        # Add cart items with IDs
+        for item in cart_items:
+            conflict_ingredients.append({
+                'ingredient_id': item.get('ingredient_id'),
+                'name_vi': item.get('name_vi') or item.get('name')
+            })
+        
+        # Add extra ingredients (may or may not have IDs)
+        for ing in extra_ingredients:
+            if isinstance(ing, dict):
+                conflict_ingredients.append({
+                    'ingredient_id': ing.get('ingredient_id'),
+                    'name_vi': ing.get('name', '')
+                })
+        
+        # Check conflicts
+        conflict_results = self.conflicts.check_conflicts(dish_name, conflict_ingredients)
         conflict_warnings = [
             {
                 'message': conflict.get('message', ''),

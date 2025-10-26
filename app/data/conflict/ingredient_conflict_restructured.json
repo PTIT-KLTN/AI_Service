@@ -1,0 +1,2538 @@
+[
+  {
+    "id": "gan-heo-gia-do",
+    "item_pairs": [
+      {
+        "name": "Gan heo xào giá đỗ",
+        "ingredient_id": "ingre07470"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Giá đỗ",
+        "ingredient_id": "ingre05427"
+      },
+      {
+        "name": "Rau giàu vitamin C",
+        "ingredient_id": "ingre00986"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Ion kim loại trong gan có thể oxy hóa vitamin C của giá đỗ, làm giảm giá trị dinh dưỡng.",
+    "advice": "Tránh xào chung gan với giá đỗ; chế biến tách bữa.",
+    "sources": [
+      {
+        "name": "VnExpress",
+        "url": "https://vnexpress.net/nhung-thu-cam-ky-an-chung-voi-gan-heo-3817263.html"
+      }
+    ]
+  },
+  {
+    "id": "sua-dau-nanh-trung-ga",
+    "item_pairs": [
+      {
+        "name": "Sữa đậu nành",
+        "ingredient_id": "ingre06170"
+      },
+      {
+        "name": "trứng",
+        "ingredient_id": "ingre06858"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Trứng gà",
+        "ingredient_id": "ingre06863"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Trypsin inhibitor trong sữa đậu nành kết hợp protein lòng trắng trứng làm giảm hấp thu.",
+    "advice": "Không dùng cùng lúc; tách 1–2 giờ.",
+    "sources": [
+      {
+        "name": "VnExpress",
+        "url": "https://vnexpress.net/co-nen-uong-sua-dau-nanh-ket-hop-an-trung-4632700.html"
+      },
+      {
+        "name": "Bệnh viện Hong Ngọc",
+        "url": "https://hongngochospital.vn/vi/chin-kieng-ki-uong-sua-dau-nanh"
+      }
+    ]
+  },
+  {
+    "id": "sau-rieng-ruou-bia",
+    "item_pairs": [
+      {
+        "name": "Sầu riêng",
+        "ingredient_id": "ingre05932"
+      },
+      {
+        "name": "rượu/bia",
+        "ingredient_id": "ingre05515"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rượu",
+        "ingredient_id": "ingre05515"
+      },
+      {
+        "name": "Bia",
+        "ingredient_id": "ingre05515"
+      },
+      {
+        "name": "Đồ uống có cồn",
+        "ingredient_id": "ingre07636"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Hợp chất lưu huỳnh trong sầu riêng có thể ức chế enzyme phân hủy ethanol, làm tăng nồng độ cồn.",
+    "advice": "Không uống rượu/bia khi ăn sầu riêng.",
+    "sources": [
+      {
+        "name": "MEDLATEC",
+        "url": "https://medlatec.vn/tin-tuc/sau-rieng-ky-gi-nhung-thuc-pham-can-tranh-ket-hop-voi-sau-rieng"
+      },
+      {
+        "name": "Thanh Niên",
+        "url": "https://thanhnien.vn/khoa-hoc-noi-gi-ve-viec-an-sau-rieng-voi-uong-ruou-bia-1851476317.htm"
+      }
+    ]
+  },
+  {
+    "id": "tom-vitamin-c",
+    "item_pairs": [
+      {
+        "name": "Tôm",
+        "ingredient_id": "ingre06930"
+      },
+      {
+        "name": "vitamin C liều cao",
+        "ingredient_id": "ingre00986"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thực phẩm",
+        "ingredient_id": "ingre00752"
+      },
+      {
+        "name": "bổ sung giàu vitamin C",
+        "ingredient_id": "ingre07796"
+      }
+    ],
+    "severity": "low",
+    "reason": "Tin đồn tôm + vitamin C gây ngộ độc asen không có bằng chứng khoa học thuyết phục.",
+    "advice": "Không cần kiêng tuyệt đối; chú ý nguồn hải sản an toàn.",
+    "sources": [
+      {
+        "name": "Báo Pháp Luật",
+        "url": "https://baophapluat.vn/thuc-hu-chuyen-an-tom-voi-rau-qua-giau-vitamin-c-bi-ngo-doc-post447132.html"
+      },
+      {
+        "name": "HelloBacsi",
+        "url": "https://hellobacsi.com/an-uong-lanh-manh/thong-tin-dinh-duong/20-cap-thuc-pham-ky-nhau-ban-nen-can-than/"
+      }
+    ]
+  },
+  {
+    "id": "cua-cam-quyt",
+    "item_pairs": [
+      {
+        "name": "Cua hấp",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "Cua nấu cam",
+        "ingredient_id": "ingre05147"
+      },
+      {
+        "name": "quýt",
+        "ingredient_id": "ingre05147"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cam",
+        "ingredient_id": "ingre05147"
+      },
+      {
+        "name": "Quýt",
+        "ingredient_id": "ingre05147"
+      }
+    ],
+    "severity": "low",
+    "reason": "Theo khuyến cáo dân gian: cua ăn cùng cam/quýt dễ sinh khó chịu đường tiêu hóa.",
+    "advice": "Tránh dùng cam/quýt ngay sát bữa cua.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "cua-bi-do",
+    "item_pairs": [
+      {
+        "name": "Cua nấu bí đỏ",
+        "ingredient_id": "ingre00253"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Bí đỏ",
+        "ingredient_id": "ingre00253"
+      }
+    ],
+    "severity": "low",
+    "reason": "Kinh nghiệm dân gian xếp vào nhóm kỵ nhau, có thể gây rối loạn tiêu hóa.",
+    "advice": "Không kết hợp nếu bụng yếu; thay bí đỏ bằng bầu/bí xanh.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "cua-mat-mia",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "mật mía",
+        "ingredient_id": "ingre07621"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Mật mía",
+        "ingredient_id": "ingre07621"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian coi là sinh độc; dễ đầy bụng, tiêu chảy.",
+    "advice": "Tránh ăn cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "cua-dau-phong",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "lạc/đậu phộng",
+        "ingredient_id": "ingre06062"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đậu phộng",
+        "ingredient_id": "ingre07873"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ gây khó tiêu theo kinh nghiệm dân gian.",
+    "advice": "Hạn chế ăn kèm nhiều đậu phộng khi dùng cua.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "cua-ca-trach",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "cá trạch",
+        "ingredient_id": "ingre01640"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cá trạch",
+        "ingredient_id": "ingre01640"
+      }
+    ],
+    "severity": "low",
+    "reason": "Xếp vào nhóm kỵ nhau; có thể gây rối loạn tiêu hóa.",
+    "advice": "Không phối chung trong một món.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "cua-hong",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "quả hồng",
+        "ingredient_id": "ingre05162"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hồng",
+        "ingredient_id": "ingre05174"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian cho là dễ sinh rối loạn tiêu hóa.",
+    "advice": "Ăn hồng cách bữa cua vài giờ.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      },
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "cua-dua-le",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "dưa lê",
+        "ingredient_id": "ingre02031"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Dưa lê",
+        "ingredient_id": "ingre02031"
+      }
+    ],
+    "severity": "low",
+    "reason": "Ghi nhận trong danh mục thực phẩm kỵ nhau truyền thống.",
+    "advice": "Không ăn cùng lúc nếu bụng yếu.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "dua-hau-dau-me",
+    "item_pairs": [
+      {
+        "name": "Dưa hấu",
+        "ingredient_id": "ingre07491"
+      },
+      {
+        "name": "dầu mè",
+        "ingredient_id": "ingre06985"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Dầu mè",
+        "ingredient_id": "ingre06985"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian nói dễ đau bụng/hoắc loạn.",
+    "advice": "Tránh trộn dầu mè với dưa hấu.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "man-ga-vit-mat-ong",
+    "item_pairs": [
+      {
+        "name": "Mận",
+        "ingredient_id": "ingre06648"
+      },
+      {
+        "name": "thịt gà/vịt/mật ong",
+        "ingredient_id": "ingre07638"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt gà",
+        "ingredient_id": "ingre06428"
+      },
+      {
+        "name": "Thịt vịt",
+        "ingredient_id": "ingre07222"
+      },
+      {
+        "name": "Mật ong",
+        "ingredient_id": "ingre07638"
+      }
+    ],
+    "severity": "low",
+    "reason": "Có thể gây thổ tả/nóng lạnh theo dân gian.",
+    "advice": "Không ăn mận kèm gà/vịt/mật ong.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "hanh-tao",
+    "item_pairs": [
+      {
+        "name": "Hành",
+        "ingredient_id": "ingre05331"
+      },
+      {
+        "name": "táo",
+        "ingredient_id": "ingre06890"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Táo",
+        "ingredient_id": "ingre06890"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê nhóm đại kỵ trong dân gian.",
+    "advice": "Không ăn chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-cho-dau-xanh",
+    "item_pairs": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "đậu xanh",
+        "ingredient_id": "ingre07906"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đậu xanh",
+        "ingredient_id": "ingre07906"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian cho là trướng bụng; SKĐS cũng liệt kê.",
+    "advice": "Tránh ăn lẫn; nếu lỡ ăn, theo dân gian dùng cam thảo (tham khảo).",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      },
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-ran-cu-cai-trang",
+    "item_pairs": [
+      {
+        "name": "Thịt rắn nấu củ cải trắng",
+        "ingredient_id": "ingre01870"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Củ cải trắng",
+        "ingredient_id": "ingre01868"
+      }
+    ],
+    "severity": "low",
+    "reason": "Xếp nhóm kỵ nhau trong danh mục dân gian.",
+    "advice": "Không nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "dao-ruou",
+    "item_pairs": [
+      {
+        "name": "Đào",
+        "ingredient_id": "ingre07507"
+      },
+      {
+        "name": "rượu mạnh",
+        "ingredient_id": "ingre05548"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rượu đế",
+        "ingredient_id": "ingre05515"
+      },
+      {
+        "name": "đồ uống cồn mạnh",
+        "ingredient_id": "ingre07636"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian cho là dễ ‘gục’, khó chịu.",
+    "advice": "Không uống rượu sát lúc ăn nhiều đào.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-de-dua-hau",
+    "item_pairs": [
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      },
+      {
+        "name": "dưa hấu",
+        "ingredient_id": "ingre07491"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Dưa hấu",
+        "ingredient_id": "ingre07491"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian cho là dễ trúng độc/khó tiêu.",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      },
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ba-ba-rau-den",
+    "item_pairs": [
+      {
+        "name": "Ba ba",
+        "ingredient_id": "ingre04203"
+      },
+      {
+        "name": "rau dền",
+        "ingredient_id": "ingre05251"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rau dền",
+        "ingredient_id": "ingre05251"
+      }
+    ],
+    "severity": "low",
+    "reason": "Ghi nhận trong danh mục kỵ nhau dân gian.",
+    "advice": "Không nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-cho-hanh-song",
+    "item_pairs": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "hành sống",
+        "ingredient_id": "ingre05331"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hành sống",
+        "ingredient_id": "ingre05331"
+      }
+    ],
+    "severity": "low",
+    "reason": "Xếp nhóm kỵ nhau theo dân gian.",
+    "advice": "Tránh ăn kèm.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "muop-dang-dau-phong",
+    "item_pairs": [
+      {
+        "name": "Mướp đắng (khổ qua)",
+        "ingredient_id": "ingre04108"
+      },
+      {
+        "name": "đậu phộng",
+        "ingredient_id": "ingre07873"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đậu phộng",
+        "ingredient_id": "ingre07873"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục dân gian gọi là ‘Dưa bà Cai (hoàng qua)’ kỵ đậu phộng.",
+    "advice": "Không trộn lạc/đậu phộng nhiều với mướp đắng.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "ga-tra-hoa-cuc",
+    "item_pairs": [
+      {
+        "name": "Thịt gà",
+        "ingredient_id": "ingre06428"
+      },
+      {
+        "name": "trà hoa cúc",
+        "ingredient_id": "ingre02567"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Trà hoa cúc",
+        "ingredient_id": "ingre02567"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dân gian coi là dễ ngộ độc/khó chịu.",
+    "advice": "Không uống trà hoa cúc ngay sau khi ăn gà.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "vit-duong-mai",
+    "item_pairs": [
+      {
+        "name": "Thịt vịt",
+        "ingredient_id": "ingre07222"
+      },
+      {
+        "name": "quả dương mai",
+        "ingredient_id": "ingre07636"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Dương mai (yangmei)",
+        "ingredient_id": "ingre07308"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau dân gian.",
+    "advice": "Tránh ăn cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-huou-bi-do",
+    "item_pairs": [
+      {
+        "name": "Thịt hươu",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "bí đỏ",
+        "ingredient_id": "ingre00253"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Bí đỏ",
+        "ingredient_id": "ingre00253"
+      }
+    ],
+    "severity": "low",
+    "reason": "Gây trướng bụng theo dân gian.",
+    "advice": "Không nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-tho-cai-xanh",
+    "item_pairs": [
+      {
+        "name": "Thịt thỏ",
+        "ingredient_id": "ingre06504"
+      },
+      {
+        "name": "cải xanh",
+        "ingredient_id": "ingre05237"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cải xanh",
+        "ingredient_id": "ingre05237"
+      }
+    ],
+    "severity": "low",
+    "reason": "Xếp kỵ nhau dân gian.",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "rua-mang-tre",
+    "item_pairs": [
+      {
+        "name": "Thịt rùa",
+        "ingredient_id": "ingre05600"
+      },
+      {
+        "name": "măng tre mùa đông",
+        "ingredient_id": "ingre06648"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Măng tre mùa đông",
+        "ingredient_id": "ingre06648"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau dân gian.",
+    "advice": "Không nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "coc-hanh-tay",
+    "item_pairs": [
+      {
+        "name": "Thịt cóc",
+        "ingredient_id": "ingre01708"
+      },
+      {
+        "name": "hành tây",
+        "ingredient_id": "ingre02851"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hành tây",
+        "ingredient_id": "ingre02851"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Thịt cóc vốn tiềm ẩn độc tố; danh mục dân gian khuyến cáo không nấu với hành tây.",
+    "advice": "Tránh hoàn toàn.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "san-mat-ong",
+    "item_pairs": [
+      {
+        "name": "Sắn/khoai mì",
+        "ingredient_id": "ingre05019"
+      },
+      {
+        "name": "mật ong",
+        "ingredient_id": "ingre07638"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Mật ong",
+        "ingredient_id": "ingre07638"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Ghi trong danh mục kỵ nhau; sắn có cyanogenic glycosides vốn cần chế biến đúng cách.",
+    "advice": "Không chấm/mix mật ong với sắn; chế biến sắn kỹ.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "mat-ong-dau-hu",
+    "item_pairs": [
+      {
+        "name": "Mật ong",
+        "ingredient_id": "ingre07638"
+      },
+      {
+        "name": "đậu hũ",
+        "ingredient_id": "ingre07852"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đậu hũ",
+        "ingredient_id": "ingre07852"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau dân gian.",
+    "advice": "Không ăn cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "mat-ong-toi",
+    "item_pairs": [
+      {
+        "name": "Mật ong",
+        "ingredient_id": "ingre07638"
+      },
+      {
+        "name": "tỏi",
+        "ingredient_id": "ingre07086"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Tỏi",
+        "ingredient_id": "ingre07086"
+      }
+    ],
+    "severity": "low",
+    "reason": "Ghi nhận là kỵ nhau trong danh mục dân gian.",
+    "advice": "Tránh pha mật ong với nhiều tỏi sống.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "mat-mia-toi",
+    "item_pairs": [
+      {
+        "name": "Mật mía",
+        "ingredient_id": "ingre07621"
+      },
+      {
+        "name": "tỏi",
+        "ingredient_id": "ingre07086"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Tỏi",
+        "ingredient_id": "ingre07086"
+      }
+    ],
+    "severity": "low",
+    "reason": "Xếp kỵ nhau dân gian.",
+    "advice": "Không dùng cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "duong-cat-mang-cut",
+    "item_pairs": [
+      {
+        "name": "Đường cát",
+        "ingredient_id": "ingre07650"
+      },
+      {
+        "name": "măng cụt",
+        "ingredient_id": "ingre05289"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Măng cụt",
+        "ingredient_id": "ingre05289"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau.",
+    "advice": "Không ăn kèm lượng nhiều.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "khoai-mi-nhan-long",
+    "item_pairs": [
+      {
+        "name": "Khoai mì",
+        "ingredient_id": "ingre03204"
+      },
+      {
+        "name": "nhãn lồng",
+        "ingredient_id": "ingre04436"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Nhãn lồng",
+        "ingredient_id": "ingre04436"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "advice": "Tránh ăn cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "khoai-mi-xoai",
+    "item_pairs": [
+      {
+        "name": "Khoai mì",
+        "ingredient_id": "ingre03204"
+      },
+      {
+        "name": "xoài",
+        "ingredient_id": "ingre07329"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Xoài",
+        "ingredient_id": "ingre07329"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "advice": "Không ăn cùng lúc số lượng nhiều.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "khoai-mi-oi",
+    "item_pairs": [
+      {
+        "name": "Khoai mì",
+        "ingredient_id": "ingre03204"
+      },
+      {
+        "name": "ổi",
+        "ingredient_id": "ingre07963"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Ổi",
+        "ingredient_id": "ingre07963"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "advice": "Tránh ăn cùng lúc.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-ky-da-gung-giam",
+    "item_pairs": [
+      {
+        "name": "Thịt kỳ đà",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "gừng/giấm",
+        "ingredient_id": "ingre05913"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gừng",
+        "ingredient_id": "ingre05913"
+      },
+      {
+        "name": "Giấm",
+        "ingredient_id": "ingre07698"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau dân gian.",
+    "advice": "Không ướp/nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "tiet-canh-rau-den",
+    "item_pairs": [
+      {
+        "name": "Tiết canh lợn/vịt",
+        "ingredient_id": "ingre01454"
+      },
+      {
+        "name": "rau dền",
+        "ingredient_id": "ingre05251"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rau dền",
+        "ingredient_id": "ingre05251"
+      }
+    ],
+    "severity": "medium",
+    "reason": "Danh mục dân gian coi kỵ; riêng tiết canh sống vốn rủi ro ATTP cao.",
+    "advice": "Tránh hoàn toàn tiết canh; không ăn kèm rau dền.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-heo-thit-lua",
+    "item_pairs": [
+      {
+        "name": "Thịt heo",
+        "ingredient_id": "ingre06533"
+      },
+      {
+        "name": "thịt lừa",
+        "ingredient_id": "ingre04195"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt lừa",
+        "ingredient_id": "ingre04195"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "advice": "Không ăn chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-heo-thit-ngua",
+    "item_pairs": [
+      {
+        "name": "Thịt heo",
+        "ingredient_id": "ingre06533"
+      },
+      {
+        "name": "thịt ngựa",
+        "ingredient_id": "ingre01588"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt ngựa",
+        "ingredient_id": "ingre01588"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau.",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-bo-he",
+    "item_pairs": [
+      {
+        "name": "Thịt bò",
+        "ingredient_id": "ingre07420"
+      },
+      {
+        "name": "hẹ",
+        "ingredient_id": "ingre03085"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hẹ",
+        "ingredient_id": "ingre03085"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê kỵ nhau (dân gian).",
+    "advice": "Không nấu chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-de-goi-ca",
+    "item_pairs": [
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      },
+      {
+        "name": "gỏi cá",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gỏi cá",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau.",
+    "advice": "Tránh ăn chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "thit-trau-thit-cho",
+    "item_pairs": [
+      {
+        "name": "Thịt trâu",
+        "ingredient_id": "ingre06508"
+      },
+      {
+        "name": "thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh mục kỵ nhau.",
+    "advice": "Không ăn chung.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "bo-cau-nam",
+    "item_pairs": [
+      {
+        "name": "Thịt bồ câu",
+        "ingredient_id": "ingre06337"
+      },
+      {
+        "name": "nấm",
+        "ingredient_id": "ingre04892"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Nấm",
+        "ingredient_id": "ingre04892"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê kỵ nhau.",
+    "advice": "Tránh nấu chung nếu cơ địa nhạy.",
+    "sources": [
+      {
+        "name": "CDC Quảng Ninh",
+        "url": "https://www.quangninhcdc.vn/93-cap-thuc-pham-ky-nhau-va-cach-giai-doc/"
+      }
+    ]
+  },
+  {
+    "id": "khoai-lang-vi-chua",
+    "item_pairs": [
+      {
+        "name": "Khoai lang",
+        "ingredient_id": "ingre03235"
+      },
+      {
+        "name": "món chua",
+        "ingredient_id": "ingre07898"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Món có vị chua",
+        "ingredient_id": "ingre07898"
+      }
+    ],
+    "severity": "low",
+    "reason": "SKĐS xếp vào nhóm không nên ăn cùng.",
+    "advice": "Tránh ăn khoai lang ngay với món chua đậm.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "bi-dao-ca",
+    "item_pairs": [
+      {
+        "name": "Bí đao",
+        "ingredient_id": "ingre06692"
+      },
+      {
+        "name": "cá",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Các loại cá",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung theo SKĐS.",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "bi-do-thit-de-cuu",
+    "item_pairs": [
+      {
+        "name": "Bí đỏ",
+        "ingredient_id": "ingre00253"
+      },
+      {
+        "name": "thịt dê/cừu",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      },
+      {
+        "name": "Thịt cừu",
+        "ingredient_id": "ingre06365"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên dùng cùng (cước khí) theo SKĐS.",
+    "advice": "Thay rau củ khác khi nấu thịt dê/cừu.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "cai-xoong-ca-diec",
+    "item_pairs": [
+      {
+        "name": "Cải xoong",
+        "ingredient_id": "ingre01798"
+      },
+      {
+        "name": "cá diếc",
+        "ingredient_id": "ingre01516"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cá diếc",
+        "ingredient_id": "ingre01516"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên nấu cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ca-ba-ba-chuoi-ca-qua-rong-bien",
+    "item_pairs": [
+      {
+        "name": "Cà (cà tím/cà pháo)",
+        "ingredient_id": "ingre02743"
+      },
+      {
+        "name": "ba ba/chuối/cá quả/rong biển",
+        "ingredient_id": "ingre04203"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Ba ba",
+        "ingredient_id": "ingre04203"
+      },
+      {
+        "name": "Chuối",
+        "ingredient_id": "ingre01160"
+      },
+      {
+        "name": "Cá quả",
+        "ingredient_id": "ingre01607"
+      },
+      {
+        "name": "Rong biển",
+        "ingredient_id": "ingre05478"
+      }
+    ],
+    "severity": "low",
+    "reason": "SKĐS nêu không nên ăn cùng; ăn với rong biển làm mất iod.",
+    "advice": "Tránh phối chung.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ot-gan-de-du-du-cu-cai",
+    "item_pairs": [
+      {
+        "name": "Ớt",
+        "ingredient_id": "ingre08101"
+      },
+      {
+        "name": "gan dê/đu đủ/củ cải",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gan dê",
+        "ingredient_id": "ingre07550"
+      },
+      {
+        "name": "Đu đủ",
+        "ingredient_id": "ingre07908"
+      },
+      {
+        "name": "Củ cải",
+        "ingredient_id": "ingre01860"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Giảm ớt khi dùng các món này.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "tiet-lon-rau-chan-vit-qua-chua",
+    "item_pairs": [
+      {
+        "name": "Tiết lợn",
+        "ingredient_id": "ingre06670"
+      },
+      {
+        "name": "rau chân vịt/hoa quả chua",
+        "ingredient_id": "ingre06909"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rau chân vịt",
+        "ingredient_id": "ingre05215"
+      },
+      {
+        "name": "Hoa quả chua",
+        "ingredient_id": "ingre06909"
+      }
+    ],
+    "severity": "low",
+    "reason": "Có thể gây sỏi tiết niệu (SKĐS).",
+    "advice": "Không ăn kèm.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "thit-de-kieu-mach-dau-do",
+    "item_pairs": [
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      },
+      {
+        "name": "kiều mạch/đậu đỏ",
+        "ingredient_id": "ingre02146"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Kiều mạch",
+        "ingredient_id": "ingre03074"
+      },
+      {
+        "name": "Đậu đỏ",
+        "ingredient_id": "ingre07868"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Thay tinh bột khác.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "thit-bo-hat-de-hat-ke-mat-ong-ca",
+    "item_pairs": [
+      {
+        "name": "Thịt bò",
+        "ingredient_id": "ingre07420"
+      },
+      {
+        "name": "hạt dẻ/hạt kê/mật ong/cá",
+        "ingredient_id": "ingre07638"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hạt dẻ",
+        "ingredient_id": "ingre03064"
+      },
+      {
+        "name": "Hạt kê",
+        "ingredient_id": "ingre02551"
+      },
+      {
+        "name": "Mật ong",
+        "ingredient_id": "ingre07638"
+      },
+      {
+        "name": "Cá",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "thit-cho-hanh-nhan-ca-chep-trach-tra-dac",
+    "item_pairs": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "hạnh nhân/đậu xanh/cá chép/lươn trạch/trà đặc",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hạnh nhân",
+        "ingredient_id": "ingre03061"
+      },
+      {
+        "name": "Đậu xanh",
+        "ingredient_id": "ingre07906"
+      },
+      {
+        "name": "Cá chép",
+        "ingredient_id": "ingre01491"
+      },
+      {
+        "name": "Lươn trạch",
+        "ingredient_id": "ingre03074"
+      },
+      {
+        "name": "Trà đặc",
+        "ingredient_id": "ingre03074"
+      }
+    ],
+    "severity": "low",
+    "reason": "Danh sách kỵ nhau (SKĐS).",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "hat-sen-cua-thit-rua",
+    "item_pairs": [
+      {
+        "name": "Hạt sen",
+        "ingredient_id": "ingre03029"
+      },
+      {
+        "name": "cua/thịt rùa",
+        "ingredient_id": "ingre01722"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "Thịt rùa",
+        "ingredient_id": "ingre05600"
+      }
+    ],
+    "severity": "low",
+    "reason": "Có thể gây ngộ độc (SKĐS).",
+    "advice": "Không ăn kèm.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "tho-vit-cai-trang-kieu-mach",
+    "item_pairs": [
+      {
+        "name": "Thịt thỏ",
+        "ingredient_id": "ingre06504"
+      },
+      {
+        "name": "thịt vịt/cải trắng/kiều mạch",
+        "ingredient_id": "ingre01870"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt vịt",
+        "ingredient_id": "ingre07222"
+      },
+      {
+        "name": "Cải trắng",
+        "ingredient_id": "ingre01870"
+      },
+      {
+        "name": "Kiều mạch",
+        "ingredient_id": "ingre03074"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ tiêu chảy/đầy bụng (SKĐS).",
+    "advice": "Không phối chung.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "chim-cut-thit-lon",
+    "item_pairs": [
+      {
+        "name": "Thịt chim cút",
+        "ingredient_id": "ingre01128"
+      },
+      {
+        "name": "thịt lợn",
+        "ingredient_id": "ingre06670"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt lợn",
+        "ingredient_id": "ingre06670"
+      }
+    ],
+    "severity": "low",
+    "reason": "Có thể làm xạm da (SKĐS).",
+    "advice": "Tránh nấu chung.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "thit-vit-ba-ba-ho-dao-moc-nhi-kieu-mach",
+    "item_pairs": [
+      {
+        "name": "Thịt vịt",
+        "ingredient_id": "ingre07222"
+      },
+      {
+        "name": "ba ba/hồ đào/mộc nhĩ/kiều mạch",
+        "ingredient_id": "ingre04203"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Ba ba",
+        "ingredient_id": "ingre04203"
+      },
+      {
+        "name": "Hồ đào",
+        "ingredient_id": "ingre03096"
+      },
+      {
+        "name": "Mộc nhĩ",
+        "ingredient_id": "ingre04944"
+      },
+      {
+        "name": "Kiều mạch",
+        "ingredient_id": "ingre03074"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "dau-banh-bao-trung-vit-he",
+    "item_pairs": [
+      {
+        "name": "Dâu tươi",
+        "ingredient_id": "ingre01970"
+      },
+      {
+        "name": "bánh bao/trứng vịt/rau hẹ",
+        "ingredient_id": "ingre00060"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Bánh bao",
+        "ingredient_id": "ingre00060"
+      },
+      {
+        "name": "Trứng vịt",
+        "ingredient_id": "ingre06863"
+      },
+      {
+        "name": "Rau hẹ",
+        "ingredient_id": "ingre05274"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Ăn cách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "luu-do-bien",
+    "item_pairs": [
+      {
+        "name": "Lựu",
+        "ingredient_id": "ingre03629"
+      },
+      {
+        "name": "đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hải sản",
+        "ingredient_id": "ingre03109"
+      },
+      {
+        "name": "đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "tram-hanh-he-cua",
+    "item_pairs": [
+      {
+        "name": "Quả trám",
+        "ingredient_id": "ingre06781"
+      },
+      {
+        "name": "hành/hẹ/cua",
+        "ingredient_id": "ingre01722"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hành",
+        "ingredient_id": "ingre05331"
+      },
+      {
+        "name": "Hẹ",
+        "ingredient_id": "ingre03085"
+      },
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ tiêu chảy/viêm dạ dày (SKĐS).",
+    "advice": "Không ăn kèm.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "dai-tao-ca-luon-hanh",
+    "item_pairs": [
+      {
+        "name": "Đại táo",
+        "ingredient_id": "ingre06890"
+      },
+      {
+        "name": "cá trắm đen/lươn/trạch/cá nheo/đồ biển/hành tây/hành ta",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cá trắm đen",
+        "ingredient_id": "ingre01642"
+      },
+      {
+        "name": "Lươn",
+        "ingredient_id": "ingre03596"
+      },
+      {
+        "name": "Trạch",
+        "ingredient_id": "ingre01640"
+      },
+      {
+        "name": "Cá nheo",
+        "ingredient_id": "ingre01592"
+      },
+      {
+        "name": "Đồ biển",
+        "ingredient_id": "ingre01929"
+      },
+      {
+        "name": "Hành tây",
+        "ingredient_id": "ingre02851"
+      },
+      {
+        "name": "Hành ta",
+        "ingredient_id": "ingre00683"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "nho-do-bien-ca-nhan-sam",
+    "item_pairs": [
+      {
+        "name": "Nho",
+        "ingredient_id": "ingre04397"
+      },
+      {
+        "name": "đồ biển/cá/nhân sâm",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đồ biển",
+        "ingredient_id": "ingre01929"
+      },
+      {
+        "name": "Cá",
+        "ingredient_id": "ingre01454"
+      },
+      {
+        "name": "Nhân sâm",
+        "ingredient_id": "ingre04422"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "son-tra-hanh-toi",
+    "item_pairs": [
+      {
+        "name": "Sơn tra",
+        "ingredient_id": "ingre05826"
+      },
+      {
+        "name": "hành/tỏi",
+        "ingredient_id": "ingre01104"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hành",
+        "ingredient_id": "ingre05331"
+      },
+      {
+        "name": "Tỏi",
+        "ingredient_id": "ingre07086"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa, nhất là khi dùng để hỗ trợ tiêu hoá.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "nam-dau-khi-bo-cau-meo",
+    "item_pairs": [
+      {
+        "name": "Nấm đầu khỉ",
+        "ingredient_id": "ingre02146"
+      },
+      {
+        "name": "thịt bồ câu/thịt mèo",
+        "ingredient_id": "ingre07796"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt bồ câu",
+        "ingredient_id": "ingre06337"
+      },
+      {
+        "name": "Thịt mèo",
+        "ingredient_id": "ingre07308"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Không phối hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "to-yen-thit-cho-de",
+    "item_pairs": [
+      {
+        "name": "Tổ yến",
+        "ingredient_id": "ingre07133"
+      },
+      {
+        "name": "thịt chó/thịt dê",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn cùng (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "bo-cau-gan-lon-thit-lon-ca-diec-tom",
+    "item_pairs": [
+      {
+        "name": "Thịt bồ câu",
+        "ingredient_id": "ingre06337"
+      },
+      {
+        "name": "gan lợn/thịt lợn/cá diếc/tôm",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gan lợn",
+        "ingredient_id": "ingre02243"
+      },
+      {
+        "name": "Thịt lợn",
+        "ingredient_id": "ingre06670"
+      },
+      {
+        "name": "Cá diếc",
+        "ingredient_id": "ingre01516"
+      },
+      {
+        "name": "Tôm",
+        "ingredient_id": "ingre06930"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ đầy chướng, có thể mày đay (SKĐS).",
+    "advice": "Không phối chung.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "chim-se-gan-lon-do-bien",
+    "item_pairs": [
+      {
+        "name": "Thịt chim sẻ",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "gan lợn/đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gan lợn",
+        "ingredient_id": "ingre02243"
+      },
+      {
+        "name": "Đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "moc-nhi-den-trung-vit-do-bien",
+    "item_pairs": [
+      {
+        "name": "Mộc nhĩ đen",
+        "ingredient_id": "ingre04192"
+      },
+      {
+        "name": "trứng vịt/đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Trứng vịt",
+        "ingredient_id": "ingre06863"
+      },
+      {
+        "name": "Đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Không phối hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "moc-nhi-trang-do-bien",
+    "item_pairs": [
+      {
+        "name": "Mộc nhĩ trắng",
+        "ingredient_id": "ingre01768"
+      },
+      {
+        "name": "đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Đồ biển",
+        "ingredient_id": "ingre01929"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "tom-thit-de",
+    "item_pairs": [
+      {
+        "name": "Tôm",
+        "ingredient_id": "ingre06930"
+      },
+      {
+        "name": "thịt dê",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt dê",
+        "ingredient_id": "ingre07550"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Thay thịt khác.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ba-ba-rua-meo-tho-vit-trung-rau-sam",
+    "item_pairs": [
+      {
+        "name": "Ba ba/rùa",
+        "ingredient_id": "ingre04203"
+      },
+      {
+        "name": "thịt mèo/thịt thỏ/thịt vịt/trứng vịt/rau sam",
+        "ingredient_id": "ingre07308"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt mèo",
+        "ingredient_id": "ingre07308"
+      },
+      {
+        "name": "Thịt thỏ",
+        "ingredient_id": "ingre06504"
+      },
+      {
+        "name": "Thịt vịt",
+        "ingredient_id": "ingre07222"
+      },
+      {
+        "name": "Trứng vịt",
+        "ingredient_id": "ingre06863"
+      },
+      {
+        "name": "Rau sam",
+        "ingredient_id": "ingre05376"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Không phối hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "luon-thit-cho-kinh-gioi",
+    "item_pairs": [
+      {
+        "name": "Lươn",
+        "ingredient_id": "ingre03596"
+      },
+      {
+        "name": "thịt chó/rau kinh giới (lươn xanh)",
+        "ingredient_id": "ingre02146"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "Rau kinh giới (lươn xanh)",
+        "ingredient_id": "ingre02146"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ca-chep-thit-cho",
+    "item_pairs": [
+      {
+        "name": "Cá chép",
+        "ingredient_id": "ingre01491"
+      },
+      {
+        "name": "thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "severity": "low",
+    "reason": "Liệt kê kỵ nhau (SKĐS).",
+    "advice": "Không ăn cùng.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ca-diec-gan-lon-rau-cai-cu-mai",
+    "item_pairs": [
+      {
+        "name": "Cá diếc",
+        "ingredient_id": "ingre01516"
+      },
+      {
+        "name": "gan lợn/rau cải/củ mài",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Gan lợn",
+        "ingredient_id": "ingre02243"
+      },
+      {
+        "name": "Rau cải",
+        "ingredient_id": "ingre05236"
+      },
+      {
+        "name": "Củ mài",
+        "ingredient_id": "ingre01902"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tách bữa.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "ca-trach-thit-cho",
+    "item_pairs": [
+      {
+        "name": "Cá chạch",
+        "ingredient_id": "ingre01501"
+      },
+      {
+        "name": "thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Không phối hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "cua-kinh-gioi-hong",
+    "item_pairs": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      },
+      {
+        "name": "rau kinh giới/quả hồng",
+        "ingredient_id": "ingre02146"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Rau kinh giới",
+        "ingredient_id": "ingre05277"
+      },
+      {
+        "name": "Hồng",
+        "ingredient_id": "ingre05174"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tránh kết hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "oc-buou-bi-dao-muop-moc-nhi-duong-tac-ke",
+    "item_pairs": [
+      {
+        "name": "Ốc bươu",
+        "ingredient_id": "ingre07952"
+      },
+      {
+        "name": "bí đao/mướp/mộc nhĩ/đường/thịt tắc kè",
+        "ingredient_id": "ingre06692"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Bí đao",
+        "ingredient_id": "ingre06692"
+      },
+      {
+        "name": "Mướp",
+        "ingredient_id": "ingre04103"
+      },
+      {
+        "name": "Mộc nhĩ",
+        "ingredient_id": "ingre04944"
+      },
+      {
+        "name": "Đường",
+        "ingredient_id": "ingre07636"
+      },
+      {
+        "name": "Thịt tắc kè",
+        "ingredient_id": "ingre06666"
+      }
+    ],
+    "severity": "low",
+    "reason": "Không nên ăn chung (SKĐS).",
+    "advice": "Tránh phối hợp.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "oc-sen-cua",
+    "item_pairs": [
+      {
+        "name": "Ốc sên",
+        "ingredient_id": "ingre07954"
+      },
+      {
+        "name": "cua",
+        "ingredient_id": "ingre01722"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cua",
+        "ingredient_id": "ingre01722"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ gây mày đay (SKĐS).",
+    "advice": "Không ăn chung.",
+    "sources": [
+      {
+        "name": "SKĐS",
+        "url": "https://suckhoedoisong.vn/nhung-thuc-pham-khong-nen-an-cung-nhau-16995953.htm"
+      }
+    ]
+  },
+  {
+    "id": "dua-hau-thit",
+    "item_pairs": [
+      {
+        "name": "Dưa hấu ăn ngay sau bữa thịt",
+        "ingredient_id": "ingre07491"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Thịt (ăn nhiều)",
+        "ingredient_id": "ingre06274"
+      }
+    ],
+    "severity": "low",
+    "reason": "Dễ khó tiêu nếu ăn sát bữa nhiều thịt.",
+    "advice": "Ăn trái cây cách bữa 1–2 giờ.",
+    "sources": [
+      {
+        "name": "MEDLATEC",
+        "url": "https://medlatec.vn/tin-tuc/tong-hop-cac-mon-an-ky-nhau-gay-nguy-hiem-khi-an-s51-n29735"
+      }
+    ]
+  },
+  {
+    "id": "gan-heo-can-tay-cai-xoan",
+    "item_pairs": [
+      {
+        "name": "Gan heo",
+        "ingredient_id": "ingre07470"
+      },
+      {
+        "name": "cần tây/cải xoăn (rất nhiều xơ/oxalat)",
+        "ingredient_id": "ingre01454"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Cần tây",
+        "ingredient_id": "ingre05240"
+      },
+      {
+        "name": "Cải xoăn",
+        "ingredient_id": "ingre01800"
+      }
+    ],
+    "severity": "low",
+    "reason": "Có thể giảm hấp thu sắt (bài phổ biến trong nước).",
+    "advice": "Tránh xào chung nhiều.",
+    "sources": [
+      {
+        "name": "Pharmacity",
+        "url": "https://www.pharmacity.vn/gan-xao-gia-do-co-doc-khong-tac-dung-cua-gan-heo-va-gia-do.htm"
+      }
+    ]
+  },
+  {
+    "id": "thit-cho-hai-san",
+    "item_pairs": [
+      {
+        "name": "Thịt chó",
+        "ingredient_id": "ingre06274"
+      },
+      {
+        "name": "hải sản",
+        "ingredient_id": "ingre03109"
+      }
+    ],
+    "conflict_details": [
+      {
+        "name": "Hải sản",
+        "ingredient_id": "ingre03109"
+      }
+    ],
+    "severity": "low",
+    "reason": "Báo chí trong nước khuyến cáo dễ rối loạn tiêu hoá.",
+    "advice": "Không ăn chung.",
+    "sources": [
+      {
+        "name": "Tiền Phong",
+        "url": "https://tienphong.vn/an-thit-cho-nho-tranh-xa-nhung-mon-nay-keo-doc-hon-thach-tin-post1432497.tpo"
+      }
+    ]
+  }
+]

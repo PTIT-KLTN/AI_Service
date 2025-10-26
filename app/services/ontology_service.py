@@ -210,3 +210,55 @@ class OntologyService:
                     'instructions': dish.get('instructions', '')
                 }
         return None
+    
+    def get_replacement_suggestions(
+        self, 
+        conflicting_ingredient_id: str, 
+        max_suggestions: int = 3,
+        exclude_ids: Optional[Set[str]] = None
+    ) -> List[Dict[str, str]]:
+        """
+        Tìm các nguyên liệu thay thế cho nguyên liệu có conflict.
+        
+        Args:
+            conflicting_ingredient_id: ID của nguyên liệu cần thay thế
+            max_suggestions: Số lượng gợi ý tối đa
+            exclude_ids: Set of ingredient IDs to exclude from suggestions
+            
+        Returns:
+            List of suggested replacement ingredients with id, name, category
+        """
+        conflicting_ing = self.ingredients.get(conflicting_ingredient_id)
+        if not conflicting_ing:
+            return []
+        
+        target_category = conflicting_ing.get('category', '')
+        if not target_category:
+            return []
+        
+        exclude_ids = exclude_ids or set()
+        
+        # Find ingredients in same category (excluding the conflicting one and excluded IDs)
+        suggestions = []
+        for ing_id, ing in self.ingredients.items():
+            if ing_id == conflicting_ingredient_id or ing_id in exclude_ids:
+                continue
+            
+            if ing.get('category') == target_category:
+                name_vi = ing.get('name_vi', '')
+                name_en = ing.get('name_en', '')
+                
+                # If name_vi is English (ASCII only), use name_en as display name instead
+                display_name = name_vi
+                if name_vi and name_vi.replace(':', '').replace(' ', '').replace('-', '').isascii():
+                    display_name = name_en if name_en else name_vi
+                
+                suggestions.append({
+                    'ingredient_id': ing_id,
+                    'name_vi': display_name,
+                    'name_en': name_en if name_vi.isascii() else name_vi,
+                    'category': ing.get('category', '')
+                })
+        
+        # Limit to max_suggestions
+        return suggestions[:max_suggestions]

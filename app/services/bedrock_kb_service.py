@@ -124,7 +124,8 @@ class BedrockKBService:
                         'modelArn': self.model_id,
                         'retrievalConfiguration': {
                             'vectorSearchConfiguration': {
-                                'numberOfResults': 24  # đủ để gom chunk của 1 file
+                                'overrideSearchType': 'SEMANTIC',
+                                'numberOfResults': 5  # đủ để gom chunk của 1 file
                             }
                         },
                     },

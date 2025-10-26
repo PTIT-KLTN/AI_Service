@@ -20,34 +20,46 @@ class BedrockModelService:
 
 
     def extract_dish_name(self, description: str) -> dict:
-        prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO, và nguyên liệu cần LOẠI TRỪ.
+        prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO (hoặc ăn/uống KÈM), và nguyên liệu cần LOẠI TRỪ.
+
+QUY TẮC QUAN TRỌNG:
+1. dish_name: Tên món ăn chính người dùng muốn nấu/gọi
+2. ingredients: Nguyên liệu THÊM VÀO món ăn, hoặc đồ ăn/uống KÈM THEO (như "ăn kèm", "uống kèm", "chấm với", "vắt vào", "rưới lên")
+3. excluded_ingredients: Nguyên liệu cần LOẠI BỎ (dị ứng, không thích, yêu cầu "bỏ", "không có")
 
 Ví dụ:
 - "Tôi muốn ăn bún bò Huế với trứng cút" 
-→ dish_name: "Bún bò Huế", ingredients: [{{"name": "trứng cút"}}], excluded_ingredients: []
+→ {{"dish_name": "Bún bò Huế", "ingredients": [{{"name": "Trứng cút"}}], "excluded_ingredients": []}}
+
+- "Hướng dẫn nấu món canh cua với nước ép cam uống kèm"
+→ {{"dish_name": "Canh cua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
+
+- "Hướng dẫn nấu món canh cua chua với cam vắt vào"
+→ {{"dish_name": "Canh cua chua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
+
+- "Công thức món sầu riêng ăn kèm với rượu"
+→ {{"dish_name": "Sầu riêng", "ingredients": [{{"name": "Rượu"}}], "excluded_ingredients": []}}
+
+- "Làm món trứng chiên ăn kèm sữa đậu nành cho bữa sáng"
+→ {{"dish_name": "Trứng chiên", "ingredients": [{{"name": "Sữa đậu nành"}}], "excluded_ingredients": []}}
 
 - "Nấu phở bò"
-→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: []
-
-- "Tôi muốn ăn phở bò cùng với một nước mắm chấm kèm"
-→ dish_name: "Phở bò", ingredients: [{{"name": "nước mắm chấm kèm"}}], excluded_ingredients: []
+→ {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": []}}
 
 - "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
-→ dish_name: "Phở bò", ingredients: [], excluded_ingredients: [{{"name": "đậu phộng", "reason": "dị ứng"}}, {{"name": "hành lá", "reason": "người dùng không muốn"}}]
+→ {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": [{{"name": "Đậu phộng", "reason": "dị ứng"}}, {{"name": "Hành lá", "reason": "người dùng không muốn"}}]}}
 
 - "Cho tôi món phở chay, bỏ hành lá và ngò rí"
-→ dish_name: "Phở chay", ingredients: [], excluded_ingredients: [{{"name": "hành lá"}}, {{"name": "ngò rí"}}]
+→ {{"dish_name": "Phở chay", "ingredients": [], "excluded_ingredients": [{{"name": "Hành lá"}}, {{"name": "Ngò rí"}}]}}
 
 Mô tả: "{description}"
 
-Trả về JSON:
+Trả về JSON (chỉ JSON, không giải thích):
 {{
     "dish_name": "tên món chính",
-    "ingredients": [{{"name": "nguyên liệu thêm", "quantity": "", "unit": ""}}],
+    "ingredients": [{{"name": "nguyên liệu thêm/ăn kèm/uống kèm", "quantity": "", "unit": ""}}],
     "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
-}}
-
-Chỉ trả về JSON."""
+}}"""
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
