@@ -1,6 +1,3 @@
-"""
-Number utility functions for parsing and converting numeric values.
-"""
 from typing import Union
 
 __all__ = [

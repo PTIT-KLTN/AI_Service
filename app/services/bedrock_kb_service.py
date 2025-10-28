@@ -1,12 +1,11 @@
 import boto3
 import os
 import json
-from collections import Counter
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 from dotenv import load_dotenv
 
 from app.utils.json_utils import read_json_from_s3_uri
-from app.utils.string_utils import norm_text, similarity_ratio
+from app.utils.string_utils import norm_text
 from app.utils.number_utils import parse_number
 
 load_dotenv()
@@ -18,11 +17,8 @@ class BedrockKBService:
         self.kb_id = os.getenv('BEDROCK_KB_ID')
         self.model_id = os.getenv('MODEL_ID')
 
-    # ----------------- Citations / URI picking -------------------
-
     @staticmethod
-    def _uris_with_counts(resp: Dict[str, Any]) -> List[Tuple[str, int]]:
-        counts = Counter()
+    def _extract_first_uri(resp: Dict[str, Any]) -> Optional[str]:
         for c in resp.get('citations', []):
             for ref in c.get('retrievedReferences', []):
                 md = ref.get('metadata') or {}
@@ -31,38 +27,8 @@ class BedrockKBService:
                     or (((ref.get('location') or {}).get('s3Location') or {}).get('uri'))
                 )
                 if uri:
-                    counts[uri] += 1
-        return list(counts.items())
-
-    def _pick_best_uri(self, dish_name: str, uri_counts: List[Tuple[str, int]]) -> Optional[str]:
-        if not uri_counts:
-            return None
-
-        # sắp theo count giảm dần
-        uri_counts = sorted(uri_counts, key=lambda x: (-x[1], x[0]))
-
-        best_fallback = uri_counts[0][0]
-        for uri, _cnt in uri_counts:
-            try:
-                j = read_json_from_s3_uri(uri)
-            except Exception:
-                continue
-
-            title = (
-                j.get('dish_name')
-                or j.get('name_vi')
-                or j.get('name')
-                or j.get('title')
-            )
-            if not title:
-                continue
-
-            if similarity_ratio(dish_name, title) >= 0.6:
-                return uri
-
-        return best_fallback
-
-    # --------------------- Ingredient extract --------------------
+                    return uri
+        return None
 
     def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
         candidates: List[Any] = []
@@ -73,7 +39,6 @@ class BedrockKBService:
         if isinstance(j.get('recipe'), dict) and isinstance(j['recipe'].get('ingredients'), list):
             candidates.append(j['recipe']['ingredients'])
 
-        # nếu vẫn chưa có gì, đừng vét cạn toàn JSON để tránh lẫn
         if not candidates:
             return []
 
@@ -93,7 +58,6 @@ class BedrockKBService:
                     'unit': unit
                 })
 
-        # lọc trùng theo tên đã normalize + đơn vị + quantity
         seen = set()
         uniq = []
         for ing in items:
@@ -103,8 +67,6 @@ class BedrockKBService:
             seen.add(k)
             uniq.append(ing)
         return uniq
-
-    # ------------------------ Public API -------------------------
 
     def get_dish_recipe(self, dish_name: str) -> dict:
         query = (
@@ -124,31 +86,28 @@ class BedrockKBService:
                         'modelArn': self.model_id,
                         'retrievalConfiguration': {
                             'vectorSearchConfiguration': {
-                                'overrideSearchType': 'SEMANTIC',
-                                'numberOfResults': 5  # đủ để gom chunk của 1 file
+                                'overrideSearchType': 'SEMANTIC',  
+                                'numberOfResults': 36
                             }
                         },
                     },
                 },
             )
 
-            uri_counts = self._uris_with_counts(resp)
-            best_uri = self._pick_best_uri(dish_name, uri_counts)
-
-            if best_uri:
+            first_uri = self._extract_first_uri(resp)
+            
+            if first_uri:
                 try:
-                    j = read_json_from_s3_uri(best_uri)
+                    j = read_json_from_s3_uri(first_uri)
                     title = j.get('dish_name') or j.get('name_vi') or j.get('name') or dish_name
                     ings = self._extract_ingredients_from_json(j)
                     if ings:
                         return {'dish_name': title, 'ingredients': ings}
                 except Exception:
-                    pass  # nếu đọc lỗi, tiếp tục fallback
+                    pass  
 
-            # --- Fallback: parse text output của LLM ---
             answer = resp.get('output', {}).get('text', '').strip()
 
-            # bóc codeblock nếu có
             if '```' in answer:
                 buf, in_code = [], False
                 for line in answer.splitlines():

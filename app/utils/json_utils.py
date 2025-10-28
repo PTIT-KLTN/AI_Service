@@ -1,6 +1,3 @@
-"""
-JSON utility functions for parsing and extracting data from various sources.
-"""
 import json
 import boto3
 from typing import Dict, Any, Optional
@@ -12,7 +9,6 @@ __all__ = [
     "extract_prompt_from_body",
 ]
 
-# Initialize S3 client
 s3 = boto3.client('s3')
 
 
@@ -26,7 +22,6 @@ def read_json_from_s3_uri(s3_uri: str) -> Dict[str, Any]:
 
 
 def parse_json_content(content: str) -> dict:
-    # Remove code block markers if present
     if content.startswith('```'):
         content = '\n'.join(content.split('\n')[1:-1]).lstrip('json')
     
@@ -41,12 +36,10 @@ def parse_json_content(content: str) -> dict:
             "response": content.strip() if isinstance(content, str) else None,
         }
     
-    # Extract dish_name and ingredients
     dish_name = data.get('dish_name')
     ingredients = data.get('ingredients', []) if isinstance(data.get('ingredients', []), list) else []
     excluded_ingredients = data.get('excluded_ingredients', []) if isinstance(data.get('excluded_ingredients', []), list) else []
 
-    # Extract warnings
     warnings = data.get('warnings', []) if isinstance(data.get('warnings'), list) else []
     response_text = data.get('response') if isinstance(data.get('response'), str) else None
     
@@ -93,11 +86,9 @@ def extract_prompt_from_body(body: str) -> str:
 
     prompt_parts = []
     if isinstance(payload, dict):
-        # Direct prompt field
         if isinstance(payload.get('prompt'), str):
             prompt_parts.append(payload['prompt'])
         
-        # Messages format
         messages = payload.get('messages')
         if isinstance(messages, list):
             for message in messages:

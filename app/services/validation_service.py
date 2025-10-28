@@ -94,7 +94,6 @@ class ValidationService:
         ban_ids = set(ban_ids or [])
         ing_map = ingredients or {}
 
-        # Ứng viên: ưu tiên từ ing_map; nếu trống, fallback sang tần suất (PMI)
         candidate_ids = list(ing_map.keys()) if ing_map else list(self.frequency.keys())
 
         candidates = {}

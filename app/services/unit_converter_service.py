@@ -3,7 +3,6 @@ from app.utils.number_utils import parse_quantity
 
 class UnitConverterService:
     def __init__(self):
-        # Conversion rules
         self.weight_to_gram = {
             'kg': 1000,
             'kilogram': 1000,
@@ -41,7 +40,6 @@ class UnitConverterService:
             'coc': 240
         }
         
-        # Ước lượng đơn vị đếm
         self.count_estimation = {
             'củ hành': ('củ', 100, 'g'),
             'hành': ('củ', 100, 'g'),
@@ -61,7 +59,6 @@ class UnitConverterService:
             'ớt': ('trái', 10, 'g')
         }
         
-        # Liquid ingredients (chuyển sang ml)
         self.liquid_keywords = [
             'nước', 'dầu', 'mắm', 'tương', 'sữa', 'giấm', 
             'rượu', 'nước cốt', 'nước dừa', 'nước mía'
@@ -71,12 +68,7 @@ class UnitConverterService:
             'cái','chiếc','quả','trái','nhánh','cọng','nắm','miếng','tép','lá','con',
             'ổ','ổ bánh','ổ mì','bó','gói','lát'
         }
-
-    
     def normalize_ingredients(self, ingredients: list) -> list:
-        """
-        Chuyển đổi nhanh không cần LLM
-        """
         if not ingredients:
             return []
         
@@ -92,32 +84,23 @@ class UnitConverterService:
         return result
     
     def _convert_single(self, item: dict) -> dict:
-        """
-        Chuyển đổi 1 nguyên liệu
-        """
         quantity = str(item.get('quantity', '')).strip()
         unit = str(item.get('unit', '')).strip().lower()
         name = str(item.get('name_vi') or item.get('name') or '').strip().lower()
         
-        # Không có số lượng
         if not quantity or quantity == '':
             return {'quantity': '', 'unit': unit or 'tùy thích'}
         
-        # Parse quantity (có thể là số hoặc phân số)
         try:
             qty_value = parse_quantity(quantity)
         except:
             return {'quantity': quantity, 'unit': unit}
         
-        # Giữ nguyên nếu là đơn vị đếm hoặc unit rỗng
         if (not unit) or (unit in self.count_units):
             return {'quantity': quantity, 'unit': unit or 'tùy thích'}
 
-        
-        # Kiểm tra liquid
         is_liquid = any(keyword in name for keyword in self.liquid_keywords)
         
-        # Chuyển đổi weight
         if unit in self.weight_to_gram:
             converted_qty = qty_value * self.weight_to_gram[unit]
             return {
@@ -125,7 +108,6 @@ class UnitConverterService:
                 'unit': 'g'
             }
         
-        # Chuyển đổi volume
         if unit in self.volume_to_ml:
             converted_qty = qty_value * self.volume_to_ml[unit]
             return {
@@ -133,9 +115,7 @@ class UnitConverterService:
                 'unit': 'ml'
             }
         
-        # Ước lượng đơn vị đếm (nếu muốn)
         if unit in ['củ', 'cây', 'quả', 'trái']:
-            # Tìm estimation
             for key, (est_unit, est_gram, est_target) in self.count_estimation.items():
                 if key in name and unit == est_unit:
                     converted_qty = qty_value * est_gram
@@ -143,14 +123,11 @@ class UnitConverterService:
                         'quantity': str(int(converted_qty)),
                         'unit': est_target
                     }
-            # Không tìm thấy → giữ nguyên
             return {'quantity': quantity, 'unit': unit}
         
-        # Đơn vị đặc biệt - giữ nguyên
         if unit in ['củ', 'cây', 'quả', 'trái', 'miếng', 'lát', 'lá', 'nhánh', 'bó', 'gói']:
             return {'quantity': quantity, 'unit': unit}
         
-        # Default: nếu liquid → ml, solid → g
         if is_liquid:
             return {'quantity': quantity, 'unit': 'ml'}
         else:

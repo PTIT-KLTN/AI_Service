@@ -10,12 +10,12 @@ def run_pipeline_cases() -> List[Dict[str, Any]]:
     pipeline = ShoppingCartPipeline()
 
     cases = [
-        # "Tôi muốn nấu món thịt kho tàu.",
+        # "Tôi muốn nấu món bún đậu mắm tôm.",
         # "Toi muon nau mon pho bo.",
         # "Mình muốn nấu món thịt kho tàu chuẩn miền Nam.",
         # "Làm thế nào để nấu phở bò ngon? Cho tôi công thức nhé.",
         # "Cho tôi công thức món bún đậu mắm tôm.",
-        "Tôi muốn nấu món canh nghêu thì là"
+        # "Tôi muốn nấu món canh nghêu thì là"
     ]
 
     results: List[Dict[str, Any]] = []
@@ -67,7 +67,7 @@ def run_conflict_cases() -> List[Dict[str, Any]]:
     pipeline = ShoppingCartPipeline()
     
     test_cases = [
-        # "Hướng dẫn nấu món canh cua với cam vắt vào",
+        "Hướng dẫn nấu món canh chua cua",
         # "Làm món trứng chiên ăn kèm với sữa đậu nành cho bữa sáng",
         # "Công thức món sầu riêng ăn kèm với rượu",
         # "Làm món thịt kho tàu với cà chua và nước mắm",

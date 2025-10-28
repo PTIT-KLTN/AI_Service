@@ -365,7 +365,6 @@ class ShoppingCartPipeline:
 
         ing_dict = getattr(self.ontology, 'ingredients', {}) or {}
 
-        # ---------- Stage A: chỉ xét name_vi ----------
         best_id = None
         best_score = -1.0
         best_extras = 10**9
