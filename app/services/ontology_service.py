@@ -5,7 +5,6 @@ from typing import Dict, Iterable, List, Optional, Set
 class OntologyService:
     _instance = None
 
-    #: Role definitions dựa trên category + importance
     _ROLE_DEFINITIONS: Dict[str, Dict[str, object]] = {
         "core_protein": {
             "categories": {
@@ -58,12 +57,6 @@ class OntologyService:
         
         path = Path("app/data/knowledge_base")
         
-        # with open(path / "ingredient_knowledge_base.json", 'r', encoding='utf-8') as f:
-        #     self.ingredients = {ing['id']: ing for ing in json.load(f)}
-        
-        # with open(path / "dish_knowledge_base.json", 'r', encoding='utf-8') as f:
-        #     self.dishes = {d['id']: d for d in json.load(f)}
-
         with open(path / "ingredient_knowledge_base.json", "r", encoding="utf-8") as f:
             self.ingredients = {ing["id"]: ing for ing in json.load(f)}
 
@@ -94,10 +87,7 @@ class OntologyService:
             role = self._determine_role(category, importance)
             if role:
                 role_map[ing_id] = role
-                if (
-                    role in self._PRIMARY_ROLES
-                    and importance >= self._ROLE_DEFINITIONS.get(role, {}).get("min_importance", 1)
-                ):
+                if role in self._PRIMARY_ROLES and importance >= self._ROLE_DEFINITIONS.get(role, {}).get("min_importance", 1):
                     required_roles.add(role)
 
         return {
@@ -109,21 +99,14 @@ class OntologyService:
     
     def _determine_role(self, category: str, importance: int) -> Optional[str]:
         for role, config in self._ROLE_DEFINITIONS.items():
-            if category in config.get("categories", set()) and importance >= config.get(
-                "min_importance", 1
-            ):
+            if category in config.get("categories", set()) and importance >= config.get("min_importance", 1):
                 return role
         if importance >= 3:
-            # Nguyên liệu cực kỳ quan trọng nhưng chưa map -> xem như core_produce
             return "core_produce"
         return None
 
     def _get_importance(self, dish_id: str, ing_id: str) -> int:
-        return int(
-            self.dish_profiles.get(dish_id, {})
-            .get("importance_map", {})
-            .get(ing_id, 1)
-        )
+        return int(self.dish_profiles.get(dish_id, {}).get("importance_map", {}).get(ing_id, 1))
     
     def get_ingredient(self, ing_id: str) -> dict:
         return self.ingredients.get(ing_id)
@@ -139,11 +122,7 @@ class OntologyService:
     ) -> List[dict]:
         matches: List[dict] = []
         ing_ids_set = set(ing_ids)
-        threshold = (
-            role_coverage_threshold
-            if role_coverage_threshold is not None
-            else self._ROLE_COVERAGE_THRESHOLD
-        )
+        threshold = role_coverage_threshold if role_coverage_threshold is not None else self._ROLE_COVERAGE_THRESHOLD
         
         for dish_id, dish in self.dishes.items():
             dish_ings = [i["ingredient_id"] for i in dish.get("ingredients", [])]
@@ -156,23 +135,13 @@ class OntologyService:
 
             profile = self.dish_profiles.get(dish_id, {})
             total_importance = profile.get("total_importance", 0)
-            matched_importance = sum(
-                self._get_importance(dish_id, ing_id) for ing_id in matched
-            )
-            weighted_score = (
-                matched_importance / total_importance
-                if total_importance
-                else 0
-            )
+            matched_importance = sum(self._get_importance(dish_id, ing_id) for ing_id in matched)
+            weighted_score = matched_importance / total_importance if total_importance else 0
 
             required_roles = profile.get("required_roles", set())
             role_map = profile.get("role_map", {})
             matched_roles = {role_map[ing_id] for ing_id in matched if ing_id in role_map}
-            coverage = (
-                len(matched_roles & required_roles) / len(required_roles)
-                if required_roles
-                else 1
-            )
+            coverage = len(matched_roles & required_roles) / len(required_roles) if required_roles else 1
 
             if coverage < threshold:
                 continue
@@ -190,14 +159,7 @@ class OntologyService:
                 }
             )
 
-        matches.sort(
-            key=lambda x: (
-                x["weighted_score"],
-                x["match_ratio"],
-                x["match_count"],
-            ),
-            reverse=True,
-        )
+        matches.sort(key=lambda x: (x["weighted_score"], x["match_ratio"], x["match_count"]), reverse=True)
         return matches
     
     def get_dish_by_name(self, name: str) -> dict:
@@ -206,7 +168,7 @@ class OntologyService:
             if dish.get('name_vi', '').lower() == name_lower:
                 return {
                     'dish_name': dish.get('name_vi'),
-                    'ingredients': dish.get('ingredients', []),  # Dùng trực tiếp, đã có quantity/unit
+                    'ingredients': dish.get('ingredients', []),
                     'instructions': dish.get('instructions', '')
                 }
         return None
@@ -217,17 +179,7 @@ class OntologyService:
         max_suggestions: int = 3,
         exclude_ids: Optional[Set[str]] = None
     ) -> List[Dict[str, str]]:
-        """
-        Tìm các nguyên liệu thay thế cho nguyên liệu có conflict.
-        
-        Args:
-            conflicting_ingredient_id: ID của nguyên liệu cần thay thế
-            max_suggestions: Số lượng gợi ý tối đa
-            exclude_ids: Set of ingredient IDs to exclude from suggestions
-            
-        Returns:
-            List of suggested replacement ingredients with id, name, category
-        """
+
         conflicting_ing = self.ingredients.get(conflicting_ingredient_id)
         if not conflicting_ing:
             return []
@@ -238,7 +190,6 @@ class OntologyService:
         
         exclude_ids = exclude_ids or set()
         
-        # Find ingredients in same category (excluding the conflicting one and excluded IDs)
         suggestions = []
         for ing_id, ing in self.ingredients.items():
             if ing_id == conflicting_ingredient_id or ing_id in exclude_ids:
@@ -248,17 +199,11 @@ class OntologyService:
                 name_vi = ing.get('name_vi', '')
                 name_en = ing.get('name_en', '')
                 
-                # If name_vi is English (ASCII only), use name_en as display name instead
-                display_name = name_vi
-                if name_vi and name_vi.replace(':', '').replace(' ', '').replace('-', '').isascii():
-                    display_name = name_en if name_en else name_vi
-                
                 suggestions.append({
                     'ingredient_id': ing_id,
-                    'name_vi': display_name,
-                    'name_en': name_en if name_vi.isascii() else name_vi,
+                    'name_vi': name_vi,
+                    'name_en': name_en,
                     'category': ing.get('category', '')
                 })
         
-        # Limit to max_suggestions
         return suggestions[:max_suggestions]

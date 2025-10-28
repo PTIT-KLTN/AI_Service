@@ -6,8 +6,6 @@ import base64
 from typing import Optional
 
 from app.services.bedrock_client import GuardrailedBedrockClient
-from app.services.ontology_service import OntologyService
-from app.utils import fuzzy_score
 from app.utils.json_utils import parse_json_content
 
 load_dotenv()
@@ -18,48 +16,44 @@ class BedrockModelService:
         self.model_id = os.getenv('INVOKE_MODEL_ID')
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
 
-
     def extract_dish_name(self, description: str) -> dict:
         prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO (hoặc ăn/uống KÈM), và nguyên liệu cần LOẠI TRỪ.
 
-QUY TẮC QUAN TRỌNG:
-1. dish_name: Tên món ăn chính người dùng muốn nấu/gọi
-2. ingredients: Nguyên liệu THÊM VÀO món ăn, hoặc đồ ăn/uống KÈM THEO (như "ăn kèm", "uống kèm", "chấm với", "vắt vào", "rưới lên")
-3. excluded_ingredients: Nguyên liệu cần LOẠI BỎ (dị ứng, không thích, yêu cầu "bỏ", "không có")
+                    QUY TẮC QUAN TRỌNG:
+                    1. dish_name: Tên món ăn chính người dùng muốn nấu/gọi
+                    2. ingredients: Nguyên liệu THÊM VÀO món ăn, hoặc đồ ăn/uống KÈM THEO (như "ăn kèm", "uống kèm", "chấm với", "vắt vào", "rưới lên")
+                    3. excluded_ingredients: Nguyên liệu cần LOẠI BỎ (dị ứng, không thích, yêu cầu "bỏ", "không có")
 
-Ví dụ:
-- "Tôi muốn ăn bún bò Huế với trứng cút" 
-→ {{"dish_name": "Bún bò Huế", "ingredients": [{{"name": "Trứng cút"}}], "excluded_ingredients": []}}
+                    Ví dụ:
+                    - "Tôi muốn ăn bún bò Huế với trứng cút" 
+                    → {{"dish_name": "Bún bò Huế", "ingredients": [{{"name": "Trứng cút"}}], "excluded_ingredients": []}}
 
-- "Hướng dẫn nấu món canh cua với nước ép cam uống kèm"
-→ {{"dish_name": "Canh cua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
+                    - "Hướng dẫn nấu món canh cua chua với cam vắt vào"
+                    → {{"dish_name": "Canh cua chua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
 
-- "Hướng dẫn nấu món canh cua chua với cam vắt vào"
-→ {{"dish_name": "Canh cua chua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
+                    - "Công thức món sầu riêng ăn kèm với rượu"
+                    → {{"dish_name": NULL, "ingredients": [{{"name": "Rượu", "Sầu riêng"}}], "excluded_ingredients": []}}
 
-- "Công thức món sầu riêng ăn kèm với rượu"
-→ {{"dish_name": "Sầu riêng", "ingredients": [{{"name": "Rượu"}}], "excluded_ingredients": []}}
+                    - "Làm món trứng chiên ăn kèm sữa đậu nành cho bữa sáng"
+                    → {{"dish_name": "Trứng chiên", "ingredients": [{{"name": "Sữa đậu nành"}}], "excluded_ingredients": []}}
 
-- "Làm món trứng chiên ăn kèm sữa đậu nành cho bữa sáng"
-→ {{"dish_name": "Trứng chiên", "ingredients": [{{"name": "Sữa đậu nành"}}], "excluded_ingredients": []}}
+                    - "Nấu phở bò"
+                    → {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": []}}
 
-- "Nấu phở bò"
-→ {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": []}}
+                    - "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
+                    → {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": [{{"name": "Đậu phộng", "reason": "dị ứng"}}, {{"name": "Hành lá", "reason": "người dùng không muốn"}}]}}
 
-- "Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
-→ {{"dish_name": "Phở bò", "ingredients": [], "excluded_ingredients": [{{"name": "Đậu phộng", "reason": "dị ứng"}}, {{"name": "Hành lá", "reason": "người dùng không muốn"}}]}}
+                    - "Cho tôi món phở chay, bỏ hành lá và ngò rí"
+                    → {{"dish_name": "Phở chay", "ingredients": [], "excluded_ingredients": [{{"name": "Hành lá"}}, {{"name": "Ngò rí"}}]}}
 
-- "Cho tôi món phở chay, bỏ hành lá và ngò rí"
-→ {{"dish_name": "Phở chay", "ingredients": [], "excluded_ingredients": [{{"name": "Hành lá"}}, {{"name": "Ngò rí"}}]}}
+                    Mô tả: "{description}"
 
-Mô tả: "{description}"
-
-Trả về JSON (chỉ JSON, không giải thích):
-{{
-    "dish_name": "tên món chính",
-    "ingredients": [{{"name": "nguyên liệu thêm/ăn kèm/uống kèm", "quantity": "", "unit": ""}}],
-    "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
-}}"""
+                    Trả về JSON (chỉ JSON, không giải thích):
+                    {{
+                        "dish_name": "tên món ăn chính",
+                        "ingredients": [{{"name": "nguyên liệu thêm/ăn kèm/uống kèm", "quantity": "", "unit": ""}}],
+                        "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
+                    }}"""
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
@@ -136,21 +130,18 @@ Trả về JSON (chỉ JSON, không giải thích):
     
 
 VISION_SYSTEM_PROMPT = (
-    "Bạn là trợ lý ẩm thực chuyên trích xuất thông tin món ăn từ hình ảnh.\n"
-    "Chỉ trả về DUY NHẤT một JSON hợp lệ với cấu trúc: {\"dish_name\": <string|null>, \"ingredients\": [{\"name\": <string>, \"quantity\": \"\", \"unit\": \"\"}]}.\n"
-    "Phân loại ảnh thành một trong ba trường hợp: none | ingredient | dish và áp dụng quy tắc sau:\n"
-    "- none: dish_name = null, ingredients = []\n"
-    "- ingredient: dish_name = null, ingredients liệt kê từng nguyên liệu nhận diện được\n"
-    "- dish: dish_name bắt buộc, liệt kê các ingredients chính\n"
+    "Bạn là trợ lý ẩm thực chuyên trích xuất thông tin món ăn từ hình ảnh. "
+    "Chỉ trả về DUY NHẤT một JSON hợp lệ với cấu trúc: {\"dish_name\": <string|null>, \"ingredients\": [{\"name\": <string>, \"quantity\": \"\", \"unit\": \"\"}]}. "
+    "Phân loại ảnh thành một trong ba trường hợp: none | ingredient | dish và áp dụng quy tắc sau: "
+    "- none: dish_name = null, ingredients = [] "
+    "- ingredient: dish_name = null, ingredients liệt kê từng nguyên liệu nhận diện được "
+    "- dish: dish_name bắt buộc, liệt kê các ingredients chính "
     "Luôn dùng tiếng Việt cho tên nguyên liệu. quantity và unit là chuỗi; để chuỗi rỗng nếu không xác định được."
 )
 
 
 def _build_vision_request(description: str, image_b64: str, image_mime: str) -> dict:
-    prompt = (
-        "Phân tích ảnh và trích xuất JSON theo hướng dẫn.\n"
-        "Không giải thích, không thêm văn bản ngoài JSON.\n"
-    )
+    prompt = "Phân tích ảnh và trích xuất JSON theo hướng dẫn. Không giải thích, không thêm văn bản ngoài JSON."
     if description:
         prompt += f'\nMô tả bổ sung: """{description}"""'
 

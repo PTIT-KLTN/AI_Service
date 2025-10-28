@@ -1,6 +1,3 @@
-"""
-String utility functions for text normalization and comparison.
-"""
 import unicodedata
 from difflib import SequenceMatcher
 from typing import Optional
