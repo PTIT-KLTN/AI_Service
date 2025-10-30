@@ -7,9 +7,10 @@ from app.services.bedrock_kb_service import BedrockKBService
 from app.services.validation_service import ValidationService
 from app.services.ontology_service import OntologyService
 from app.services.unit_converter_service import UnitConverterService 
-from app.utils import fuzzy_score, tokenize
 from app.services.conflict_service import ConflictDetectionService
-
+from app.services.ingredient_resolver import IngredientResolver
+from app.services.suggestion_service import SuggestionService
+from app.services.s3_image_service import S3ImageService
 load_dotenv()
 
 class ShoppingCartPipeline:
@@ -20,27 +21,81 @@ class ShoppingCartPipeline:
         self.validator = ValidationService()
         self.ontology = OntologyService()
         self.conflicts = ConflictDetectionService()
+        self.s3_service = S3ImageService()
+        
+        self.ingredient_resolver = IngredientResolver(self.ontology)
+        self.suggestion_service = SuggestionService(self.ontology, self.converter, self.validator)
 
 
     def process(self, user_input: str) -> dict:
         # Extract dish name + extra ingredients
         extracted = self.extractor.extract_dish_name(user_input)
-        # print(f"Extracted from text: {extracted}")
         return self._build_response(extracted, user_input)
 
 
-    def process_image(self, image_b64: str, description: str = "", image_mime: str = "image/png") -> dict:
-        extracted = self.extractor.extract_dish_from_image(image_b64, description, image_mime)
+    def process_image(self, s3_url: str, description: str = "") -> dict:
+        """
+        Process image từ S3 URL
+        
+        Args:
+            s3_url: S3 URL của ảnh (https://bucket.s3.region.amazonaws.com/key hoặc key only)
+            description: Mô tả bổ sung (optional)
+            
+        Returns:
+            Response dict giống như process text
+        """
+        # Download image từ S3
+        image_data = self.s3_service.download_image_as_base64(s3_url)
+        
+        if not image_data:
+            return {
+                'status': 'error',
+                'error': 'Không thể tải ảnh từ S3',
+                'error_type': 'image_download_failed',
+                'dish': {'name': ''},
+                'cart': None,
+                'suggestions': [],
+                'similar_dishes': [],
+                'warnings': [],
+                'insights': [],
+                'guardrail': None,
+            }
+        
+        # Extract từ image
+        extracted = self.extractor.extract_dish_from_image(
+            image_data=image_data['data'],
+            description=description,
+            image_mime=image_data['mime_type']
+        )
+        
         return self._build_response(extracted)
 
 
     def _build_response(self, extracted: dict, user_query: str = "") -> dict:
 
         if not extracted:
-            return {'status': 'error', 'error': 'Không có dữ liệu trích xuất.'}
+            return {
+                'status': 'error',
+                'error': 'Không có dữ liệu trích xuất.',
+                'error_type': 'extraction_failed',
+                'dish': {'name': ''},
+                'cart': None,
+                'suggestions': [],
+                'similar_dishes': [],
+                'warnings': [],
+                'insights': [],
+                'guardrail': None,
+            }
 
         guardrail_info = extracted.get('guardrail')
         warnings = self._normalize_warnings(extracted.get('warnings'))
+        
+        # Check if request was blocked by guardrails
+        is_guardrail_blocked = (
+            guardrail_info and 
+            guardrail_info.get('action') in ['block', 'blocked'] and
+            guardrail_info.get('triggered') is True
+        )
         
         # Add guardrails messages
         guardrail_messages = extracted.get('guardrail_messages')
@@ -63,31 +118,66 @@ class ShoppingCartPipeline:
         excluded_ingredients = extracted.get('excluded_ingredients', [])
 
         if not dish_name:
-            status = 'guardrail_blocked' if guardrail_info and guardrail_info.get('action') != 'allow' else 'error'
-            response_text = extracted.get('response')
-            payload = {
-                'status': status,
-                'dish': {'name': None},
-                'warnings': self._unique_warnings(warnings),
-                'response': response_text,
-                'guardrail': guardrail_info,
-            }
-            if status == 'error':
-                payload['error'] = 'Không tìm thấy tên món ăn'
-                payload.setdefault('response', 'Không tìm thấy tên món ăn')
-            return payload
-        
-        # Get recipe
-        recipe = self._get_recipe(dish_name)
-        if not recipe.get('ingredients'):
-            if not dish_name:
+            # Case 1: Guardrail blocked
+            if is_guardrail_blocked:
                 return {
-                'status': 'error',
-                'error': f'Không tìm thấy công thức cho "{dish_name}"',
-                'warnings': self._unique_warnings(warnings),
-            }
+                    'status': 'guardrail_blocked',
+                    'error': 'Nội dung vi phạm chính sách an toàn',
+                    'error_type': 'guardrail_violation',
+                    'dish': {'name': ''},
+                    'cart': None,
+                    'suggestions': [],
+                    'similar_dishes': [],
+                    'warnings': self._unique_warnings(warnings),
+                    'insights': [],
+                    'guardrail': guardrail_info,
+                }
+            
+            # Case 2: No dish but has ingredients → Process ingredients only
+            elif extra_ingredients:
+                # Add warning that no dish was found
+                warnings.append({
+                    'message': 'Không tìm thấy tên món, chỉ xử lý danh sách nguyên liệu',
+                    'severity': 'info',
+                    'source': 'system',
+                    'details': {}
+                })
+                # Skip to processing extra ingredients (set recipe to empty)
+                recipe = {'ingredients': []}
+                recipe_ing = []
+            
+            # Case 3: No dish and no ingredients → Error
+            else:
+                return {
+                    'status': 'error',
+                    'error': 'Không tìm thấy tên món ăn trong yêu cầu',
+                    'error_type': 'dish_not_found',
+                    'dish': {'name': ''},
+                    'cart': None,
+                    'suggestions': [],
+                    'similar_dishes': [],
+                    'warnings': self._unique_warnings(warnings),
+                    'insights': [],
+                    'guardrail': guardrail_info,
+                }
+        else:
+            # Get recipe when dish_name exists
+            recipe = self._get_recipe(dish_name)
+            if not recipe.get('ingredients'):
+                return {
+                    'status': 'error',
+                    'error': f'Không tìm thấy công thức cho món "{dish_name}"',
+                    'error_type': 'recipe_not_found',
+                    'dish': {'name': dish_name},
+                    'cart': None,
+                    'suggestions': [],
+                    'similar_dishes': [],
+                    'warnings': self._unique_warnings(warnings),
+                    'insights': [],
+                    'guardrail': guardrail_info,
+                }
+            recipe_ing = self._normalize_recipe_items(recipe.get('ingredients', []))
         
-        recipe_ing = self._normalize_recipe_items(recipe.get('ingredients', []))
         extra_norm = self._normalize_extra(extra_ingredients)
         
         # Filter out excluded ingredients
@@ -97,19 +187,29 @@ class ShoppingCartPipeline:
         # Merge: công thức + nguyên liệu thêm
         all_ingredients = recipe_ing + [it for it in extra_norm if it.get('ingredient_id')]
         if not all_ingredients:
-            return {'error': 'Không có nguyên liệu hợp lệ'}
+            return {
+                'status': 'error',
+                'error': 'Không có nguyên liệu hợp lệ sau khi xử lý',
+                'error_type': 'no_valid_ingredients',
+                'dish': {'name': dish_name or ''},
+                'cart': None,
+                'suggestions': [],
+                'similar_dishes': [],
+                'warnings': self._unique_warnings(warnings),
+                'insights': [],
+                'guardrail': guardrail_info,
+            }
         
         # Convert units
         cart_items = self.converter.normalize_ingredients(all_ingredients)
         
         # Add category
         for item in cart_items:
-            # print(item)
             ing_info = self.ontology.get_ingredient(item['ingredient_id'])
             item['category'] = ing_info.get('category', 'other') if ing_info else 'other'
         
         # Get suggestions
-        suggestions = self._get_suggestions([item['ingredient_id'] for item in cart_items], dish_name)
+        suggestions = self._get_suggestions([item['ingredient_id'] for item in cart_items], dish_name or '')
         
         # Similar dishes
         similar = self.ontology.search_similar_dishes(
@@ -136,7 +236,7 @@ class ShoppingCartPipeline:
                 })
         
         # Check conflicts
-        conflict_results = self.conflicts.check_conflicts(dish_name, conflict_ingredients)
+        conflict_results = self.conflicts.check_conflicts(dish_name or '', conflict_ingredients)
         conflict_warnings = [
             {
                 'message': conflict.get('message', ''),
@@ -147,11 +247,11 @@ class ShoppingCartPipeline:
             for conflict in conflict_results
         ]
         warnings.extend(conflict_warnings)
-        insights = self.conflicts.build_explanations(dish_name, conflict_results)
+        insights = self.conflicts.build_explanations(dish_name or '', conflict_results)
         
         # ===== Contextual Grounding  =====
         assistant_text = extracted.get('response') or ""
-        if assistant_text and recipe_ing:
+        if assistant_text and recipe_ing and dish_name:
             # Build nguồn từ RAG 
             src_lines = []
             for it in recipe_ing:
@@ -184,10 +284,12 @@ class ShoppingCartPipeline:
 
         return {
             'status': 'success',
+            'error': None,
+            'error_type': None,
             'dish': {
-                'name': dish_name,
-                'prep_time': recipe.get('prep_time'),
-                'servings': recipe.get('servings')
+                'name': dish_name or '',
+                'prep_time': recipe.get('prep_time') if dish_name else None,
+                'servings': recipe.get('servings') if dish_name else None
             },
             'cart': {
                 'total_items': len(cart_items),
@@ -197,7 +299,6 @@ class ShoppingCartPipeline:
             'similar_dishes': similar[:3],
             'warnings': self._unique_warnings(warnings),
             'insights': insights,
-            'assistant_response': assistant_text, 
             'guardrail': guardrail_info,
         }
 
@@ -259,17 +360,11 @@ class ShoppingCartPipeline:
         return unique
 
     def _get_recipe(self, dish_name: str) -> dict:
-        """Get recipe từ RAG hoặc local KB"""
-        # print(f"Fetching RAG recipe for dish: {dish_name}")
+        """Get recipe từ RAG KB"""
         recipe = self.kb_service.get_dish_recipe(dish_name)
-        # print(f"RAG recipe for {dish_name}: {recipe}")
         if recipe.get('ingredients'):
-            print("Recipe found in RAG KB")
             return recipe
         
-        # print("Falling back to local ontology for recipe")
-        # local = self.ontology.get_dish_by_name(dish_name)
-        # return local if local else {'ingredients': []}
         return {'ingredients': []}
     
     def _normalize_extra(self, extra_ingredients: list) -> list:
@@ -289,11 +384,19 @@ class ShoppingCartPipeline:
             matched_id = self._resolve_name_to_ingredient_id(name)
             if matched_id:
                 ing_data = self.ontology.ingredients.get(matched_id, {})
+                
+                # Ensure quantity is always string
+                qty = item.get('quantity', '')
+                if isinstance(qty, (int, float)):
+                    qty = str(qty)
+                elif not isinstance(qty, str):
+                    qty = ''
+                
                 normalized.append({
                     'ingredient_id': matched_id,
                     'name_vi': ing_data.get('name_vi', name),
-                    'quantity': item.get('quantity', ''),
-                    'unit': item.get('unit', '')
+                    'quantity': qty,
+                    'unit': str(item.get('unit', ''))
                 })
         
         return normalized
@@ -324,96 +427,12 @@ class ShoppingCartPipeline:
         return filtered
     
     def _get_suggestions(self, current_ids: list, dish_name: str = "") -> list:
-        allowed_cats = self._allowed_categories_for_dish(dish_name)
-        ban_ids = self._build_exclusion_set(current_ids)
-
-        raw = self.validator.suggest_ingredients(
-            seed_ids=current_ids,
-            allowed_categories=allowed_cats,
-            ban_ids=ban_ids,
-            top_k=5,
-            ingredients=self.ontology.ingredients
-        )
-
-        suggestions = []
-        for sug in raw:
-            ing = self.ontology.ingredients.get(sug['id'])
-            if not ing:
-                continue
-
-            suggestion_item = {
-                'ingredient_id': sug['id'],
-                'name_vi': ing.get('name_vi', ''),
-                'quantity': '',
-                'unit': '',
-                'score': sug['score'],
-                'reason': 'Phù hợp với món & chưa có trong giỏ',
-            }
-            converted = self.converter.normalize_ingredients([suggestion_item])
-            if converted:
-                suggestions.append(converted[0])
-
-        return suggestions
+        """Get ingredient suggestions using SuggestionService."""
+        return self.suggestion_service.get_suggestions(current_ids, dish_name)
     
     def _resolve_name_to_ingredient_id(self, name: str):
-        if not name:
-            return None
-
-        THRESHOLD_A = 0.70  # ngưỡng cho name_vi
-        THRESHOLD_B = 0.65  # ngưỡng cho synonyms 
-        q_tokens = set(tokenize(name))
-
-        ing_dict = getattr(self.ontology, 'ingredients', {}) or {}
-
-        best_id = None
-        best_score = -1.0
-        best_extras = 10**9
-        best_len = 10**9
-
-        for ing_id, ing in ing_dict.items():
-            cand = ing.get('name_vi') or ''
-            if not cand:
-                continue
-            sc = fuzzy_score(name, cand)
-            extras = len(set(tokenize(cand)) - q_tokens)  # ít từ dư hơn thì tốt hơn
-            clen = len(cand)
-
-            if (sc > best_score) or (sc == best_score and (extras < best_extras or (extras == best_extras and clen < best_len))):
-                best_id, best_score, best_extras, best_len = ing_id, sc, extras, clen
-
-        if best_score >= THRESHOLD_A:
-            return best_id
-
-        # ---------- Stage B: xét synonyms nếu Stage A không đủ ----------
-        best_id = None
-        best_score = -1.0
-        best_extras = 10**9
-        best_len = 10**9
-
-        for ing_id, ing in ing_dict.items():
-            syns = [s for s in ing.get('synonyms', []) if s]
-            if not syns:
-                continue
-
-            # lấy synonym tốt nhất cho ingredient này
-            local_best_sc = -1.0
-            local_best_extras = 10**9
-            local_best_len = 10**9
-            for s in syns:
-                sc = fuzzy_score(name, s)
-                extras = len(set(tokenize(s)) - q_tokens)
-                slen = len(s)
-                if (sc > local_best_sc) or (sc == local_best_sc and (extras < local_best_extras or (extras == local_best_extras and slen < local_best_len))):
-                    local_best_sc, local_best_extras, local_best_len = sc, extras, slen
-
-            if (local_best_sc > best_score) or (local_best_sc == best_score and (local_best_extras < best_extras or (local_best_extras == best_extras and local_best_len < best_len))):
-                best_id, best_score, best_extras, best_len = ing_id, local_best_sc, local_best_extras, local_best_len
-
-        if best_score >= THRESHOLD_B:
-            return best_id
-
-        return None
-
+        """Delegate to IngredientResolver service."""
+        return self.ingredient_resolver.resolve_name_to_id(name)
 
     def _normalize_recipe_items(self, items: list) -> list:
         if not items:
@@ -421,57 +440,27 @@ class ShoppingCartPipeline:
         normalized = []
         for it in items:
             nm = it.get('name_vi') or it.get('name') or ''
+            
+            # Skip if no valid name
+            if not nm or not str(nm).strip():
+                continue
+            
+            nm = str(nm).strip()
             ing_id = self._resolve_name_to_ingredient_id(nm)
             if not ing_id:
                 continue
+            
+            # Ensure quantity is always string
+            qty = it.get('quantity', '')
+            if isinstance(qty, (int, float)):
+                qty = str(qty)
+            elif not isinstance(qty, str):
+                qty = ''
+            
             normalized.append({
                 'ingredient_id': ing_id,
                 'name_vi': nm, 
-                'quantity': it.get('quantity', ''),
-                'unit': it.get('unit', '')
+                'quantity': qty,
+                'unit': str(it.get('unit', ''))
             })
         return normalized
-
-    
-    def _build_exclusion_set(self, current_ids: list) -> set:
-        exclude = set(current_ids)
-        # map tên -> id nhanh
-        name_to_id = {}
-        for iid, ing in getattr(self.ontology, 'ingredients', {}).items():
-            nm = (ing.get('name_vi') or '').strip().lower()
-            if nm:
-                name_to_id[nm] = iid
-            for syn in ing.get('synonyms', []):
-                name_to_id[str(syn).strip().lower()] = iid
-
-        # thêm các id suy ra từ tên/synonyms của các id hiện có
-        for iid in list(current_ids):
-            ing = self.ontology.ingredients.get(iid, {})
-            names = [ing.get('name_vi', '')] + ing.get('synonyms', [])
-            for n in names:
-                mid = name_to_id.get(str(n).strip().lower())
-                if mid:
-                    exclude.add(mid)
-        return exclude
-    
-    def _allowed_categories_for_dish(self, dish_name: str) -> set:
-        cats = set()
-        dish = self.ontology.get_dish_by_name(dish_name) or {}
-        
-        # Lấy category từ ingredient knowledge base
-        for it in dish.get('ingredients', []):
-            ing_id = it.get('ingredient_id')
-            if ing_id:
-                ing_data = self.ontology.get_ingredient(ing_id)
-                if ing_data:
-                    cat = ing_data.get('category')
-                    if cat:
-                        cats.add(cat)
-        
-        if cats:
-            return cats
-
-        return {
-            'seasonings','aromatics','sweeteners','fresh_meat','eggs','beverages',
-            'vegetables','herbs'
-        }

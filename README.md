@@ -2,6 +2,14 @@
 
 Một hệ thống AI tiên tiến sử dụng AWS Bedrock để xử lý và gợi ý giỏ hàng thông minh dựa trên món ăn Việt Nam. Hệ thống có khả năng hiểu ngôn ngữ tự nhiên, trích xuất tên món ăn, tìm kiếm công thức và gợi ý nguyên liệu phù hợp, đồng thời tích hợp các lớp bảo vệ an toàn nội dung toàn diện.
 
+## 🔌 Communication Architecture
+
+**AI Service sử dụng RabbitMQ làm message broker để giao tiếp với Main Service.**
+
+- **Pattern**: RabbitMQ RPC (Request-Reply) với correlation_id
+- **Queue**: `recipe_analysis_request` (AI Service consumer)
+- **Documentation**: Xem [RABBITMQ_GUIDE.md](RABBITMQ_GUIDE.md) để biết chi tiết
+
 ## 🌟 Tính năng chính
 
 ### 🎯 Xử lý thông minh
@@ -49,6 +57,10 @@ Hệ thống sử dụng **kiến trúc guardrails 2 lớp** kết hợp AWS Bed
 AI_Service/
 ├── app/
 │   ├── main.py                           # Pipeline xử lý chính (ShoppingCartPipeline)
+│   ├── rabbitmq/
+│   │   ├── config.py                     # RabbitMQ connection configuration
+│   │   ├── consumer.py                   # RPC Server - receives requests
+│   │   └── processor.py                  # Integrates ShoppingCartPipeline with RabbitMQ
 │   ├── services/
 │   │   ├── bedrock_client.py             # Wrapper AWS Bedrock với Guardrails + LLM Safe Completion
 │   │   ├── bedrock_kb_service.py         # Dịch vụ AWS Bedrock Knowledge Base (RAG)
@@ -70,23 +82,28 @@ AI_Service/
 │   │   ├── cooccurrence/                 # Ma trận đồng xuất hiện
 │   │   └── conflict/
 │   │       └── ingredient_conflict.json  # Dữ liệu tương khắc nguyên liệu
+│   ├── schemas.py                        # Pydantic models cho request/response validation
 │   └── scripts/
 │       └── build_cooccurrence.py         # Script xây dựng ma trận co-occurrence
-├── output/                               # Test output files
-├── requirements.txt
+├── run_rabbitmq_worker.py                # 🚀 Main entry point - RabbitMQ worker
+├── test_rabbitmq_client.py               # Test client để simulate Main Service
 ├── test_rag.py                           # Script test pipeline & guardrails
+├── requirements.txt
+├── RABBITMQ_GUIDE.md                     # 📖 RabbitMQ setup & usage guide
 └── README.md
 ```
 
 ## 🛠️ Công nghệ sử dụng
 
 - **Framework**: Python 3.10+
+- **Message Broker**: RabbitMQ (Pika client)
 - **AI Services**: 
   - AWS Bedrock Claude 3 Sonnet (Text & Vision models)
   - AWS Bedrock Claude 3 Haiku (LLM Safe Completion - cost-effective)
   - AWS Bedrock Knowledge Base (RAG)
   - AWS Bedrock Guardrails (Contextual Grounding, Prompt Attack Detection)
 - **SDK**: Boto3 cho AWS integration
+- **Data Validation**: Pydantic 2.5.0
 - **Data Processing**: 
   - Fuzzy matching cho ingredient resolution
   - Tokenization cho Vietnamese text
@@ -101,6 +118,7 @@ AI_Service/
 ### Yêu cầu hệ thống
 
 - Python 3.10+
+- RabbitMQ Server (hoặc Docker)
 - Tài khoản AWS với quyền truy cập Bedrock
 - AWS CLI được cấu hình với credentials phù hợp
 
@@ -124,9 +142,40 @@ source venv/bin/activate  # MacOS/Linux
 pip install -r requirements.txt
 ```
 
-4. Cấu hình biến môi trường
+4. Cài đặt RabbitMQ Server
+
+**Tùy chọn 1: Docker (Khuyến nghị)**
 ```bash
-# Tạo file .env với nội dung:
+docker run -d --name rabbitmq \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  -e RABBITMQ_DEFAULT_USER=admin \
+  -e RABBITMQ_DEFAULT_PASS=admin123 \
+  rabbitmq:3-management
+```
+
+**Tùy chọn 2: Windows (Chocolatey)**
+```powershell
+choco install erlang -y
+choco install rabbitmq -y
+rabbitmq-service start
+```
+
+5. Cấu hình biến môi trường
+
+Tạo file `.env` từ `.env.example`:
+```bash
+cp .env.example .env
+```
+
+Cập nhật file `.env`:
+```bash
+# RabbitMQ Configuration
+RABBITMQ_HOST=localhost
+RABBITMQ_PORT=5672
+RABBITMQ_USERNAME=guest
+RABBITMQ_PASSWORD=guest
+RABBITMQ_VIRTUAL_HOST=/
 
 # AWS Bedrock Configuration
 BEDROCK_KB_ID=your_knowledge_base_id
@@ -139,7 +188,7 @@ BEDROCK_GUARDRAIL_ID=your_guardrail_id
 BEDROCK_GUARDRAIL_VERSION=DRAFT
 BEDROCK_GUARDRAIL_BEHAVIOR=safe-completion  # block | safe-completion | redact
 
-# LLM Safe Completion (NEW)
+# LLM Safe Completion
 ENABLE_LLM_SAFE_COMPLETION=true
 SAFE_COMPLETION_MODEL=anthropic.claude-3-haiku-20240307-v1:0
 
@@ -150,12 +199,124 @@ ENABLE_GUARDRAILS=false  # true để bật guardrails trong dev
 
 ### Chạy ứng dụng
 
-1. **Chạy test pipeline**:
+1. **Khởi động RabbitMQ Worker**:
+```bash
+python run_rabbitmq_worker.py
+```
+
+Output mong đợi:
+```
+================================================================================
+Starting AI Service RabbitMQ Worker
+================================================================================
+RabbitMQ Configuration:
+  Host: localhost:5672
+  Virtual Host: /
+  Request Queue: recipe_analysis_request
+Connected to RabbitMQ at localhost:5672
+Listening on queue: recipe_analysis_request
+AI Service RabbitMQ Consumer started. Waiting for requests...
+```
+
+2. **Test với RabbitMQ Client**:
+```bash
+# Automated tests
+python test_rabbitmq_client.py
+
+# Interactive mode
+python test_rabbitmq_client.py interactive
+```
+
+3. **Test pipeline trực tiếp** (không qua RabbitMQ):
 ```bash
 python test_rag.py
 ```
 
-2. **Import và sử dụng trong code**:
+## 📋 API và Sử dụng
+
+### RabbitMQ Message Format
+
+AI Service nhận và gửi messages qua RabbitMQ theo RPC pattern.
+
+#### Request Message (từ Main Service)
+
+**Queue**: `recipe_analysis_request`
+
+**Properties**:
+- `correlation_id`: Unique UUID để match request/response
+- `reply_to`: Callback queue name để nhận response
+- `content_type`: `application/json`
+
+**Body**:
+```json
+{
+  "user_input": "Tôi muốn ăn phở bò"
+}
+```
+
+#### Response Message (từ AI Service)
+
+**Queue**: `{reply_to}` (callback queue được chỉ định trong request)
+
+**Properties**:
+- `correlation_id`: Same UUID from request
+- `content_type`: `application/json`
+
+**Body - Success**:
+```json
+{
+  "success": true,
+  "result": {
+    "dish": {
+      "name": "Phở bò",
+      "prep_time": "45 phút",
+      "servings": "4 người"
+    },
+    "cart": {
+      "total_items": 12,
+      "items": [
+        {
+          "ingredient_id": "ingre05872",
+          "name_vi": "Sườn bò",
+          "quantity": 1.0,
+          "unit": "kg",
+          "converted_quantity": "1000",
+          "converted_unit": "g",
+          "category": "fresh_meat"
+        }
+      ]
+    },
+    "conflict_warnings": [
+      {
+        "conflicting_item_1": ["Bò"],
+        "conflicting_item_2": ["Phô mai"],
+        "message": "Không nên kết hợp bò với phô mai",
+        "sources": [
+          {
+            "name": "Dinh dưỡng học",
+            "url": "https://example.com/nutrition"
+          }
+        ]
+      }
+    ],
+    "suggestions": [...],
+    "similar_dishes": [...]
+  }
+}
+```
+
+**Body - Error**:
+```json
+{
+  "success": false,
+  "error": "Processing error: ..."
+}
+```
+
+### Pipeline Usage (Direct Python)
+
+Nếu bạn muốn test pipeline trực tiếp (không qua RabbitMQ):
+
 ```python
 from app.main import ShoppingCartPipeline
 
@@ -175,106 +336,6 @@ result = pipeline.process(
 print(result)
 # → Cart có nước mắm được thêm vào (fuzzy matching: "nước mắm chấm kèm" → "Nước mắm")
 ```
-
-## 📋 API và Sử dụng
-
-### Pipeline chính - ShoppingCartPipeline
-
-#### 1. Xử lý văn bản (Text Processing)
-
-```python
-from app.main import ShoppingCartPipeline
-
-pipeline = ShoppingCartPipeline()
-result = pipeline.process(user_input)
-```
-
-**Input Examples**:
-```python
-# Món ăn đơn giản
-"Tôi muốn ăn bún bò Huế"
-
-# Món ăn với nguyên liệu thêm
-"Tôi muốn ăn phở bò với trứng cút và nước mắm chấm kèm"
-
-# Món ăn với nguyên liệu loại trừ
-"Mình dị ứng đậu phộng, gợi ý topping KHÔNG có hành lá cho phở bò"
-
-# Món ăn với cả hai
-"Cho tôi bún bò Huế với trứng cút nhưng bỏ hành lá và ngò rí đi"
-```
-
-**Output Structure**:
-
-```json
-{
-  "status": "success",
-  "dish": {
-    "name": "Phở bò",
-    "prep_time": "45 phút",
-    "servings": "4 người"
-  },
-  "cart": {
-    "total_items": 12,
-    "items": [
-      {
-        "ingredient_id": "ingre05872",
-        "name_vi": "Sườn bò",
-        "quantity": 1.0,
-        "unit": "kg",
-        "converted_quantity": "1000",
-        "converted_unit": "g",
-        "category": "fresh_meat"
-      }
-    ]
-  },
-  "suggestions": [
-    {
-      "ingredient_id": "ingre05232",
-      "name_vi": "Rau cải ngọt",
-      "score": 0.95,
-      "reason": "Phù hợp với món & chưa có trong giỏ"
-    }
-  ],
-  "similar_dishes": [
-    {
-      "dish_id": "dish3327",
-      "dish_name": "Phở sườn bò",
-      "match_ratio": 0.69
-    }
-  ],
-  "warnings": [],
-  "insights": [],
-  "assistant_response": "",
-  "guardrail": {
-    "triggered": false,
-    "action": "allow",
-    "violation_count": 0
-  }
-}
-```
-
-#### 2. Xử lý hình ảnh (Image Processing)
-
-```python
-import base64
-
-# Đọc ảnh và encode base64
-with open("mon_an.jpg", "rb") as f:
-    image_b64 = base64.b64encode(f.read()).decode('utf-8')
-
-result = pipeline.process_image(
-    image_b64=image_b64,
-    description="Món này là gì?",  # Optional
-    image_mime="image/jpeg"
-)
-```
-
-### Status Codes
-
-- **`success`**: Xử lý thành công
-- **`error`**: Lỗi trong quá trình xử lý (không tìm thấy món, không parse được JSON)
-- **`guardrail_blocked`**: Yêu cầu bị chặn bởi guardrails (có LLM safe completion nếu enabled)
 
 ## 🎯 Các Service Components
 
@@ -322,9 +383,28 @@ result = pipeline.process_image(
 
 ## 🧪 Testing
 
-### Chạy test toàn diện
+### 1. Test RabbitMQ Integration (Recommended)
 
-Script `test_rag.py` bao gồm các test cases:
+Test communication với Main Service qua RabbitMQ:
+
+```bash
+# Automated tests
+python test_rabbitmq_client.py
+```
+
+Tests include:
+- ✅ Basic recipe request
+- ✅ Conflict detection
+- ✅ Invalid request handling
+
+```bash
+# Interactive mode (manual testing)
+python test_rabbitmq_client.py interactive
+```
+
+### 2. Test Pipeline Directly
+
+Test pipeline trực tiếp (không qua RabbitMQ):
 
 ```bash
 python test_rag.py
@@ -361,6 +441,13 @@ Kết quả test được lưu trong `output/`:
 ## 🔧 Cấu hình
 
 ### Biến môi trường
+
+#### RabbitMQ
+- **`RABBITMQ_HOST`**: Hostname của RabbitMQ server (mặc định: `localhost`)
+- **`RABBITMQ_PORT`**: Port của RabbitMQ (mặc định: `5672`)
+- **`RABBITMQ_USERNAME`**: Username để kết nối (mặc định: `guest`)
+- **`RABBITMQ_PASSWORD`**: Password để kết nối (mặc định: `guest`)
+- **`RABBITMQ_VIRTUAL_HOST`**: Virtual host (mặc định: `/`)
 
 #### AWS Bedrock
 - **`BEDROCK_KB_ID`**: ID của Knowledge Base trên AWS Bedrock
@@ -504,6 +591,40 @@ def _generate_aws_blocked_completion(self, user_input: str) -> str:
 
 ## 🐛 Troubleshooting
 
+### Issue: RabbitMQ Connection Refused
+
+**Nguyên nhân**: RabbitMQ server không chạy
+
+**Giải pháp**:
+```bash
+# Docker
+docker ps | grep rabbitmq
+docker start rabbitmq
+
+# Windows service
+rabbitmq-service status
+rabbitmq-service start
+```
+
+### Issue: RabbitMQ Authentication Failed
+
+**Nguyên nhân**: Username/password không đúng
+
+**Giải pháp**:
+- Kiểm tra `.env` file
+- Mặc định: `guest/guest` (chỉ work với localhost)
+- Docker: Sử dụng credentials bạn đã set trong docker run
+
+### Issue: Worker không nhận được messages
+
+**Nguyên nhân**: Queue name không match hoặc Main Service chưa connect
+
+**Giải pháp**:
+- Check RabbitMQ Management UI: http://localhost:15672
+- Verify queue `recipe_analysis_request` tồn tại
+- Verify worker đang consume từ queue
+- Check Main Service có publish messages không
+
 ### Issue: Excluded ingredients vẫn xuất hiện trong cart
 
 **Nguyên nhân**: LLM không extract được `excluded_ingredients` hoặc fuzzy matching không match
@@ -558,6 +679,11 @@ matched = ontology.search_ingredient("nước mắm chấm kèm")
 - [Knowledge Bases for Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)
 - [Claude 3 Model Card](https://www.anthropic.com/claude)
 
+### RabbitMQ Documentation
+- [RabbitMQ Official Documentation](https://www.rabbitmq.com/documentation.html)
+- [RabbitMQ RPC Tutorial](https://www.rabbitmq.com/tutorials/tutorial-six-python.html)
+- [Pika Documentation](https://pika.readthedocs.io/)
+
 ### Vietnamese Food Safety
 - [VnExpress Sức khỏe](https://vnexpress.net/suc-khoe)
 - [Bộ Y tế Việt Nam](https://moh.gov.vn/)
@@ -580,6 +706,8 @@ MIT License
 ---
 
 **Latest Updates (Oct 2025)**:
+- ✅ RabbitMQ integration với RPC pattern
+- ✅ Removed REST API (chỉ sử dụng RabbitMQ)
 - ✅ Excluded ingredients filtering với fuzzy matching
 - ✅ Extra ingredients fuzzy matching (upgrade từ exact match)
 - ✅ LLM Safe Completion với Claude 3 Haiku

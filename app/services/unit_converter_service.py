@@ -33,7 +33,7 @@ class UnitConverterService:
             'muong ca phe': 5,
             'tsp': 5,
             'teaspoon': 5,
-            'muỗng': 15,  # Mặc định = muỗng canh
+            'muỗng': 15,
             'muong': 15,
             'ly': 200,
             'cốc': 240,
@@ -75,10 +75,21 @@ class UnitConverterService:
         result = []
         for item in ingredients:
             converted = self._convert_single(item)
+            
+            quantity_str = converted['quantity']
+            unit_str = converted['unit']
+            
+            if quantity_str and unit_str:
+                combined = f"{quantity_str} {unit_str}"
+            elif quantity_str:
+                combined = quantity_str
+            else:
+                combined = unit_str or ''
+            
             result.append({
                 **item,
-                'converted_quantity': converted['quantity'],
-                'converted_unit': converted['unit']
+                'quantity': combined,
+                'unit': unit_str
             })
         
         return result

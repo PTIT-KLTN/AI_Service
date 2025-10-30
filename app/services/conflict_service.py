@@ -105,16 +105,12 @@ class ConflictDetectionService:
                         seen_ids.add(repl['ingredient_id'])
                         unique_replacements.append(repl)
                 
-                all_conflicting_items = matched_main + matched_conflicts
-                
                 results.append({
                     "id": entry.get("id"),
                     "severity": entry.get("severity", "medium"),
                     "message": entry.get("reason", ""),
-                    "advice": entry.get("advice", ""),
-                    "conflicting_items": all_conflicting_items,
-                    "main_ingredients": matched_main,
-                    "conflict_ingredients": matched_conflicts,
+                    "conflicting_item_1": matched_main,
+                    "conflicting_item_2": matched_conflicts,
                     "sources": entry.get("sources", []),
                     "replacement_suggestions": unique_replacements[:3],
                     "conflict_type": "ingredient_ingredient"
