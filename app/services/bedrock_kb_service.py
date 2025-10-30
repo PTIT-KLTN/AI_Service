@@ -1,10 +1,9 @@
 import boto3
 import os
 import json
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from dotenv import load_dotenv
 
-from app.utils.json_utils import read_json_from_s3_uri
 from app.utils.string_utils import norm_text
 from app.utils.number_utils import parse_number
 
@@ -16,19 +15,6 @@ class BedrockKBService:
         self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
         self.kb_id = os.getenv('BEDROCK_KB_ID')
         self.model_id = os.getenv('MODEL_ID')
-
-    @staticmethod
-    def _extract_first_uri(resp: Dict[str, Any]) -> Optional[str]:
-        for c in resp.get('citations', []):
-            for ref in c.get('retrievedReferences', []):
-                md = ref.get('metadata') or {}
-                uri = (
-                    md.get('x-amz-bedrock-kb-source-uri')
-                    or (((ref.get('location') or {}).get('s3Location') or {}).get('uri'))
-                )
-                if uri:
-                    return uri
-        return None
 
     def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
         candidates: List[Any] = []
@@ -73,10 +59,29 @@ class BedrockKBService:
             f"Tìm đúng món: {dish_name}\n"
             "Trả về JSON với dạng:\n"
             "{ \"dish_name\": \"...\", \"ingredients\": [{\"name\":\"...\",\"quantity\":...,\"unit\":\"...\"}] }\n"
-            "Bắt buộc kèm citations nguồn để tôi lấy URI file gốc."
         )
 
         try:
+            # Step 1: Retrieve top 40 results
+            retrieve_resp = self.bedrock_agent.retrieve(
+                knowledgeBaseId=self.kb_id,
+                retrievalQuery={'text': query},
+                retrievalConfiguration={
+                    'vectorSearchConfiguration': {
+                        'overrideSearchType': 'SEMANTIC',
+                        'numberOfResults': 40
+                    }
+                }
+            )
+            
+            # Step 2: Get top 12 chunks based on score
+            results = retrieve_resp.get('retrievalResults', [])
+            top_12_results = sorted(results, key=lambda x: x.get('score', 0), reverse=True)[:12]
+            
+            # Step 3: Generate answer using only top 12 chunks
+            if not top_12_results:
+                return {'dish_name': dish_name, 'ingredients': []}
+            
             resp = self.bedrock_agent.retrieve_and_generate(
                 input={'text': query},
                 retrieveAndGenerateConfiguration={
@@ -87,27 +92,20 @@ class BedrockKBService:
                         'retrievalConfiguration': {
                             'vectorSearchConfiguration': {
                                 'overrideSearchType': 'SEMANTIC',  
-                                'numberOfResults': 36
+                                'numberOfResults': 12
                             }
                         },
                     },
                 },
             )
 
-            first_uri = self._extract_first_uri(resp)
-            
-            if first_uri:
-                try:
-                    j = read_json_from_s3_uri(first_uri)
-                    title = j.get('dish_name') or j.get('name_vi') or j.get('name') or dish_name
-                    ings = self._extract_ingredients_from_json(j)
-                    if ings:
-                        return {'dish_name': title, 'ingredients': ings}
-                except Exception:
-                    pass  
-
+            # Parse response directly from KB (no URI extraction needed - 1 dish = 1 JSON, no chunking)
             answer = resp.get('output', {}).get('text', '').strip()
+            
+            if not answer:
+                return {'dish_name': dish_name, 'ingredients': []}
 
+            # Remove markdown code blocks if present
             if '```' in answer:
                 buf, in_code = [], False
                 for line in answer.splitlines():
@@ -117,17 +115,42 @@ class BedrockKBService:
                     if in_code:
                         buf.append(line)
                 answer = "\n".join(buf).strip()
-
+            
+            # Extract JSON from text (LLM may add explanation before/after JSON)
+            json_start = answer.find('{')
+            json_end = answer.rfind('}')
+            
+            if json_start >= 0 and json_end > json_start:
+                answer = answer[json_start:json_end + 1]
+            
             parsed = json.loads(answer) if answer else {}
             if isinstance(parsed, dict) and 'ingredients' in parsed:
                 cleaned = []
-                for it in parsed['ingredients']:
-                    if isinstance(it, dict):
-                        cleaned.append({
-                            'name': it.get('name') or it.get('name_vi') or it.get('name_en'),
-                            'quantity': parse_number(it.get('quantity')),
-                            'unit': it.get('unit')
-                        })
+                for it in parsed.get('ingredients', []):
+                    if not isinstance(it, dict):
+                        continue
+                    
+                    # Extract name from various fields
+                    name = it.get('name') or it.get('name_vi') or it.get('name_en')
+                    
+                    # Skip if no valid name
+                    if not name or not str(name).strip():
+                        continue
+                    
+                    # Parse quantity 
+                    qty_raw = it.get('quantity')
+                    qty_str = ''
+                    if qty_raw is not None:
+                        qty_num = parse_number(qty_raw)
+                        if qty_num is not None:
+                            qty_str = str(qty_num) if isinstance(qty_num, int) else str(float(qty_num)).rstrip('0').rstrip('.')
+                    
+                    cleaned.append({
+                        'name': str(name).strip(),
+                        'quantity': qty_str,
+                        'unit': it.get('unit') or it.get('unit_vi') or it.get('unit_en') or ''
+                    })
+                
                 parsed['ingredients'] = cleaned
                 if not parsed.get('dish_name'):
                     parsed['dish_name'] = dish_name

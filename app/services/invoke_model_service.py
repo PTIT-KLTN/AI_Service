@@ -17,6 +17,18 @@ class BedrockModelService:
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
 
     def extract_dish_name(self, description: str) -> dict:
+        # 🔒 GUARDRAIL CHECK #1: Check raw user input TRƯỚC khi construct prompt
+        raw_input_check = self.bedrock_client.check_raw_input(description)
+        if raw_input_check:
+            # Raw input bị block → return ngay
+            return {
+                'dish_name': None,
+                'ingredients': [],
+                'excluded_ingredients': [],
+                'guardrail': raw_input_check.get('guardrail'),
+                'guardrail_messages': raw_input_check.get('guardrail_messages', [])
+            }
+        
         prompt = f"""Trích xuất tên món ăn CHÍNH, nguyên liệu THÊM VÀO (hoặc ăn/uống KÈM), và nguyên liệu cần LOẠI TRỪ.
 
                     QUY TẮC QUAN TRỌNG:
@@ -94,6 +106,18 @@ class BedrockModelService:
 
         if not image_data:
             return {"dish_name": None, "ingredients": []}
+
+        # 🔒 GUARDRAIL CHECK #1: Check raw description TRƯỚC khi construct prompt
+        if description:
+            raw_input_check = self.bedrock_client.check_raw_input(description)
+            if raw_input_check:
+                return {
+                    'dish_name': None,
+                    'ingredients': [],
+                    'excluded_ingredients': [],
+                    'guardrail': raw_input_check.get('guardrail'),
+                    'guardrail_messages': raw_input_check.get('guardrail_messages', [])
+                }
 
         image_b64 = self._ensure_base64(image_data)
         body = json.dumps(_build_vision_request(description, image_b64, image_mime))
