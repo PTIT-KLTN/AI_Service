@@ -14,15 +14,20 @@ from app.rabbitmq.config import RabbitMQConfig
 from app.rabbitmq.consumer import RecipeAnalysisConsumer
 from app.rabbitmq.processor import RecipeAnalysisProcessor
 
-# Configure logging
+# Configure logging with UTF-8 encoding
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler('rabbitmq_worker.log')
+        logging.FileHandler('rabbitmq_worker.log', encoding='utf-8')
     ]
 )
+
+# Fix console encoding for Windows
+if sys.platform == 'win32':
+    import codecs
+    sys.stdout.reconfigure(encoding='utf-8') if hasattr(sys.stdout, 'reconfigure') else None
 
 logger = logging.getLogger(__name__)
 

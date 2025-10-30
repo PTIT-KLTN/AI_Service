@@ -10,6 +10,7 @@ from app.services.unit_converter_service import UnitConverterService
 from app.services.conflict_service import ConflictDetectionService
 from app.services.ingredient_resolver import IngredientResolver
 from app.services.suggestion_service import SuggestionService
+from app.services.s3_image_service import S3ImageService
 load_dotenv()
 
 class ShoppingCartPipeline:
@@ -20,6 +21,7 @@ class ShoppingCartPipeline:
         self.validator = ValidationService()
         self.ontology = OntologyService()
         self.conflicts = ConflictDetectionService()
+        self.s3_service = S3ImageService()
         
         self.ingredient_resolver = IngredientResolver(self.ontology)
         self.suggestion_service = SuggestionService(self.ontology, self.converter, self.validator)
@@ -31,8 +33,41 @@ class ShoppingCartPipeline:
         return self._build_response(extracted, user_input)
 
 
-    def process_image(self, image_b64: str, description: str = "", image_mime: str = "image/png") -> dict:
-        extracted = self.extractor.extract_dish_from_image(image_b64, description, image_mime)
+    def process_image(self, s3_url: str, description: str = "") -> dict:
+        """
+        Process image từ S3 URL
+        
+        Args:
+            s3_url: S3 URL của ảnh (https://bucket.s3.region.amazonaws.com/key hoặc key only)
+            description: Mô tả bổ sung (optional)
+            
+        Returns:
+            Response dict giống như process text
+        """
+        # Download image từ S3
+        image_data = self.s3_service.download_image_as_base64(s3_url)
+        
+        if not image_data:
+            return {
+                'status': 'error',
+                'error': 'Không thể tải ảnh từ S3',
+                'error_type': 'image_download_failed',
+                'dish': {'name': ''},
+                'cart': None,
+                'suggestions': [],
+                'similar_dishes': [],
+                'warnings': [],
+                'insights': [],
+                'guardrail': None,
+            }
+        
+        # Extract từ image
+        extracted = self.extractor.extract_dish_from_image(
+            image_data=image_data['data'],
+            description=description,
+            image_mime=image_data['mime_type']
+        )
+        
         return self._build_response(extracted)
 
 
