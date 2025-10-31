@@ -14,14 +14,6 @@ from .guardrails import AWSGuardrailHandler, PolicyHandler, SafeCompletionGenera
 
 
 class GuardrailedBedrockClient:
-    """
-    AWS Bedrock client with guardrails support.
-    
-    Flow:
-    1. AWS Guardrails (INPUT) - via AWSGuardrailHandler
-    2. Model invocation
-    3. Custom policies (OUTPUT) - via PolicyHandler
-    """
 
     def __init__(
         self,
@@ -72,16 +64,7 @@ class GuardrailedBedrockClient:
         return config
 
     def check_raw_input(self, user_input: str) -> Optional[Dict[str, Any]]:
-        """
-        Check raw user input BEFORE constructing prompt.
-        This prevents dangerous content from being "diluted" in instruction context.
-        
-        Args:
-            user_input: Raw user input text
-            
-        Returns:
-            None if safe, Dict with guardrail info if blocked
-        """
+
         blocked_response = self.aws_guardrail_handler.apply_input_guardrail(
             prompt_text=user_input,
             guardrail_id=None,
@@ -90,6 +73,7 @@ class GuardrailedBedrockClient:
         
         if blocked_response:
             self.logger.warning(f"Raw input blocked by guardrail: {user_input[:50]}...")
+
             # Extract guardrail info from blocked response
             return {
                 'guardrail': blocked_response.get('guardrail'),
@@ -107,14 +91,7 @@ class GuardrailedBedrockClient:
         guardrail_version: Optional[str] = None,
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        """
-        Invoke model with guardrails support.
-        
-        Flow:
-        1. Apply AWS Guardrail to INPUT (if enabled)
-        2. If passed, invoke model
-        3. Apply custom policies to OUTPUT
-        """
+        """Invoke Bedrock model with guardrails and policies applied."""
         prompt_text = extract_prompt_from_body(body)
         
         blocked_response = self.aws_guardrail_handler.apply_input_guardrail(
@@ -141,17 +118,7 @@ class GuardrailedBedrockClient:
         rag_sources: list,
         grounding_config: dict = None
     ) -> dict:
-        """
-        Apply contextual grounding to check if response is grounded in provided sources.
-        
-        Args:
-            user_query: Original user query
-            rag_sources: List of source documents/context
-            grounding_config: Grounding configuration (threshold, filter, etc.)
-            
-        Returns:
-            Dict with grounding results and actions
-        """
+
         if not grounding_config:
             grounding_config = {
                 'threshold': 0.7,

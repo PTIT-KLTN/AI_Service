@@ -62,26 +62,7 @@ class BedrockKBService:
         )
 
         try:
-            # Step 1: Retrieve top 40 results
-            retrieve_resp = self.bedrock_agent.retrieve(
-                knowledgeBaseId=self.kb_id,
-                retrievalQuery={'text': query},
-                retrievalConfiguration={
-                    'vectorSearchConfiguration': {
-                        'overrideSearchType': 'SEMANTIC',
-                        'numberOfResults': 40
-                    }
-                }
-            )
-            
-            # Step 2: Get top 12 chunks based on score
-            results = retrieve_resp.get('retrievalResults', [])
-            top_12_results = sorted(results, key=lambda x: x.get('score', 0), reverse=True)[:12]
-            
-            # Step 3: Generate answer using only top 12 chunks
-            if not top_12_results:
-                return {'dish_name': dish_name, 'ingredients': []}
-            
+            # Retrieve and generate 
             resp = self.bedrock_agent.retrieve_and_generate(
                 input={'text': query},
                 retrieveAndGenerateConfiguration={
@@ -92,14 +73,14 @@ class BedrockKBService:
                         'retrievalConfiguration': {
                             'vectorSearchConfiguration': {
                                 'overrideSearchType': 'SEMANTIC',  
-                                'numberOfResults': 12
+                                'numberOfResults': 20
                             }
                         },
                     },
                 },
             )
 
-            # Parse response directly from KB (no URI extraction needed - 1 dish = 1 JSON, no chunking)
+            # Parse response 
             answer = resp.get('output', {}).get('text', '').strip()
             
             if not answer:

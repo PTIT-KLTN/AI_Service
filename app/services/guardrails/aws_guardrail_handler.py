@@ -41,13 +41,7 @@ class AWSGuardrailHandler:
         guardrail_id: Optional[str] = None,
         guardrail_version: Optional[str] = None
     ) -> Optional[Dict[str, Any]]:
-        """
-        Apply AWS guardrail to INPUT.
-        
-        Returns:
-            None if guardrail passed
-            Blocked response dict if guardrail blocked
-        """
+
         if not self.should_enable():
             return None
         
@@ -92,13 +86,7 @@ class AWSGuardrailHandler:
             return None
     
     def _is_pii_only_intervention(self, assessments: list) -> bool:
-        """
-        Check if guardrail intervention is ONLY for PII (not dangerous content).
-        
-        Returns:
-            True if only PII detected (safe to allow)
-            False if has other violations (should block)
-        """
+
         if not assessments:
             return False
         
