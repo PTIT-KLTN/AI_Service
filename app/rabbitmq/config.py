@@ -36,7 +36,7 @@ class RabbitMQConfig:
         
         # Worker configuration
         self.worker_concurrency = int(os.getenv("WORKER_CONCURRENCY", "3"))
-        self.process_timeout_sec = int(os.getenv("PROCESS_TIMEOUT_SEC", "30"))
+        self.process_timeout_sec = int(os.getenv("PROCESS_TIMEOUT_SEC", "100"))
         
         # DLX/DLQ configuration
         self.results_dlx = os.getenv("RESULTS_DLX", "dlx.results")

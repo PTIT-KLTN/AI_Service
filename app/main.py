@@ -303,7 +303,7 @@ class ShoppingCartPipeline:
             },
             'suggestions': suggestions,
             'similar_dishes': similar[:3],
-            'excluded_ingredients': excluded_ingredients,
+            'excluded_ingredients': self._normalize_excluded_ingredients(excluded_ingredients),
             'warnings': self._unique_warnings(warnings),
             'insights': insights,
             'guardrail': guardrail_info,
@@ -432,6 +432,48 @@ class ShoppingCartPipeline:
         ]
         
         return filtered
+    
+    def _normalize_excluded_ingredients(self, excluded: list) -> list:
+        """
+        Normalize excluded ingredients với đầy đủ thông tin từ ontology
+        Input: [{"name": "Đậu phộng", "reason": "dị ứng"}]
+        Output: [{"ingredient_id": "ing_xxx", "name_vi": "Đậu phộng", "name_en": "Peanut", ...}]
+        """
+        if not excluded:
+            return []
+        
+        normalized = []
+        
+        for exc in excluded:
+            name = exc.get('name', '').strip()
+            reason = exc.get('reason', '').strip()
+            
+            if not name:
+                continue
+            
+            # Resolve to ingredient_id using fuzzy matching
+            matched_id = self._resolve_name_to_ingredient_id(name)
+            
+            if matched_id:
+                ing_info = self.ontology.get_ingredient(matched_id)
+                normalized.append({
+                    'ingredient_id': matched_id,
+                    'name_vi': ing_info.get('name_vi', name),
+                    'name_en': ing_info.get('name_en', ''),
+                    'category': ing_info.get('category', ''),
+                    'reason': reason
+                })
+            else:
+                # Nếu không tìm thấy trong ontology, vẫn trả về với thông tin cơ bản
+                normalized.append({
+                    'ingredient_id': '',
+                    'name_vi': name,
+                    'name_en': '',
+                    'category': '',
+                    'reason': reason
+                })
+        
+        return normalized
     
     def _get_suggestions(self, current_ids: list, dish_name: str = "") -> list:
         """Get ingredient suggestions using SuggestionService."""

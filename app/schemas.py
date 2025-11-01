@@ -53,8 +53,11 @@ class RecipeAnalysisRequest(BaseModel):
 
 
 class ExcludedIngredient(BaseModel):
-    name: str
-    reason: Optional[str] = None
+    ingredient_id: str = ""
+    name_vi: str
+    name_en: str = ""
+    category: str = ""
+    reason: str = ""
 
 
 class RecipeAnalysisResponse(BaseModel):
