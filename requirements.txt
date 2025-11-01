@@ -1,11 +1,11 @@
 # AWS SDK
-boto3==1.34.0
-botocore==1.34.0
+boto3>=1.34.70
+botocore>=1.34.70
 
 # Data Validation
 pydantic==2.5.0
 
-# RabbitMQ
+# RabbitMQ (thread-safe BlockingConnection)
 pika==1.3.2
 
 # Utilities
@@ -13,3 +13,4 @@ python-dotenv==1.0.0
 PyYAML==6.0.1
 pytest==7.4.4
 requests==2.31.0
+

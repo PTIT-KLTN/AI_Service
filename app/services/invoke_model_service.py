@@ -17,10 +17,10 @@ class BedrockModelService:
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
 
     def extract_dish_name(self, description: str) -> dict:
-        # 🔒 GUARDRAIL CHECK #1: Check raw user input TRƯỚC khi construct prompt
+
+        # Guardrails check
         raw_input_check = self.bedrock_client.check_raw_input(description)
         if raw_input_check:
-            # Raw input bị block → return ngay
             return {
                 'dish_name': None,
                 'ingredients': [],
@@ -107,7 +107,7 @@ class BedrockModelService:
         if not image_data:
             return {"dish_name": None, "ingredients": []}
 
-        # 🔒 GUARDRAIL CHECK #1: Check raw description TRƯỚC khi construct prompt
+        # Guardrails check
         if description:
             raw_input_check = self.bedrock_client.check_raw_input(description)
             if raw_input_check:

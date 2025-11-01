@@ -15,28 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 class RecipeAnalysisConsumer:
-    """
-    RabbitMQ RPC Server - consumes recipe analysis requests and sends responses.
-    
-    Pattern:
-    1. Listen on 'recipe_analysis_request' queue
-    2. Receive message with correlation_id and reply_to properties
-    3. Process request using provided callback
-    4. Send response to reply_to queue with same correlation_id
-    """
     
     def __init__(
         self,
         config: RabbitMQConfig,
         process_callback: Callable[[Dict[str, Any]], Dict[str, Any]]
     ):
-        """
-        Initialize RabbitMQ consumer.
-        
-        Args:
-            config: RabbitMQ configuration
-            process_callback: Function to process requests (receives dict, returns dict)
-        """
+        """Initialize RabbitMQ consumer."""
         self.config = config
         self.process_callback = process_callback
         self.connection = None
@@ -69,15 +54,7 @@ class RecipeAnalysisConsumer:
         properties: BasicProperties,
         body: bytes
     ) -> None:
-        """
-        Callback when a message is received.
-        
-        Args:
-            channel: Pika channel
-            method: Delivery method
-            properties: Message properties (contains correlation_id and reply_to)
-            body: Message body (JSON string)
-        """
+        """Handle incoming RPC requests."""
         correlation_id = properties.correlation_id
         reply_to = properties.reply_to
         
