@@ -52,6 +52,11 @@ class RecipeAnalysisRequest(BaseModel):
     image_description: Optional[str] = None
 
 
+class ExcludedIngredient(BaseModel):
+    name: str
+    reason: Optional[str] = None
+
+
 class RecipeAnalysisResponse(BaseModel):
     status: str
     dish: Optional[DishInfo] = None
@@ -59,6 +64,7 @@ class RecipeAnalysisResponse(BaseModel):
     conflict_warnings: List[ConflictWarning] = Field(default_factory=list)
     suggestions: List[IngredientItem] = Field(default_factory=list)
     similar_dishes: List[Dict[str, Any]] = Field(default_factory=list)
+    excluded_ingredients: List[ExcludedIngredient] = Field(default_factory=list)
     warnings: List[Warning] = Field(default_factory=list)
     insights: List[str] = Field(default_factory=list)
     assistant_response: Optional[str] = None
