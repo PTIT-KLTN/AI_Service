@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Server
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: ai_service_rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"      # AMQP port
+      - "15672:15672"    # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - ai_service_network
+    restart: unless-stopped
+
+  # AI Service Worker
+  ai_service_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_service_worker
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      # RabbitMQ Configuration
+      AMQP_URL: amqp://admin:admin123@rabbitmq:5672/
+      REQUEST_QUEUE: recipe_analysis_request
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-3}
+      PROCESS_TIMEOUT_SEC: ${PROCESS_TIMEOUT_SEC:-30}
+      RESULTS_DLX: dlx.results
+      RESULTS_DLQ: dlq.results
+      MESSAGE_TTL_MS: 300000
+      
+      # AWS Configuration
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      
+      # S3 Configuration
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      S3_REGION: ${S3_REGION:-us-east-1}
+      
+      # Bedrock Configuration
+      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID:-anthropic.claude-3-sonnet-20240229-v1:0}
+      BEDROCK_KB_ID: ${BEDROCK_KB_ID}
+      
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+    
+    volumes:
+      - ./app:/app/app
+      - ./run_rabbitmq_worker.py:/app/run_rabbitmq_worker.py
+      - worker_logs:/app/logs
+    
+    command: python run_rabbitmq_worker.py
+    
+    networks:
+      - ai_service_network
+    
+    restart: unless-stopped
+    
+    # Resource limits (cho máy yếu)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  worker_logs:
+    driver: local
+
+networks:
+  ai_service_network:
+    driver: bridge
