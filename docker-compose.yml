@@ -39,7 +39,7 @@ services:
       AMQP_URL: amqp://admin:admin123@rabbitmq:5672/
       REQUEST_QUEUE: recipe_analysis_request
       WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-3}
-      PROCESS_TIMEOUT_SEC: ${PROCESS_TIMEOUT_SEC:-30}
+      PROCESS_TIMEOUT_SEC: ${PROCESS_TIMEOUT_SEC:-100}
       RESULTS_DLX: dlx.results
       RESULTS_DLQ: dlq.results
       MESSAGE_TTL_MS: 300000
