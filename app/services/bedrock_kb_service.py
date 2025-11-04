@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from app.utils.string_utils import norm_text
 from app.utils.number_utils import parse_number
+from app.services.invoke_model_service import BedrockModelService
 
 load_dotenv()
 
@@ -14,7 +15,8 @@ class BedrockKBService:
     def __init__(self, region: str = 'us-east-1'):
         self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
         self.kb_id = os.getenv('BEDROCK_KB_ID')
-        self.model_id = os.getenv('MODEL_ID')
+        self.bedrock_model_id = os.getenv('BEDROCK_MODEL_ID') 
+        self.bedrock_model_service = BedrockModelService(region=region)
 
     def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
         candidates: List[Any] = []
@@ -55,38 +57,73 @@ class BedrockKBService:
         return uniq
 
     def get_dish_recipe(self, dish_name: str) -> dict:
-        query = (
-            f"Tìm đúng món: {dish_name}\n"
-            "Trả về JSON với dạng:\n"
-            "{ \"dish_name\": \"...\", \"ingredients\": [{\"name\":\"...\",\"quantity\":...,\"unit\":\"...\"}] }\n"
-        )
+
+        query = f"Tìm đúng món: {dish_name}"
 
         try:
-            # Retrieve and generate 
-            resp = self.bedrock_agent.retrieve_and_generate(
-                input={'text': query},
-                retrieveAndGenerateConfiguration={
-                    'type': 'KNOWLEDGE_BASE',
-                    'knowledgeBaseConfiguration': {
-                        'knowledgeBaseId': self.kb_id,
-                        'modelArn': self.model_id,
-                        'retrievalConfiguration': {
-                            'vectorSearchConfiguration': {
-                                'overrideSearchType': 'SEMANTIC',  
-                                'numberOfResults': 20
+            # Retrieve relevant documents từ KB
+            retrieve_response = self.bedrock_agent.retrieve(
+                knowledgeBaseId=self.kb_id,
+                retrievalQuery={'text': query},
+                retrievalConfiguration={
+                    'vectorSearchConfiguration': {
+                        'overrideSearchType': 'SEMANTIC',  
+                        'numberOfResults': 20,
+                        'filter': {
+                            'equals': {
+                                'key': 'type',
+                                'value': 'dish'
                             }
-                        },
-                    },
-                },
+                        }
+                    }
+                }
             )
 
-            # Parse response 
-            answer = resp.get('output', {}).get('text', '').strip()
+            # Extract context từ retrieved documents
+            retrieval_results = retrieve_response.get('retrievalResults', [])
+            
+            if not retrieval_results:
+                return {'dish_name': dish_name, 'ingredients': []}
+            
+            # Build context từ các documents được retrieve
+            context_parts = []
+            for idx, result in enumerate(retrieval_results[:10], 1):  # Lấy top 10 results
+                content = result.get('content', {}).get('text', '')
+                if content:
+                    context_parts.append(f"[Tài liệu {idx}]:\n{content}")
+            
+            context = "\n\n".join(context_parts)
+            
+            # Step 2: Sử dụng Nova model để generate response
+            system_prompt = """Bạn là chuyên gia ẩm thực Việt Nam. Nhiệm vụ của bạn là trích xuất thông tin công thức món ăn từ tài liệu được cung cấp.
+
+                            QUAN TRỌNG:
+                            - Chỉ trả về JSON hợp lệ, KHÔNG giải thích thêm
+                            - Format: {"dish_name": "tên món", "ingredients": [{"name": "tên nguyên liệu", "quantity": "số lượng", "unit": "đơn vị"}]}
+                            - Nếu không tìm thấy thông tin, trả về: {"dish_name": "tên món", "ingredients": []}
+                            - Tên nguyên liệu phải bằng tiếng Việt
+                            - quantity là chuỗi số (ví dụ: "200", "0.5"), để rỗng nếu không có
+                            - unit là đơn vị (gram, ml, muỗng, củ, ...), để rỗng nếu không có"""
+
+            user_prompt = f"""Dựa trên các tài liệu sau, hãy trích xuất công thức cho món: {dish_name}
+
+                            {context}
+
+                            Trả về JSON với format chính xác:
+                            {{"dish_name": "{dish_name}", "ingredients": [{{"name": "...", "quantity": "...", "unit": "..."}}]}}"""
+
+            # Gọi Nova model
+            answer = self.bedrock_model_service.invoke_nova_for_rag(
+                prompt=user_prompt,
+                system_prompt=system_prompt,
+                temperature=0.1, 
+                max_tokens=1024
+            )
             
             if not answer:
                 return {'dish_name': dish_name, 'ingredients': []}
 
-            # Remove markdown code blocks if present
+            # Parse JSON response
             if '```' in answer:
                 buf, in_code = [], False
                 for line in answer.splitlines():
@@ -97,7 +134,7 @@ class BedrockKBService:
                         buf.append(line)
                 answer = "\n".join(buf).strip()
             
-            # Extract JSON from text (LLM may add explanation before/after JSON)
+            # Extract JSON from text
             json_start = answer.find('{')
             json_end = answer.rfind('}')
             
@@ -105,6 +142,7 @@ class BedrockKBService:
                 answer = answer[json_start:json_end + 1]
             
             parsed = json.loads(answer) if answer else {}
+            
             if isinstance(parsed, dict) and 'ingredients' in parsed:
                 cleaned = []
                 for it in parsed.get('ingredients', []):
@@ -139,5 +177,6 @@ class BedrockKBService:
 
             return {'dish_name': dish_name, 'ingredients': []}
 
-        except Exception:
+        except Exception as e:
+            print(f"Error in get_dish_recipe: {str(e)}")
             return {'dish_name': dish_name, 'ingredients': []}

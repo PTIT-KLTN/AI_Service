@@ -137,18 +137,30 @@ class ConflictDetectionService:
         if not name1 or not name2:
             return False
         
+        # Exact match
         if name1 == name2:
             return True
         
-        if name1 in name2 or name2 in name1:
-            return True
+        # Split into tokens
+        tokens1 = name1.split()
+        tokens2 = name2.split()
         
-        tokens1 = set(name1.split())
-        tokens2 = set(name2.split())
+        # Determine shorter and longer
+        if len(tokens1) <= len(tokens2):
+            shorter_tokens = tokens1
+            longer_tokens = tokens2
+        else:
+            shorter_tokens = tokens2
+            longer_tokens = tokens1
         
-        if len(tokens1) > 1 and len(tokens2) > 1:
-            common = tokens1 & tokens2
-            if len(common) >= min(len(tokens1), len(tokens2)) * 0.7:
+        shorter_len = len(shorter_tokens)
+        longer_len = len(longer_tokens)
+        
+        if shorter_len == 1:
+            return False
+        
+        if shorter_len < longer_len:
+            if longer_tokens[:shorter_len] == shorter_tokens:
                 return True
         
         return False

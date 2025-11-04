@@ -16,6 +16,9 @@ from app.rabbitmq.config import RabbitMQConfig
 from app.rabbitmq.worker_threaded import ThreadedRabbitMQWorker
 from app.rabbitmq.processor import RecipeAnalysisProcessor
 
+# Check if should use optimized pipeline
+USE_OPTIMIZED = os.getenv('USE_OPTIMIZED_PIPELINE', 'false').lower() == 'true'
+
 # Configure logging with JSON format for production
 logging.basicConfig(
     level=logging.INFO,
@@ -40,11 +43,13 @@ logger = logging.getLogger(__name__)
 
 def print_banner():
     """Print startup banner."""
-    banner = """
+    pipeline_type = "OPTIMIZED" if USE_OPTIMIZED else "ORIGINAL"
+    banner = f"""
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                                                                           ║
 ║                    AI Service RabbitMQ Worker                             ║
 ║                    Multi-Threading (No Async)                             ║
+║                    Pipeline: {pipeline_type:<47} ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 """
@@ -83,9 +88,25 @@ def main():
         logger.info(f"  DLQ: {config.results_dlq}")
         logger.info("")
         
-        # Initialize processor
+        # Initialize processor with appropriate pipeline
         logger.info("Initializing RecipeAnalysisProcessor...")
-        processor = RecipeAnalysisProcessor()
+        
+        if USE_OPTIMIZED:
+            logger.info("🚀 Using OPTIMIZED pipeline with caching")
+            # Log optimized settings
+            cache_ttl = int(os.getenv('RECIPE_CACHE_TTL', '3600'))
+            cache_maxsize = int(os.getenv('RECIPE_CACHE_MAXSIZE', '1000'))
+            max_workers = int(os.getenv('OPTIMIZED_MAX_WORKERS', '3'))
+            
+            logger.info(f"  Recipe Cache TTL: {cache_ttl}s")
+            logger.info(f"  Recipe Cache Max Size: {cache_maxsize}")
+            logger.info(f"  Parallel Workers: {max_workers}")
+            
+            processor = RecipeAnalysisProcessor(use_optimized=True)
+        else:
+            logger.info("📊 Using ORIGINAL pipeline (no caching)")
+            processor = RecipeAnalysisProcessor(use_optimized=False)
+        
         logger.info("Processor initialized successfully")
         logger.info("")
         

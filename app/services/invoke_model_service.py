@@ -13,8 +13,9 @@ load_dotenv()
 class BedrockModelService:
     def __init__(self, region: str | None = None, bedrock_client: Optional[GuardrailedBedrockClient] = None):
         self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
-        self.model_id = os.getenv('INVOKE_MODEL_ID')
+        self.model_id = os.getenv('INVOKE_MODEL_ID')  
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
+        self.bedrock_model_id = os.getenv('BEDROCK_MODEL_ID')  
 
     def extract_dish_name(self, description: str) -> dict:
 
@@ -120,16 +121,21 @@ class BedrockModelService:
                 }
 
         image_b64 = self._ensure_base64(image_data)
-        body = json.dumps(_build_vision_request(description, image_b64, image_mime))
+        body = json.dumps(_build_vision_request_nova(description, image_b64, image_mime))
 
         response = self.bedrock_client.invoke_model(model_id=self.vision_model_id, body=body)
         resp_json = json.loads(response['body'].read() or b'{}')
+        
+        # Parse response theo format của Nova
         text = ""
-        content_arr = resp_json.get('content') or []
-        if isinstance(content_arr, list) and content_arr:
-            first = content_arr[0] or {}
-            if isinstance(first, dict):
-                text = (first.get('text') or "").strip()
+        output = resp_json.get('output', {})
+        message = output.get('message', {})
+        content = message.get('content', [])
+        
+        if isinstance(content, list) and content:
+            first_content = content[0]
+            if isinstance(first_content, dict):
+                text = first_content.get('text', '').strip()
 
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
@@ -152,6 +158,63 @@ class BedrockModelService:
             return base64.b64encode(image_data).decode('utf-8')
         raise TypeError('image_data must be base64 string or bytes-like object')
     
+    def invoke_nova_for_rag(self, prompt: str, system_prompt: str = None, temperature: float = 0.7, max_tokens: int = 1024) -> str:
+        if not self.bedrock_model_id:
+            raise ValueError('BEDROCK_MODEL_ID environment variable is not configured')
+        
+        # Xây dựng request body theo format của Amazon Nova
+        request_body = {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "text": prompt
+                        }
+                    ]
+                }
+            ],
+            "inferenceConfig": {
+                "maxTokens": max_tokens, 
+                "temperature": temperature,
+                "topP": 0.9
+            }
+        }
+        
+        # Thêm system prompt 
+        if system_prompt:
+            request_body["system"] = [
+                {
+                    "text": system_prompt
+                }
+            ]
+        
+        body = json.dumps(request_body)
+        
+        # Gọi model
+        response = self.bedrock_client.invoke_model(
+            model_id=self.bedrock_model_id, 
+            body=body
+        )
+        
+        # Parse response
+        resp_json = json.loads(response['body'].read() or b'{}')
+        
+        text = ""
+        output = resp_json.get('output', {})
+        message = output.get('message', {})
+        content = message.get('content', [])
+        
+        if isinstance(content, list) and content:
+            first_content = content[0]
+            if isinstance(first_content, dict):
+                text = first_content.get('text', '').strip()
+        
+        if not text:
+            text = json.dumps(resp_json, ensure_ascii=False)
+        
+        return text
+    
 
 VISION_SYSTEM_PROMPT = (
     "Bạn là trợ lý ẩm thực chuyên trích xuất thông tin món ăn từ hình ảnh. "
@@ -164,28 +227,51 @@ VISION_SYSTEM_PROMPT = (
 )
 
 
-def _build_vision_request(description: str, image_b64: str, image_mime: str) -> dict:
+def _build_vision_request_nova(description: str, image_b64: str, image_mime: str) -> dict:
+
+    # Build prompt
     prompt = "Phân tích ảnh và trích xuất JSON theo hướng dẫn. Không giải thích, không thêm văn bản ngoài JSON."
     if description:
         prompt += f'\nMô tả bổ sung: """{description}"""'
 
+    # Map mime type to Nova format
+    format_map = {
+        "image/jpeg": "jpeg",
+        "image/jpg": "jpeg",
+        "image/png": "png",
+        "image/webp": "webp",
+        "image/gif": "gif"
+    }
+    image_format = format_map.get(image_mime.lower(), "png")
+
     return {
-        "anthropic_version": "bedrock-2023-05-31",
-        "system": VISION_SYSTEM_PROMPT,
-        "messages": [{
-            "role": "user",
-            "content": [
-                {
-                    "type": "image",
-                    "source": {
-                        "type": "base64",
-                        "media_type": image_mime,
-                        "data": image_b64,
+        "schemaVersion": "messages-v1",
+        "system": [
+            {
+                "text": VISION_SYSTEM_PROMPT
+            }
+        ],
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "image": {
+                            "format": image_format,
+                            "source": {
+                                "bytes": image_b64  # Base64-encoded string for Invoke API
+                            }
+                        }
                     },
-                },
-                {"type": "text", "text": prompt},
-            ],
-        }],
-        "temperature": 0.1,
-        "max_tokens": 1024,
+                    {
+                        "text": prompt
+                    }
+                ]
+            }
+        ],
+        "inferenceConfig": {
+            "maxTokens": 1024,
+            "temperature": 0.1,
+            "topP": 0.9
+        }
     }

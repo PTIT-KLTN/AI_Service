@@ -1,10 +1,12 @@
 """
 RabbitMQ Request Processor - Business logic handler.
 KHÔNG dùng async - chỉ synchronous processing.
+Supports both original and optimized pipelines.
 """
 import json
 import logging
 import time
+import os
 from typing import Dict, Any
 
 from app.main import ShoppingCartPipeline
@@ -20,12 +22,37 @@ class RecipeAnalysisProcessor:
     - Supports text và image input
     - Timeout được handle bởi caller (ThreadPoolExecutor.result(timeout=...))
     - Synchronous I/O-bound operations (boto3, HTTP requests)
+    - Supports both original and optimized pipelines
     """
     
-    def __init__(self):
+    def __init__(self, use_optimized: bool = False):
         """Initialize processor với pipeline và services."""
         try:
-            self.pipeline = ShoppingCartPipeline()
+            self.use_optimized = use_optimized
+            
+            if use_optimized:
+                # Import optimized pipeline
+                try:
+                    from app.main_optimized import OptimizedShoppingCartPipeline
+                    
+                    cache_ttl = int(os.getenv('RECIPE_CACHE_TTL', '3600'))
+                    cache_maxsize = int(os.getenv('RECIPE_CACHE_MAXSIZE', '1000'))
+                    max_workers = int(os.getenv('OPTIMIZED_MAX_WORKERS', '3'))
+                    
+                    self.pipeline = OptimizedShoppingCartPipeline(
+                        max_workers=max_workers,
+                        recipe_cache_ttl=cache_ttl
+                    )
+                    logger.info(f"✅ Optimized pipeline initialized (TTL={cache_ttl}s, MaxSize={cache_maxsize}, Workers={max_workers})")
+                except ImportError as e:
+                    logger.error(f"Failed to import OptimizedShoppingCartPipeline: {e}")
+                    logger.info("Falling back to original pipeline")
+                    self.pipeline = ShoppingCartPipeline()
+                    self.use_optimized = False
+            else:
+                self.pipeline = ShoppingCartPipeline()
+                logger.info("✅ Original pipeline initialized")
+            
             self.s3_service = get_s3_image_service()
             logger.info("RecipeAnalysisProcessor initialized successfully")
         except Exception as e:

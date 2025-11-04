@@ -1,0 +1,118 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Server (Shared - nếu chưa có)
+  # Uncomment nếu muốn chạy RabbitMQ riêng cho testing
+  # rabbitmq_optimized:
+  #   image: rabbitmq:3.12-management
+  #   container_name: ai_service_rabbitmq_optimized
+  #   hostname: rabbitmq-optimized
+  #   ports:
+  #     - "5673:5672"      # AMQP port (khác port để tránh conflict)
+  #     - "15673:15672"    # Management UI (khác port)
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin123
+  #     RABBITMQ_DEFAULT_VHOST: /
+  #   volumes:
+  #     - rabbitmq_optimized_data:/var/lib/rabbitmq
+  #   healthcheck:
+  #     test: rabbitmq-diagnostics -q ping
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 20s
+  #   networks:
+  #     - ai_service_optimized_network
+  #   restart: unless-stopped
+
+  # AI Service Worker - OPTIMIZED VERSION
+  ai_service_worker_optimized:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized
+    container_name: ai_service_worker_optimized
+    # Nếu dùng RabbitMQ riêng, uncomment:
+    # depends_on:
+    #   rabbitmq_optimized:
+    #     condition: service_healthy
+    
+    environment:
+      # ============ RabbitMQ Configuration ============
+      # Option 1: Dùng RabbitMQ của Main Service (trên host)
+      AMQP_URL: amqp://admin:admin123@host.docker.internal:5672/
+      
+      # Option 2: Dùng RabbitMQ riêng (uncomment nếu dùng rabbitmq_optimized)
+      # AMQP_URL: amqp://admin:admin123@rabbitmq-optimized:5672/
+      
+      REQUEST_QUEUE: recipe_analysis_request_optimized
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-3}
+      PROCESS_TIMEOUT_SEC: ${PROCESS_TIMEOUT_SEC:-100}
+      RESULTS_DLX: dlx.results
+      RESULTS_DLQ: dlq.results
+      MESSAGE_TTL_MS: 300000
+      
+      # ============ Optimized Pipeline Settings ============
+      USE_OPTIMIZED_PIPELINE: "true"
+      RECIPE_CACHE_TTL: ${RECIPE_CACHE_TTL:-3600}        # 1 hour default
+      RECIPE_CACHE_MAXSIZE: ${RECIPE_CACHE_MAXSIZE:-1000}
+      OPTIMIZED_MAX_WORKERS: ${OPTIMIZED_MAX_WORKERS:-3}
+      LOG_CACHE_STATS: "true"
+      CACHE_STATS_INTERVAL: 300  # Every 5 minutes
+      
+      # ============ AWS Configuration ============
+      AWS_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      
+      # S3 Configuration
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      S3_REGION: ${AWS_DEFAULT_REGION}
+      
+      # Bedrock Configuration
+      BEDROCK_KB_ID: ${BEDROCK_KB_ID}
+      INVOKE_MODEL_ID: ${INVOKE_MODEL_ID}
+      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID}
+      VISION_MODEL_ID: ${VISION_MODEL_ID}
+      
+      # ============ Logging ============
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENVIRONMENT: ${ENVIRONMENT:-testing-optimized}
+    
+    volumes:
+      - ./app:/app/app
+      - ./run_rabbitmq_worker.py:/app/run_rabbitmq_worker.py
+      - worker_optimized_logs:/app/logs
+    
+    command: python run_rabbitmq_worker.py
+    
+    networks:
+      - ai_service_optimized_network
+    
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Labels for identification
+    labels:
+      - "com.aiservice.version=optimized"
+      - "com.aiservice.type=worker"
+
+volumes:
+  # rabbitmq_optimized_data:  # Uncomment nếu dùng RabbitMQ riêng
+  #   driver: local
+  worker_optimized_logs:
+    driver: local
+
+networks:
+  ai_service_optimized_network:
+    driver: bridge
+
