@@ -1,8 +1,4 @@
-"""
-RabbitMQ Worker - Main entry point for AI Service RabbitMQ consumer.
-Sử dụng ThreadPoolExecutor (multi-threading) - KHÔNG dùng async/await.
-Run this script to start the AI Service as a RabbitMQ worker.
-"""
+
 import logging
 import sys
 import os
@@ -15,6 +11,7 @@ sys.path.insert(0, str(project_root))
 from app.rabbitmq.config import RabbitMQConfig
 from app.rabbitmq.worker_threaded import ThreadedRabbitMQWorker
 from app.rabbitmq.processor import RecipeAnalysisProcessor
+
 
 # Configure logging with JSON format for production
 logging.basicConfig(
@@ -40,11 +37,13 @@ logger = logging.getLogger(__name__)
 
 def print_banner():
     """Print startup banner."""
-    banner = """
+    pipeline_type = "OPTIMIZED"
+    banner = f"""
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║                                                                           ║
 ║                    AI Service RabbitMQ Worker                             ║
 ║                    Multi-Threading (No Async)                             ║
+║                    Pipeline: {pipeline_type:<47} ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 """
@@ -83,9 +82,20 @@ def main():
         logger.info(f"  DLQ: {config.results_dlq}")
         logger.info("")
         
-        # Initialize processor
+        # Initialize processor with appropriate pipeline
         logger.info("Initializing RecipeAnalysisProcessor...")
-        processor = RecipeAnalysisProcessor()
+        
+        # Log optimized settings
+        cache_ttl = int(os.getenv('RECIPE_CACHE_TTL', '3600'))
+        cache_maxsize = int(os.getenv('RECIPE_CACHE_MAXSIZE', '1000'))
+        max_workers = int(os.getenv('OPTIMIZED_MAX_WORKERS', '3'))
+        
+        logger.info(f"  Recipe Cache TTL: {cache_ttl}s")
+        logger.info(f"  Recipe Cache Max Size: {cache_maxsize}")
+        logger.info(f"  Parallel Workers: {max_workers}")
+        
+        processor = RecipeAnalysisProcessor(use_optimized=True)
+
         logger.info("Processor initialized successfully")
         logger.info("")
         

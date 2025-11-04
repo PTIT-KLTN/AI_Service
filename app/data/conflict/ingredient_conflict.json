@@ -9,7 +9,7 @@
       "Rau giàu vitamin C"
     ],
     "severity": "medium",
-    "reason": "Ion kim loại trong gan có thể oxy hóa vitamin C của giá đỗ, làm giảm giá trị dinh dưỡng.",
+    "reason": "Gan heo không nên kết hợp với Giá đỗ hoặc Rau giàu vitamin C: Ion kim loại trong gan có thể oxy hóa vitamin C của nguyên liệu đối ứng, làm giảm giá trị dinh dưỡng.",
     "advice": "Tránh xào chung gan với giá đỗ; chế biến tách bữa.",
     "sources": [
       {
@@ -27,7 +27,7 @@
       "Trứng gà"
     ],
     "severity": "medium",
-    "reason": "Trypsin inhibitor trong sữa đậu nành kết hợp protein lòng trắng trứng làm giảm hấp thu.",
+    "reason": "Sữa đậu nành không nên kết hợp với Trứng gà: Chất ức chế trypsin trong sữa đậu nành gắn với protein (đặc biệt là lòng trắng trứng), làm giảm hấp thu và dễ gây khó tiêu.",
     "advice": "Không dùng cùng lúc; tách 1–2 giờ.",
     "sources": [
       {
@@ -51,7 +51,7 @@
       "Đồ uống có cồn"
     ],
     "severity": "medium",
-    "reason": "Hợp chất lưu huỳnh trong sầu riêng có thể ức chế enzyme phân hủy ethanol, làm tăng nồng độ cồn.",
+    "reason": "Sầu riêng không nên dùng cùng Rượu, Bia hoặc Đồ uống có cồn: Hợp chất chứa lưu huỳnh trong sầu riêng có thể ức chế enzym chuyển hoá ethanol, khiến cồn tích lũy và dễ gây khó chịu/độc tính.",
     "advice": "Không uống rượu/bia khi ăn sầu riêng.",
     "sources": [
       {
@@ -73,7 +73,7 @@
       "Thực phẩm/bổ sung giàu vitamin C"
     ],
     "severity": "low",
-    "reason": "Tin đồn tôm + vitamin C gây ngộ độc asen không có bằng chứng khoa học thuyết phục.",
+    "reason": "Tôm có thể ăn cùng Thực phẩm/bổ sung giàu vitamin C: Tin đồn 'tôm + vitamin C gây ngộ độc asen' không có bằng chứng khoa học thuyết phục; nếu thực phẩm tươi sạch, phối hợp này không gây độc.",
     "advice": "Không cần kiêng tuyệt đối; chú ý nguồn hải sản an toàn.",
     "sources": [
       {
@@ -96,7 +96,7 @@
       "Quýt"
     ],
     "severity": "low",
-    "reason": "Theo khuyến cáo dân gian: cua ăn cùng cam/quýt dễ sinh khó chịu đường tiêu hóa.",
+    "reason": "Cua không nên ăn ngay với Cam hoặc Quýt: Axit hữu cơ mạnh có thể làm tăng kích ứng dạ dày khi đi kèm thực phẩm giàu đạm, dễ gây khó chịu tiêu hoá (mức độ chứng cứ thấp).",
     "advice": "Tránh dùng cam/quýt ngay sát bữa cua.",
     "sources": [
       {
@@ -114,7 +114,7 @@
       "Bí đỏ"
     ],
     "severity": "low",
-    "reason": "Kinh nghiệm dân gian xếp vào nhóm kỵ nhau, có thể gây rối loạn tiêu hóa.",
+    "reason": "Cua không nên ăn chung với Bí đỏ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không kết hợp nếu bụng yếu; thay bí đỏ bằng bầu/bí xanh.",
     "sources": [
       {
@@ -132,7 +132,7 @@
       "Mật mía"
     ],
     "severity": "low",
-    "reason": "Dân gian coi là sinh độc; dễ đầy bụng, tiêu chảy.",
+    "reason": "Cua không nên kết hợp với Mật mía: Đường dễ làm tăng lên men trong dạ dày khi ăn cùng hải sản vỏ cứng, gây đầy bụng hoặc tiêu chảy (theo kinh nghiệm dân gian).",
     "advice": "Tránh ăn cùng lúc.",
     "sources": [
       {
@@ -150,7 +150,7 @@
       "Đậu phộng"
     ],
     "severity": "low",
-    "reason": "Dễ gây khó tiêu theo kinh nghiệm dân gian.",
+    "reason": "Cua không nên ăn chung với Đậu phộng: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Hạn chế ăn kèm nhiều đậu phộng khi dùng cua.",
     "sources": [
       {
@@ -168,7 +168,7 @@
       "Cá trạch"
     ],
     "severity": "low",
-    "reason": "Xếp vào nhóm kỵ nhau; có thể gây rối loạn tiêu hóa.",
+    "reason": "Cua không nên ăn chung với Cá trạch: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối chung trong một món.",
     "sources": [
       {
@@ -186,7 +186,7 @@
       "Hồng"
     ],
     "severity": "low",
-    "reason": "Dân gian cho là dễ sinh rối loạn tiêu hóa.",
+    "reason": "Cua không nên ăn cùng Hồng: Tannin trong quả hồng có thể kết hợp với protein/khoáng của Cua, tạo kết tủa khó tiêu và dễ đau bụng.",
     "advice": "Ăn hồng cách bữa cua vài giờ.",
     "sources": [
       {
@@ -208,7 +208,7 @@
       "Dưa lê"
     ],
     "severity": "low",
-    "reason": "Ghi nhận trong danh mục thực phẩm kỵ nhau truyền thống.",
+    "reason": "Cua không nên ăn chung với Dưa lê: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn cùng lúc nếu bụng yếu.",
     "sources": [
       {
@@ -226,7 +226,7 @@
       "Dầu mè"
     ],
     "severity": "low",
-    "reason": "Dân gian nói dễ đau bụng/hoắc loạn.",
+    "reason": "Dưa hấu không nên trộn cùng nhiều Dầu mè: Sự phối hợp giàu chất béo với lượng nước đường lớn dễ gây khó tiêu ở người nhạy cảm (theo kinh nghiệm dân gian).",
     "advice": "Tránh trộn dầu mè với dưa hấu.",
     "sources": [
       {
@@ -246,7 +246,7 @@
       "Mật ong"
     ],
     "severity": "low",
-    "reason": "Có thể gây thổ tả/nóng lạnh theo dân gian.",
+    "reason": "Mận không nên ăn chung với Thịt gà, Thịt vịt hoặc Mật ong: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn mận kèm gà/vịt/mật ong.",
     "sources": [
       {
@@ -264,7 +264,7 @@
       "Táo"
     ],
     "severity": "low",
-    "reason": "Liệt kê nhóm đại kỵ trong dân gian.",
+    "reason": "Hành không nên ăn chung với Táo: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn chung.",
     "sources": [
       {
@@ -282,7 +282,7 @@
       "Đậu xanh"
     ],
     "severity": "low",
-    "reason": "Dân gian cho là trướng bụng; SKĐS cũng liệt kê.",
+    "reason": "Thịt chó không nên ăn cùng Đậu xanh: Theo kinh nghiệm dân gian, sự tương phản tính hàn – nhiệt và độ đạm cao có thể gây đầy bụng, khó tiêu.",
     "advice": "Tránh ăn lẫn; nếu lỡ ăn, theo dân gian dùng cam thảo (tham khảo).",
     "sources": [
       {
@@ -304,7 +304,7 @@
       "Củ cải trắng"
     ],
     "severity": "low",
-    "reason": "Xếp nhóm kỵ nhau trong danh mục dân gian.",
+    "reason": "Thịt rắn không nên ăn chung với Củ cải trắng: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không nấu chung.",
     "sources": [
       {
@@ -322,7 +322,7 @@
       "Rượu đế/đồ uống cồn mạnh"
     ],
     "severity": "low",
-    "reason": "Dân gian cho là dễ ‘gục’, khó chịu.",
+    "reason": "Đào không nên ăn chung với Rượu đế/đồ uống cồn mạnh: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không uống rượu sát lúc ăn nhiều đào.",
     "sources": [
       {
@@ -340,7 +340,7 @@
       "Dưa hấu"
     ],
     "severity": "low",
-    "reason": "Dân gian cho là dễ trúng độc/khó tiêu.",
+    "reason": "Thịt dê không nên ăn chung với Dưa hấu: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -362,7 +362,7 @@
       "Rau dền"
     ],
     "severity": "low",
-    "reason": "Ghi nhận trong danh mục kỵ nhau dân gian.",
+    "reason": "Ba ba không nên ăn chung với Rau dền: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không nấu chung.",
     "sources": [
       {
@@ -380,7 +380,7 @@
       "Hành sống"
     ],
     "severity": "low",
-    "reason": "Xếp nhóm kỵ nhau theo dân gian.",
+    "reason": "Thịt chó không nên ăn cùng Hành sống: Theo kinh nghiệm dân gian, sự tương phản tính hàn – nhiệt và độ đạm cao có thể gây đầy bụng, khó tiêu.",
     "advice": "Tránh ăn kèm.",
     "sources": [
       {
@@ -398,7 +398,7 @@
       "Đậu phộng"
     ],
     "severity": "low",
-    "reason": "Danh mục dân gian gọi là ‘Dưa bà Cai (hoàng qua)’ kỵ đậu phộng.",
+    "reason": "Mướp đắng không nên ăn chung với Đậu phộng: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không trộn lạc/đậu phộng nhiều với mướp đắng.",
     "sources": [
       {
@@ -416,7 +416,7 @@
       "Trà hoa cúc"
     ],
     "severity": "low",
-    "reason": "Dân gian coi là dễ ngộ độc/khó chịu.",
+    "reason": "Thịt gà không nên dùng kèm Trà hoa cúc ngay sau bữa: Tannin trong trà có thể liên kết protein, gây khó tiêu và giảm hấp thu.",
     "advice": "Không uống trà hoa cúc ngay sau khi ăn gà.",
     "sources": [
       {
@@ -434,7 +434,7 @@
       "Dương mai (yangmei)"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau dân gian.",
+    "reason": "Thịt vịt không nên ăn chung với Dương mai (yangmei): Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh ăn cùng lúc.",
     "sources": [
       {
@@ -452,7 +452,7 @@
       "Bí đỏ"
     ],
     "severity": "low",
-    "reason": "Gây trướng bụng theo dân gian.",
+    "reason": "Thịt hươu không nên ăn chung với Bí đỏ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không nấu chung.",
     "sources": [
       {
@@ -470,7 +470,7 @@
       "Cải xanh"
     ],
     "severity": "low",
-    "reason": "Xếp kỵ nhau dân gian.",
+    "reason": "Thịt thỏ không nên ăn chung với Cải xanh: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -488,7 +488,7 @@
       "Măng tre mùa đông"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau dân gian.",
+    "reason": "Thịt rùa không nên ăn chung với Măng tre mùa đông: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không nấu chung.",
     "sources": [
       {
@@ -506,7 +506,7 @@
       "Hành tây"
     ],
     "severity": "medium",
-    "reason": "Thịt cóc vốn tiềm ẩn độc tố; danh mục dân gian khuyến cáo không nấu với hành tây.",
+    "reason": "Thịt cóc không nên ăn chung với Hành tây: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh hoàn toàn.",
     "sources": [
       {
@@ -524,7 +524,7 @@
       "Mật ong"
     ],
     "severity": "medium",
-    "reason": "Ghi trong danh mục kỵ nhau; sắn có cyanogenic glycosides vốn cần chế biến đúng cách.",
+    "reason": "Sắn/khoai mì không nên ăn chung với Mật ong: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không chấm/mix mật ong với sắn; chế biến sắn kỹ.",
     "sources": [
       {
@@ -542,7 +542,7 @@
       "Đậu hũ"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau dân gian.",
+    "reason": "Mật ong không nên ăn chung với Đậu hũ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn cùng lúc.",
     "sources": [
       {
@@ -560,7 +560,7 @@
       "Tỏi"
     ],
     "severity": "low",
-    "reason": "Ghi nhận là kỵ nhau trong danh mục dân gian.",
+    "reason": "Mật ong không nên ăn chung với Tỏi: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh pha mật ong với nhiều tỏi sống.",
     "sources": [
       {
@@ -578,7 +578,7 @@
       "Tỏi"
     ],
     "severity": "low",
-    "reason": "Xếp kỵ nhau dân gian.",
+    "reason": "Mật mía không nên ăn chung với Tỏi: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không dùng cùng lúc.",
     "sources": [
       {
@@ -596,7 +596,7 @@
       "Măng cụt"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau.",
+    "reason": "Đường cát không nên ăn chung với Măng cụt: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn kèm lượng nhiều.",
     "sources": [
       {
@@ -614,7 +614,7 @@
       "Nhãn lồng"
     ],
     "severity": "low",
-    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "reason": "Khoai mì không nên ăn chung với Nhãn lồng: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh ăn cùng lúc.",
     "sources": [
       {
@@ -632,7 +632,7 @@
       "Xoài"
     ],
     "severity": "low",
-    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "reason": "Khoai mì không nên ăn chung với Xoài: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn cùng lúc số lượng nhiều.",
     "sources": [
       {
@@ -650,7 +650,7 @@
       "Ổi"
     ],
     "severity": "low",
-    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "reason": "Khoai mì không nên ăn chung với Ổi: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh ăn cùng lúc.",
     "sources": [
       {
@@ -669,7 +669,7 @@
       "Giấm"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau dân gian.",
+    "reason": "Thịt kỳ đà không nên ăn chung với Gừng hoặc Giấm: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ướp/nấu chung.",
     "sources": [
       {
@@ -687,7 +687,7 @@
       "Rau dền"
     ],
     "severity": "medium",
-    "reason": "Danh mục dân gian coi kỵ; riêng tiết canh sống vốn rủi ro ATTP cao.",
+    "reason": "Tiết không nên ăn chung với Rau dền: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh hoàn toàn tiết canh; không ăn kèm rau dền.",
     "sources": [
       {
@@ -705,7 +705,7 @@
       "Thịt lừa"
     ],
     "severity": "low",
-    "reason": "Liệt kê trong danh mục kỵ nhau.",
+    "reason": "Thịt heo không nên ăn chung với Thịt lừa: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn chung.",
     "sources": [
       {
@@ -723,7 +723,7 @@
       "Thịt ngựa"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau.",
+    "reason": "Thịt heo không nên ăn chung với Thịt ngựa: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -741,7 +741,7 @@
       "Hẹ"
     ],
     "severity": "low",
-    "reason": "Liệt kê kỵ nhau (dân gian).",
+    "reason": "Thịt bò không nên ăn chung với Hẹ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không nấu chung.",
     "sources": [
       {
@@ -759,7 +759,7 @@
       "Gỏi cá"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau.",
+    "reason": "Thịt dê không nên ăn chung với Gỏi cá: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh ăn chung.",
     "sources": [
       {
@@ -777,7 +777,7 @@
       "Thịt chó"
     ],
     "severity": "low",
-    "reason": "Danh mục kỵ nhau.",
+    "reason": "Thịt trâu không nên ăn chung với Thịt chó: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn chung.",
     "sources": [
       {
@@ -795,7 +795,7 @@
       "Nấm"
     ],
     "severity": "low",
-    "reason": "Liệt kê kỵ nhau.",
+    "reason": "Thịt bồ câu không nên ăn chung với Nấm: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh nấu chung nếu cơ địa nhạy.",
     "sources": [
       {
@@ -813,7 +813,7 @@
       "Món có vị chua"
     ],
     "severity": "low",
-    "reason": "SKĐS xếp vào nhóm không nên ăn cùng.",
+    "reason": "Khoai lang không nên ăn ngay với Món có vị chua: Vị chua có thể kích thích tăng tiết acid, dễ gây ợ nóng/đầy bụng khi ăn nhiều khoai lang.",
     "advice": "Tránh ăn khoai lang ngay với món chua đậm.",
     "sources": [
       {
@@ -831,7 +831,7 @@
       "Các loại cá"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung theo SKĐS.",
+    "reason": "Bí đao không nên ăn chung với Các loại cá: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -850,7 +850,7 @@
       "Thịt cừu"
     ],
     "severity": "low",
-    "reason": "Không nên dùng cùng (cước khí) theo SKĐS.",
+    "reason": "Bí đỏ không nên ăn chung với Thịt dê hoặc Thịt cừu: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Thay rau củ khác khi nấu thịt dê/cừu.",
     "sources": [
       {
@@ -868,7 +868,7 @@
       "Cá diếc"
     ],
     "severity": "low",
-    "reason": "Không nên nấu cùng (SKĐS).",
+    "reason": "Cải xoong không nên ăn chung với Cá diếc: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -889,7 +889,7 @@
       "Rong biển"
     ],
     "severity": "low",
-    "reason": "SKĐS nêu không nên ăn cùng; ăn với rong biển làm mất iod.",
+    "reason": "Cà không nên ăn chung với Ba ba, Chuối, Cá quả hoặc Rong biển: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh phối chung.",
     "sources": [
       {
@@ -909,7 +909,7 @@
       "Củ cải"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Ớt không nên ăn chung với Gan dê, Đu đủ hoặc Củ cải: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Giảm ớt khi dùng các món này.",
     "sources": [
       {
@@ -928,7 +928,7 @@
       "Hoa quả chua"
     ],
     "severity": "low",
-    "reason": "Có thể gây sỏi tiết niệu (SKĐS).",
+    "reason": "Tiết lợn không nên ăn chung với Rau chân vịt hoặc Hoa quả chua: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn kèm.",
     "sources": [
       {
@@ -947,7 +947,7 @@
       "Đậu đỏ"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Thịt dê không nên ăn chung với Kiều mạch hoặc Đậu đỏ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Thay tinh bột khác.",
     "sources": [
       {
@@ -968,7 +968,7 @@
       "Cá"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Thịt bò không nên ăn chung với Hạt dẻ, Hạt kê, Mật ong hoặc Cá: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -990,7 +990,7 @@
       "Trà đặc"
     ],
     "severity": "low",
-    "reason": "Danh sách kỵ nhau (SKĐS).",
+    "reason": "Thịt chó không nên dùng kèm Hạnh nhân, Đậu xanh, Cá chép, Lươn trạch hoặc Trà đặc ngay sau bữa: Tannin trong trà có thể liên kết protein, gây khó tiêu và giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -1009,7 +1009,7 @@
       "Thịt rùa"
     ],
     "severity": "low",
-    "reason": "Có thể gây ngộ độc (SKĐS).",
+    "reason": "Hạt sen không nên ăn chung với Cua hoặc Thịt rùa: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn kèm.",
     "sources": [
       {
@@ -1029,7 +1029,7 @@
       "Kiều mạch"
     ],
     "severity": "low",
-    "reason": "Dễ tiêu chảy/đầy bụng (SKĐS).",
+    "reason": "Thịt thỏ không nên ăn chung với Thịt vịt, Cải trắng hoặc Kiều mạch: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối chung.",
     "sources": [
       {
@@ -1047,7 +1047,7 @@
       "Thịt lợn"
     ],
     "severity": "low",
-    "reason": "Có thể làm xạm da (SKĐS).",
+    "reason": "Thịt chim cút không nên ăn chung với Thịt lợn: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh nấu chung.",
     "sources": [
       {
@@ -1068,7 +1068,7 @@
       "Kiều mạch"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Thịt vịt không nên ăn chung với Ba ba, Hồ đào, Mộc nhĩ hoặc Kiều mạch: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1088,7 +1088,7 @@
       "Rau hẹ"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Dâu tươi không nên ăn chung với Bánh bao, Trứng vịt hoặc Rau hẹ: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Ăn cách bữa.",
     "sources": [
       {
@@ -1106,7 +1106,7 @@
       "Hải sản/đồ biển"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Lựu không nên ăn chung với Hải sản/đồ biển: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1126,7 +1126,7 @@
       "Cua"
     ],
     "severity": "low",
-    "reason": "Dễ tiêu chảy/viêm dạ dày (SKĐS).",
+    "reason": "Quả trám không nên ăn chung với Hành, Hẹ hoặc Cua: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn kèm.",
     "sources": [
       {
@@ -1150,7 +1150,7 @@
       "Hành ta"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Đại táo không nên ăn chung với Cá trắm đen, Lươn, Trạch, Cá nheo, Đồ biển, Hành tây hoặc Hành ta: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1170,7 +1170,7 @@
       "Nhân sâm"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Nho không nên ăn chung với Đồ biển, Cá hoặc Nhân sâm: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -1189,7 +1189,7 @@
       "Tỏi"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Sơn tra không nên ăn chung với Hành hoặc Tỏi: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa, nhất là khi dùng để hỗ trợ tiêu hoá.",
     "sources": [
       {
@@ -1208,7 +1208,7 @@
       "Thịt mèo"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Nấm đầu khỉ không nên ăn chung với Thịt bồ câu hoặc Thịt mèo: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối hợp.",
     "sources": [
       {
@@ -1227,7 +1227,7 @@
       "Thịt dê"
     ],
     "severity": "low",
-    "reason": "Không nên ăn cùng (SKĐS).",
+    "reason": "Tổ yến không nên ăn chung với Thịt chó hoặc Thịt dê: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1248,7 +1248,7 @@
       "Tôm"
     ],
     "severity": "low",
-    "reason": "Dễ đầy chướng, có thể mày đay (SKĐS).",
+    "reason": "Thịt bồ câu không nên ăn chung với Gan lợn, Thịt lợn, Cá diếc hoặc Tôm: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối chung.",
     "sources": [
       {
@@ -1267,7 +1267,7 @@
       "Đồ biển"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Thịt chim sẻ không nên ăn chung với Gan lợn hoặc Đồ biển: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1286,7 +1286,7 @@
       "Đồ biển"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Mộc nhĩ đen không nên ăn chung với Trứng vịt hoặc Đồ biển: Theo danh mục truyền thống, kết hợp này dễ gây khó chịu tiêu hoá; nên tách bữa.",
     "advice": "Không phối hợp.",
     "sources": [
       {
@@ -1304,7 +1304,7 @@
       "Đồ biển"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Mộc nhĩ trắng không nên ăn chung với Đồ biển: Theo danh mục truyền thống, kết hợp này dễ gây khó chịu tiêu hoá; nên tách bữa.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1322,7 +1322,7 @@
       "Thịt dê"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Tôm không nên ăn chung với Thịt dê: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Thay thịt khác.",
     "sources": [
       {
@@ -1344,7 +1344,7 @@
       "Rau sam"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Ba ba/rùa không nên ăn chung với Thịt mèo, Thịt thỏ, Thịt vịt, Trứng vịt hoặc Rau sam: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối hợp.",
     "sources": [
       {
@@ -1363,7 +1363,7 @@
       "Rau kinh giới (lươn xanh)"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Lươn không nên ăn chung với Thịt chó hoặc Rau kinh giới (lươn xanh): Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -1381,7 +1381,7 @@
       "Thịt chó"
     ],
     "severity": "low",
-    "reason": "Liệt kê kỵ nhau (SKĐS).",
+    "reason": "Cá chép không nên ăn chung với Thịt chó: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn cùng.",
     "sources": [
       {
@@ -1401,7 +1401,7 @@
       "Củ mài"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Cá diếc không nên ăn chung với Gan lợn, Rau cải hoặc Củ mài: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Tách bữa.",
     "sources": [
       {
@@ -1419,7 +1419,7 @@
       "Thịt chó"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Cá chạch không nên ăn chung với Thịt chó: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không phối hợp.",
     "sources": [
       {
@@ -1438,7 +1438,7 @@
       "Hồng"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Cua không nên ăn cùng Rau kinh giới hoặc Hồng: Tannin trong quả hồng có thể kết hợp với protein/khoáng của Cua, tạo kết tủa khó tiêu và dễ đau bụng.",
     "advice": "Tránh kết hợp.",
     "sources": [
       {
@@ -1460,7 +1460,7 @@
       "Thịt tắc kè"
     ],
     "severity": "low",
-    "reason": "Không nên ăn chung (SKĐS).",
+    "reason": "Ốc bươu không nên kết hợp với Bí đao, Mướp, Mộc nhĩ, Đường hoặc Thịt tắc kè: Đường dễ làm tăng lên men trong dạ dày khi ăn cùng hải sản vỏ cứng, gây đầy bụng hoặc tiêu chảy (theo kinh nghiệm dân gian).",
     "advice": "Tránh phối hợp.",
     "sources": [
       {
@@ -1478,7 +1478,7 @@
       "Cua"
     ],
     "severity": "low",
-    "reason": "Dễ gây mày đay (SKĐS).",
+    "reason": "Ốc sên không nên ăn chung với Cua: Các danh mục trong nước (SKĐS/CDC) liệt kê là cặp kỵ nhau, có thể gây khó tiêu hoặc giảm hấp thu.",
     "advice": "Không ăn chung.",
     "sources": [
       {
@@ -1496,7 +1496,7 @@
       "Thịt (ăn nhiều)"
     ],
     "severity": "low",
-    "reason": "Dễ khó tiêu nếu ăn sát bữa nhiều thịt.",
+    "reason": "Dưa hấu không nên ăn sát bữa nhiều Thịt (ăn nhiều): Dưa hấu nhiều nước và đường đơn có thể làm loãng dịch vị, khiến tiêu hoá đạm kém hiệu quả và dễ đầy bụng.",
     "advice": "Ăn trái cây cách bữa 1–2 giờ.",
     "sources": [
       {
@@ -1515,7 +1515,7 @@
       "Cải xoăn"
     ],
     "severity": "low",
-    "reason": "Có thể giảm hấp thu sắt (bài phổ biến trong nước).",
+    "reason": "Gan heo không nên kết hợp với Cần tây hoặc Cải xoăn: Một số hợp chất (canxi/oxalat/tanin) có thể giảm hấp thu sắt từ gan.",
     "advice": "Tránh xào chung nhiều.",
     "sources": [
       {
@@ -1533,7 +1533,7 @@
       "Hải sản"
     ],
     "severity": "low",
-    "reason": "Báo chí trong nước khuyến cáo dễ rối loạn tiêu hoá.",
+    "reason": "Thịt chó không nên ăn cùng Hải sản: Theo kinh nghiệm dân gian, sự tương phản tính hàn – nhiệt và độ đạm cao có thể gây đầy bụng, khó tiêu.",
     "advice": "Không ăn chung.",
     "sources": [
       {
