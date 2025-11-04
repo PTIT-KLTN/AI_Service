@@ -17,13 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 class RecipeAnalysisProcessor:
-    """
-    Processor xử lý yêu cầu phân tích recipe.
-    - Supports text và image input
-    - Timeout được handle bởi caller (ThreadPoolExecutor.result(timeout=...))
-    - Synchronous I/O-bound operations (boto3, HTTP requests)
-    - Supports both original and optimized pipelines
-    """
     
     def __init__(self, use_optimized: bool = False):
         """Initialize processor với pipeline và services."""

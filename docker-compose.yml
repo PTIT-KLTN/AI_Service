@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # RabbitMQ Server
+  # ======================== RabbitMQ Server ========================
   rabbitmq:
     image: rabbitmq:3.12-management
     container_name: ai_service_rabbitmq
@@ -25,7 +25,7 @@ services:
       - ai_service_network
     restart: unless-stopped
 
-  # AI Service Worker
+  # ======================== RabbitMQ Worker (Optimized) ========================
   ai_service_worker:
     build:
       context: .
@@ -35,7 +35,7 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      # RabbitMQ Configuration
+      # ============ RabbitMQ Configuration ============
       AMQP_URL: amqp://admin:admin123@rabbitmq:5672/
       REQUEST_QUEUE: recipe_analysis_request
       WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-3}
@@ -44,20 +44,30 @@ services:
       RESULTS_DLQ: dlq.results
       MESSAGE_TTL_MS: 300000
       
-      # AWS Configuration
+      # ============ Pipeline Configuration (Optimized) ============
+      USE_OPTIMIZED_PIPELINE: "true"
+      RECIPE_CACHE_TTL: ${RECIPE_CACHE_TTL:-3600}
+      RECIPE_CACHE_MAXSIZE: ${RECIPE_CACHE_MAXSIZE:-1000}
+      OPTIMIZED_MAX_WORKERS: ${OPTIMIZED_MAX_WORKERS:-3}
+      LOG_CACHE_STATS: "true"
+      CACHE_STATS_INTERVAL: 300
+      
+      # ============ AWS Configuration ============
       AWS_REGION: ${AWS_REGION}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       
       # S3 Configuration
       S3_BUCKET_NAME: ${S3_BUCKET_NAME}
-      S3_REGION: ${S3_REGION:-us-east-1}
+      S3_REGION: ${AWS_DEFAULT_REGION}
       
       # Bedrock Configuration
-      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID:-anthropic.claude-3-sonnet-20240229-v1:0}
       BEDROCK_KB_ID: ${BEDROCK_KB_ID}
+      INVOKE_MODEL_ID: ${INVOKE_MODEL_ID}
+      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID}
+      VISION_MODEL_ID: ${VISION_MODEL_ID}
       
-      # Logging
+      # ============ Logging ============
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       ENVIRONMENT: ${ENVIRONMENT:-production}
     
@@ -73,7 +83,6 @@ services:
     
     restart: unless-stopped
     
-    # Resource limits (cho máy yếu)
     deploy:
       resources:
         limits:
@@ -82,6 +91,10 @@ services:
         reservations:
           cpus: '0.5'
           memory: 512M
+    
+    labels:
+      - "com.aiservice.type=worker"
+      - "com.aiservice.pipeline=optimized"
 
 volumes:
   rabbitmq_data:

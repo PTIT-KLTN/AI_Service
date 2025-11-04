@@ -224,6 +224,7 @@ VISION_SYSTEM_PROMPT = (
     "- ingredient: dish_name = null, ingredients liệt kê từng nguyên liệu nhận diện được "
     "- dish: dish_name bắt buộc, liệt kê các ingredients chính "
     "Luôn dùng tiếng Việt cho tên nguyên liệu. quantity và unit là chuỗi; để chuỗi rỗng nếu không xác định được."
+    "Danh sách nguyên liệu trong ingredients KHÔNG được trùng tên nhau."
 )
 
 

@@ -1,13 +1,4 @@
-"""
-RabbitMQ Worker với ThreadPoolExecutor - KHÔNG dùng async/await.
-Implement RPC pattern với:
-- Publisher confirms
-- Mandatory routing (detect unroutable messages)
-- Thread-safe callbacks với add_callback_threadsafe
-- Timeout xử lý
-- DLQ cho failed messages
-- Fairness với prefetch_count
-"""
+
 import json
 import logging
 import time
@@ -26,25 +17,12 @@ logger = logging.getLogger(__name__)
 
 
 class ThreadedRabbitMQWorker:
-    """
-    RabbitMQ Worker sử dụng BlockingConnection + ThreadPoolExecutor.
-    - Main thread: chạy pika IOLoop, nhận messages
-    - Worker threads: xử lý business logic (I/O-bound tasks)
-    - Thread-safe callbacks: publish/ack từ worker threads về pika thread
-    """
     
     def __init__(
         self,
         config: RabbitMQConfig,
         process_callback: Callable[[Dict[str, Any]], Dict[str, Any]]
     ):
-        """
-        Initialize worker.
-        
-        Args:
-            config: RabbitMQ configuration
-            process_callback: Function xử lý request, trả về response dict
-        """
         self.config = config
         self.process_callback = process_callback
         
@@ -458,15 +436,7 @@ class ThreadedRabbitMQWorker:
         correlation_id: str,
         error_message: str
     ) -> None:
-        """
-        Gửi error response (chạy trên pika thread).
-        
-        Args:
-            channel: Pika channel
-            reply_to: Queue để gửi response
-            correlation_id: Correlation ID
-            error_message: Error message
-        """
+
         try:
             error_body = json.dumps({
                 'success': False,
