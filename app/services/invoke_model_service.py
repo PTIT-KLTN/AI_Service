@@ -68,21 +68,38 @@ class BedrockModelService:
                         "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
                     }}"""
 
-        body = json.dumps({
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 1024,
-            "temperature": 0.1,
-            "messages": [{
-                "role": "user",
-                "content": [{"type": "text", "text": prompt}]
-            }]
-        })
+        # Format request dựa vào model type
+        if 'claude' in self.model_id.lower():
+            # Claude format
+            body = json.dumps({
+                "anthropic_version": "bedrock-2023-05-31",
+                "max_tokens": 1024,
+                "temperature": 0.1,
+                "messages": [{
+                    "role": "user",
+                    "content": [{"type": "text", "text": prompt}]
+                }]
+            })
+        else:
+            # Nova format
+            body = json.dumps({
+                "messages": [{
+                    "role": "user",
+                    "content": [{"text": prompt}]
+                }],
+                "inferenceConfig": {
+                    "max_new_tokens": 1024,
+                    "temperature": 0.1
+                }
+            })
 
         response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
         resp_json = json.loads(response['body'].read() or b'{}')
 
-        text = ""
-        content_arr = resp_json.get('content') or []
+        # Nova response format
+        output = resp_json.get('output', {})
+        message = output.get('message', {})
+        content_arr = message.get('content', [])
         if isinstance(content_arr, list) and content_arr:
             first = content_arr[0] or {}
             if isinstance(first, dict):
@@ -217,23 +234,20 @@ class BedrockModelService:
     
 
 VISION_SYSTEM_PROMPT = (
-    "Bạn là trợ lý ẩm thực chuyên trích xuất thông tin món ăn từ hình ảnh. "
-    "Chỉ trả về DUY NHẤT một JSON hợp lệ với cấu trúc: {\"dish_name\": <string|null>, \"ingredients\": [{\"name\": <string>, \"quantity\": \"\", \"unit\": \"\"}]}. "
-    "Phân loại ảnh thành một trong ba trường hợp: none | ingredient | dish và áp dụng quy tắc sau: "
-    "- none: dish_name = null, ingredients = [] "
-    "- ingredient: dish_name = null, ingredients liệt kê từng nguyên liệu nhận diện được "
-    "- dish: dish_name bắt buộc, liệt kê các ingredients chính "
-    "Luôn dùng tiếng Việt cho tên nguyên liệu. quantity và unit là chuỗi; để chuỗi rỗng nếu không xác định được."
-    "Danh sách nguyên liệu trong ingredients KHÔNG được trùng tên nhau."
+    "Nhận diện món ăn hoặc nguyên liệu từ ảnh. "
+    "Trả về JSON: {\"dish_name\": <string|null>, \"ingredients\": []}.\n"
+    "- Nếu là MÓN ĂN hoàn chỉnh: dish_name = tên món tiếng Việt có dấu (VD: \"Phở bò\"), ingredients = []\n"
+    "- Nếu là NGUYÊN LIỆU thô: dish_name = null, ingredients = [{\"name\": \"tên nguyên liệu\"}]\n"
+    "- Nếu KHÔNG RÕ/KHÁC: dish_name = null, ingredients = []"
 )
 
 
 def _build_vision_request_nova(description: str, image_b64: str, image_mime: str) -> dict:
 
     # Build prompt
-    prompt = "Phân tích ảnh và trích xuất JSON theo hướng dẫn. Không giải thích, không thêm văn bản ngoài JSON."
+    prompt = "Nhận diện món ăn hoặc nguyên liệu từ ảnh. Trả về JSON theo format đã hướng dẫn."
     if description:
-        prompt += f'\nMô tả bổ sung: """{description}"""'
+        prompt += f'\nGợi ý: "{description}"'
 
     # Map mime type to Nova format
     format_map = {

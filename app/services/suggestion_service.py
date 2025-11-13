@@ -9,14 +9,7 @@ class SuggestionService:
     """Generates suggestions for related ingredients and dishes."""
     
     def __init__(self, ontology_service, unit_converter, validation_service=None):
-        """
-        Initialize service.
-        
-        Args:
-            ontology_service: OntologyService for ingredient/dish data
-            unit_converter: UnitConverterService for normalizing quantities
-            validation_service: ValidationService for PMI-based suggestions (optional)
-        """
+
         self.ontology = ontology_service
         self.converter = unit_converter
         self.validator = validation_service
@@ -26,16 +19,7 @@ class SuggestionService:
         current_ingredient_ids: List[str],
         dish_name: str = ""
     ) -> List[Dict[str, Any]]:
-        """
-        Get ingredient suggestions based on PMI co-occurrence patterns.
-        
-        Args:
-            current_ingredient_ids: List of current ingredient IDs in cart
-            dish_name: Optional dish name for context
-            
-        Returns:
-            List of suggested ingredients with metadata
-        """
+
         if not current_ingredient_ids:
             return []
         
@@ -63,7 +47,8 @@ class SuggestionService:
             
             suggestion_item = {
                 'ingredient_id': sug['id'],
-                'name_vi': ing_data.get('name_vi', ''),
+                'vietnamese_name': ing_data.get('vietnamese_name') or ing_data.get('name_vi', ''),
+                'name': ing_data.get('name') or ing_data.get('name_en', ''),
                 'category': ing_data.get('category', 'other'),
                 'quantity': '',
                 'unit': '',

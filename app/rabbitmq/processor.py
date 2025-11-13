@@ -53,20 +53,7 @@ class RecipeAnalysisProcessor:
             raise
     
     def process_request(self, request_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Xử lý request và trả về response.
-        
-        Args:
-            request_data: Request payload từ RabbitMQ
-            
-        Returns:
-            Response dict với format:
-            {
-                'success': bool,
-                'result': dict,  # nếu success
-                'error': str,    # nếu fail
-            }
-        """
+
         start_time = time.time()
         start_time = time.time()
         
@@ -167,16 +154,7 @@ class RecipeAnalysisProcessor:
             }
     
     def _process_image(self, s3_url: str, description: str = "") -> Dict[str, Any]:
-        """
-        Process image từ S3.
-        
-        Args:
-            s3_url: S3 URL của ảnh
-            description: Mô tả bổ sung (optional)
-            
-        Returns:
-            Result dict từ pipeline
-        """
+
         try:
             # Download image từ S3
             image_data = self.s3_service.download_image_as_base64(s3_url)
@@ -223,15 +201,7 @@ class RecipeAnalysisProcessor:
             }
     
     def _process_text(self, user_input: str) -> Dict[str, Any]:
-        """
-        Process text input.
-        
-        Args:
-            user_input: User input text
-            
-        Returns:
-            Result dict từ pipeline
-        """
+
         try:
             logger.info(f"Processing text with pipeline...")
             result = self.pipeline.process(user_input)

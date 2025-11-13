@@ -107,12 +107,12 @@ class OptimizedShoppingCartPipeline:
         
         for ing_id, ing_info in self.ontology.ingredients.items():
             # Index by Vietnamese name (lowercase)
-            name_vi = ing_info.get('name_vi', '').lower().strip()
+            name_vi = ing_info.get('vietnamese_name', '').lower().strip()
             if name_vi:
                 self._ingredient_name_index[name_vi] = ing_id
             
             # Index by English name (lowercase)
-            name_en = ing_info.get('name_en', '').lower().strip()
+            name_en = ing_info.get('name', '').lower().strip()
             if name_en:
                 self._ingredient_name_index[name_en] = ing_id
         
@@ -122,7 +122,7 @@ class OptimizedShoppingCartPipeline:
         """Process with optimizations"""
         # Extract dish name + extra ingredients
         extracted = self.extractor.extract_dish_name(user_input)
-        return self._build_response(extracted, user_input)
+        return self._build_response(extracted, user_query=user_input, s3_url=None)
 
     def process_image(self, s3_url: str, description: str = "") -> dict:
         """Process image from S3 URL"""
@@ -130,7 +130,7 @@ class OptimizedShoppingCartPipeline:
         image_data = self.s3_service.download_image_as_base64(s3_url)
         
         if not image_data:
-            return self._error_response('image_download_failed')
+            return self._error_response('image_download_failed', s3_url=s3_url)
         
         # Extract từ image
         extracted = self.extractor.extract_dish_from_image(
@@ -139,13 +139,13 @@ class OptimizedShoppingCartPipeline:
             image_mime=image_data['mime_type']
         )
         
-        return self._build_response(extracted)
+        return self._build_response(extracted, s3_url=s3_url)
 
-    def _build_response(self, extracted: dict, user_query: str = "") -> dict:
+    def _build_response(self, extracted: dict, user_query: str = "", s3_url: str = None) -> dict:
         """Build response with optimizations"""
         
         if not extracted:
-            return self._error_response('extraction_failed')
+            return self._error_response('extraction_failed', s3_url=s3_url)
 
         guardrail_info = extracted.get('guardrail')
         warnings = self._normalize_warnings(extracted.get('warnings'))
@@ -177,7 +177,7 @@ class OptimizedShoppingCartPipeline:
         # Handle no dish name
         if not dish_name:
             if is_guardrail_blocked:
-                return self._error_response('guardrail_violation', guardrail_info, warnings)
+                return self._error_response('guardrail_violation', guardrail_info, warnings, s3_url=s3_url)
             elif extra_ingredients:
                 warnings.append({
                     'message': 'Không tìm thấy tên món, chỉ xử lý danh sách nguyên liệu',
@@ -188,12 +188,12 @@ class OptimizedShoppingCartPipeline:
                 recipe = {'ingredients': []}
                 recipe_ing = []
             else:
-                return self._error_response('dish_not_found', guardrail_info, warnings)
+                return self._error_response('dish_not_found', guardrail_info, warnings, s3_url=s3_url)
         else:
             # Get recipe
             recipe = self._get_recipe(dish_name)
             if not recipe.get('ingredients'):
-                return self._error_response('recipe_not_found', guardrail_info, warnings, dish_name)
+                return self._error_response('recipe_not_found', guardrail_info, warnings, dish_name, s3_url)
             
             # Batch normalize recipe ingredients
             recipe_ing = self._normalize_recipe_items_batch(recipe.get('ingredients', []))
@@ -215,7 +215,7 @@ class OptimizedShoppingCartPipeline:
         all_ingredients = recipe_ing + [it for it in extra_norm if it.get('ingredient_id')]
         
         if not all_ingredients:
-            return self._error_response('no_valid_ingredients', guardrail_info, warnings, dish_name)
+            return self._error_response('no_valid_ingredients', guardrail_info, warnings, dish_name, s3_url)
         
         # Convert units
         cart_items = self.converter.normalize_ingredients(all_ingredients)
@@ -271,8 +271,10 @@ class OptimizedShoppingCartPipeline:
             'status': 'success',
             'error': None,
             'error_type': None,
+            's3_url': s3_url or '',
             'dish': {
-                'name': dish_name or '',
+                'vietnamese_name': recipe.get('vietnamese_name') or dish_name or '',
+                'name': recipe.get('name') or '',
                 'prep_time': recipe.get('prep_time') if dish_name else None,
                 'servings': recipe.get('servings') if dish_name else None
             },
@@ -334,16 +336,29 @@ class OptimizedShoppingCartPipeline:
         normalized = []
         
         for it in items:
-            name = str(it.get('name_vi') or it.get('name') or '').strip()
+            # Extract Vietnamese name (prioritize vietnamese_name, then name_vi)
+            vietnamese_name = str(it.get('vietnamese_name') or it.get('name_vi') or '').strip()
             
-            # Skip if no valid name
-            if not name:
+            # Extract English name (prioritize name field, then name_en)
+            english_name = str(it.get('name') or it.get('name_en') or '').strip()
+            
+            # Fallback: if vietnamese_name is empty but 'name' exists and english_name is empty,
+            # then 'name' might be Vietnamese (old format)
+            if not vietnamese_name and it.get('name'):
+                vietnamese_name = str(it.get('name')).strip()
+                english_name = ''  # Clear english_name in this case
+            
+            # Skip if no valid Vietnamese name
+            if not vietnamese_name:
                 continue
             
             # Resolve ingredient ID (with cache)
-            ing_id = self._resolve_name_to_ingredient_id_cached(name)
+            ing_id = self._resolve_name_to_ingredient_id_cached(vietnamese_name)
             if not ing_id:
                 continue
+            
+            # Get ingredient info for fallback
+            ing_info = self._get_ingredient_info_cached(ing_id)
             
             qty = it.get('quantity', '')
             if isinstance(qty, (int, float)):
@@ -353,7 +368,8 @@ class OptimizedShoppingCartPipeline:
             
             normalized.append({
                 'ingredient_id': ing_id,
-                'name_vi': name,
+                'vietnamese_name': vietnamese_name,
+                'name': english_name or ing_info.get('name_en', ''),
                 'quantity': qty,
                 'unit': str(it.get('unit', ''))
             })
@@ -368,11 +384,14 @@ class OptimizedShoppingCartPipeline:
         normalized = []
         
         for item in extra_ingredients:
-            name = item.get('name', '').strip()
-            if not name:
+            # Extract Vietnamese and English names
+            vietnamese_name = item.get('vietnamese_name', '').strip() or item.get('name_vi', '').strip() or item.get('name', '').strip()
+            english_name = item.get('name', '').strip() or item.get('name_en', '').strip()
+            
+            if not vietnamese_name:
                 continue
             
-            matched_id = self._resolve_name_to_ingredient_id_cached(name)
+            matched_id = self._resolve_name_to_ingredient_id_cached(vietnamese_name)
             if matched_id:
                 ing_data = self._get_ingredient_info_cached(matched_id)
                 
@@ -384,7 +403,8 @@ class OptimizedShoppingCartPipeline:
                 
                 normalized.append({
                     'ingredient_id': matched_id,
-                    'name_vi': ing_data.get('name_vi', name),
+                    'vietnamese_name': ing_data.get('vietnamese_name') or ing_data.get('name_vi', vietnamese_name),
+                    'name': english_name or ing_data.get('name_en', ''),
                     'quantity': qty,
                     'unit': str(item.get('unit', ''))
                 })
@@ -427,16 +447,16 @@ class OptimizedShoppingCartPipeline:
                 ing_info = self._get_ingredient_info_cached(matched_id)
                 normalized.append({
                     'ingredient_id': matched_id,
-                    'name_vi': ing_info.get('name_vi', name),
-                    'name_en': ing_info.get('name_en', ''),
+                    'vietnamese_name': ing_info.get('vietnamese_name') or ing_info.get('name_vi', name),
+                    'name': ing_info.get('name') or ing_info.get('name_en', ''),
                     'category': ing_info.get('category', ''),
                     'reason': reason
                 })
             else:
                 normalized.append({
                     'ingredient_id': '',
-                    'name_vi': name,
-                    'name_en': '',
+                    'vietnamese_name': name,
+                    'name': '',
                     'category': '',
                     'reason': reason
                 })
@@ -448,6 +468,12 @@ class OptimizedShoppingCartPipeline:
         for item in cart_items:
             ing_info = self._get_ingredient_info_cached(item['ingredient_id'])
             item['category'] = ing_info.get('category', 'other')
+            
+            # Ensure both vietnamese_name and name fields exist
+            if 'vietnamese_name' not in item:
+                item['vietnamese_name'] = ing_info.get('vietnamese_name') or ing_info.get('name_vi', '')
+            if 'name' not in item:
+                item['name'] = ing_info.get('name') or ing_info.get('name_en', '')
 
 
     def _check_conflicts_parallel(
@@ -463,14 +489,14 @@ class OptimizedShoppingCartPipeline:
         for item in cart_items:
             conflict_ingredients.append({
                 'ingredient_id': item.get('ingredient_id'),
-                'name_vi': item.get('name_vi') or item.get('name')
+                'vietnamese_name': item.get('vietnamese_name') or item.get('name_vi') or item.get('name')
             })
         
         for ing in extra_ingredients:
             if isinstance(ing, dict):
                 conflict_ingredients.append({
                     'ingredient_id': ing.get('ingredient_id'),
-                    'name_vi': ing.get('name', '')
+                    'vietnamese_name': ing.get('vietnamese_name') or ing.get('name_vi', '') or ing.get('name', '')
                 })
         
         conflict_results = self.conflicts.check_conflicts(dish_name, conflict_ingredients)
@@ -502,7 +528,7 @@ class OptimizedShoppingCartPipeline:
         try:
             src_lines = []
             for it in recipe_ing:
-                nm = it.get('name_vi') or it.get('name') or ''
+                nm = it.get('vietnamese_name') or it.get('name_vi') or it.get('name') or ''
                 qty = it.get('quantity', '')
                 unit = it.get('unit', '')
                 line = f"- {nm}".strip()
@@ -622,7 +648,8 @@ class OptimizedShoppingCartPipeline:
         error_type: str,
         guardrail_info=None,
         warnings=None,
-        dish_name: str = ''
+        dish_name: str = '',
+        s3_url: str = None
     ) -> dict:
         """Build error response"""
         error_messages = {
@@ -640,6 +667,7 @@ class OptimizedShoppingCartPipeline:
             'status': status,
             'error': error_messages.get(error_type, 'Unknown error'),
             'error_type': error_type,
+            's3_url': s3_url or '',
             'dish': {'name': dish_name},
             'cart': None,
             'suggestions': [],
