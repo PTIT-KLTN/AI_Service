@@ -19,14 +19,15 @@ class ConflictWarning(BaseModel):
 
 class IngredientItem(BaseModel):
     ingredient_id: str
-    name_vi: str
-    quantity: str = ""
+    vietnamese_name: str
+    name: str
     unit: str = ""
     category: Optional[str] = None
     note: Optional[str] = None
 
 
 class DishInfo(BaseModel):
+    vietnamese_name: str = ""
     name: str
     prep_time: Optional[str] = None
     servings: Optional[int] = None
@@ -54,8 +55,8 @@ class RecipeAnalysisRequest(BaseModel):
 
 class ExcludedIngredient(BaseModel):
     ingredient_id: str = ""
-    name_vi: str
-    name_en: str = ""
+    vietnamese_name: str
+    name: str = ""
     category: str = ""
     reason: str = ""
 

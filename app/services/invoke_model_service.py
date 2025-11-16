@@ -64,7 +64,7 @@ class BedrockModelService:
                     Trả về JSON (chỉ JSON, không giải thích):
                     {{
                         "dish_name": "tên món ăn chính",
-                        "ingredients": [{{"name": "nguyên liệu thêm/ăn kèm/uống kèm", "quantity": "", "unit": ""}}],
+                        "ingredients": [{{"name": "nguyên liệu thêm/ăn kèm/uống kèm", "unit": "số lượng và đơn vị (VD: 2 củ, 100 g)"}}],
                         "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
                     }}"""
 

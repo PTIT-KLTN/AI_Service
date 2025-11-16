@@ -11,31 +11,13 @@ class IngredientResolver:
     """Resolves ingredient names to IDs using fuzzy matching."""
     
     # Thresholds for matching
-    NAME_VI_THRESHOLD = 0.70
+    NAME_VI_THRESHOLD = 0.7
     SYNONYMS_THRESHOLD = 0.65
     
     def __init__(self, ontology_service):
-        """
-        Initialize resolver.
-        
-        Args:
-            ontology_service: OntologyService instance with ingredients data
-        """
         self.ontology = ontology_service
     
     def resolve_name_to_id(self, name: str) -> Optional[str]:
-        """
-        Resolve ingredient name to ID using 2-stage fuzzy matching.
-        
-        Stage A: Match against name_vi (threshold 0.70)
-        Stage B: Match against synonyms (threshold 0.65)
-        
-        Args:
-            name: Ingredient name in Vietnamese
-            
-        Returns:
-            Ingredient ID or None if no match found
-        """
         if not name:
             return None
         

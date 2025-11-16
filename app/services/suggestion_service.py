@@ -50,7 +50,6 @@ class SuggestionService:
                 'vietnamese_name': ing_data.get('vietnamese_name') or ing_data.get('name_vi', ''),
                 'name': ing_data.get('name') or ing_data.get('name_en', ''),
                 'category': ing_data.get('category', 'other'),
-                'quantity': '',
                 'unit': '',
                 'score': sug['score'],
             }
@@ -66,16 +65,7 @@ class SuggestionService:
         ingredient_ids: List[str],
         min_match: int = 3
     ) -> List[Dict[str, Any]]:
-        """
-        Find dishes similar to current ingredients.
-        
-        Args:
-            ingredient_ids: List of ingredient IDs
-            min_match: Minimum number of matching ingredients
-            
-        Returns:
-            List of similar dishes
-        """
+
         return self.ontology.search_similar_dishes(
             ingredient_ids=ingredient_ids,
             min_match=min_match

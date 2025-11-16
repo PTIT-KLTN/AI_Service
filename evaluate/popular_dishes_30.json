@@ -1,0 +1,182 @@
+[
+  {
+    "dish_id": "dish7133",
+    "name_vi": "Phở chiên phồng bò xào",
+    "name_normalize": "pho chien phong bo xao",
+    "category": "mon chien"
+  },
+  {
+    "dish_id": "dish3498",
+    "name_vi": "Bún măng vịt  bằng nồi cơm điện tử",
+    "name_normalize": "bun mang vit  bang noi com dien tu",
+    "category": "mon nuoc"
+  },
+  {
+    "dish_id": "dish5363",
+    "name_vi": "Phở xào tim gà",
+    "name_normalize": "pho xao tim ga",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish5302",
+    "name_vi": "Bún xào rau cải thịt heo",
+    "name_normalize": "bun xao rau cai thit heo",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish4616",
+    "name_vi": "Bún gạo xào lòng gà",
+    "name_normalize": "bun gao xao long ga",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish3431",
+    "name_vi": "Bún gỏi dà Sóc Trăng",
+    "name_normalize": "bun goi da soc trang",
+    "category": "mon nuoc"
+  },
+  {
+    "dish_id": "dish2132",
+    "name_vi": "Bánh khoai mì nướng bằng nồi cơm điện",
+    "name_normalize": "banh khoai mi nuong bang noi com dien",
+    "category": "mon banh"
+  },
+  {
+    "dish_id": "dish6333",
+    "name_vi": "Cơm chiên bò xào",
+    "name_normalize": "com chien bo xao",
+    "category": "mon chien"
+  },
+  {
+    "dish_id": "dish5479",
+    "name_vi": "Cách làm đậu hũ xào thịt sốt cà chua đơn giản, bắt cơm",
+    "name_normalize": "cach lam dau hu xao thit sot ca chua don gian, bat com",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish8105",
+    "name_vi": "Gỏi cá cơm tươi",
+    "name_normalize": "goi ca com tuoi",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish7780",
+    "name_vi": "Nấu lẩu bằng nồi cơm điện",
+    "name_normalize": "nau lau bang noi com dien",
+    "category": "mon lau"
+  },
+  {
+    "dish_id": "dish3389",
+    "name_vi": "Canh bún bạch tuộc",
+    "name_normalize": "canh bun bach tuoc",
+    "category": "mon nuoc"
+  },
+  {
+    "dish_id": "dish0082",
+    "name_vi": "Canh ngót cá cơm",
+    "name_normalize": "canh ngot ca com",
+    "category": "mon canh"
+  },
+  {
+    "dish_id": "dish7877",
+    "name_vi": "Lẩu bò nướng hầm sả",
+    "name_normalize": "lau bo nuong ham sa",
+    "category": "mon lau"
+  },
+  {
+    "dish_id": "dish8135",
+    "name_vi": "Gỏi bò nướng chua ngọt",
+    "name_normalize": "goi bo nuong chua ngot",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish4183",
+    "name_vi": "Cánh gà nướng muối ớt bằng nồi chiên không dầu",
+    "name_normalize": "canh ga nuong muoi ot bang noi chien khong dau",
+    "category": "mon nuong"
+  },
+  {
+    "dish_id": "dish8122",
+    "name_vi": "Salad bí đỏ thịt gà nướng",
+    "name_normalize": "salad bi do thit ga nuong",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish5502",
+    "name_vi": "Khoai tây xào thịt bò",
+    "name_normalize": "khoai tay xao thit bo",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish4968",
+    "name_vi": "Thịt lợn xào khoai tây su hào",
+    "name_normalize": "thit lon xao khoai tay su hao",
+    "category": "mon xao"
+  },
+  {
+    "dish_id": "dish4202",
+    "name_vi": "Nem nướng Nha Trang bằng nồi chiên không dầu",
+    "name_normalize": "nem nuong nha trang bang noi chien khong dau",
+    "category": "mon nuong"
+  },
+  {
+    "dish_id": "dish8206",
+    "name_vi": "Gỏi rau diếp cá thịt bò",
+    "name_normalize": "goi rau diep ca thit bo",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish8197",
+    "name_vi": "Gỏi bông súng tôm thịt",
+    "name_normalize": "goi bong sung tom thit",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish10677",
+    "name_vi": "Gỏi cuốn thịt gà đơn giản",
+    "name_normalize": "goi cuon thit ga don gian",
+    "category": "mon cuon - tron"
+  },
+  {
+    "dish_id": "dish7397",
+    "name_vi": "Chả giò tôm thịt cá lóc",
+    "name_normalize": "cha gio tom thit ca loc",
+    "category": "mon chien"
+  },
+  {
+    "dish_id": "dish6465",
+    "name_vi": "Chả quế thịt gà",
+    "name_normalize": "cha que thit ga",
+    "category": "mon chien"
+  },
+  {
+    "dish_id": "dish6474",
+    "name_vi": "Chả thịt heo trứng muối",
+    "name_normalize": "cha thit heo trung muoi",
+    "category": "mon chien"
+  },
+  {
+    "dish_id": "dish3936",
+    "name_vi": "Khoai tây nướng phô mai bằng nồi chiên không dầu",
+    "name_normalize": "khoai tay nuong pho mai bang noi chien khong dau",
+    "category": "mon nuong"
+  },
+  {
+    "dish_id": "dish8357",
+    "name_vi": "Gỏi khoai môn tôm thịt",
+    "name_normalize": "goi khoai mon tom thit",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish8149",
+    "name_vi": "Gỏi nấm tuyết thịt heo chiên",
+    "name_normalize": "goi nam tuyet thit heo chien",
+    "category": "mon goi - salad"
+  },
+  {
+    "dish_id": "dish8349",
+    "name_vi": "Gỏi mực xoài xanh chiên giòn",
+    "name_normalize": "goi muc xoai xanh chien gion",
+    "category": "mon goi - salad"
+  }
+]

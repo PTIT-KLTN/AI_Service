@@ -9,6 +9,7 @@ class UnitConverterService:
             'lạng': 100,
             'cân': 600,
             'g': 1,
+            'gr': 1,  # gr là viết tắt của gram
             'gram': 1,
             'tạ': 100000,
             'yến': 10,
@@ -76,70 +77,85 @@ class UnitConverterService:
         for item in ingredients:
             converted = self._convert_single(item)
             
-            quantity_str = converted['quantity']
-            unit_str = converted['unit']
-            
-            if quantity_str and unit_str:
-                combined = f"{quantity_str} {unit_str}"
-            elif quantity_str:
-                combined = quantity_str
-            else:
-                combined = unit_str or ''
-            
+            # converted now has a combined 'unit' field
             result.append({
                 **item,
-                'quantity': combined,
-                'unit': unit_str
+                'unit': converted['unit']
             })
         
         return result
     
     def _convert_single(self, item: dict) -> dict:
-        quantity = str(item.get('quantity', '')).strip()
-        unit = str(item.get('unit', '')).strip().lower()
-        name = str(item.get('name_vi') or item.get('name') or '').strip().lower()
+        # Parse combined 'unit' field into quantity and unit parts
+        combined_unit = str(item.get('unit', '')).strip()
         
-        if not quantity or quantity == '':
-            return {'quantity': '', 'unit': unit or 'tùy thích'}
+        # Try to split into quantity and unit
+        # Format: "500 g" or "2 củ" or "1.0 kg" or just "g" or just "500"
+        parts = combined_unit.split(None, 1)  # Split on first whitespace
+        
+        if len(parts) == 2:
+            quantity_str, unit = parts
+        elif len(parts) == 1:
+            # Could be just quantity or just unit
+            # Try to parse as number first
+            try:
+                from app.utils.number_utils import parse_number
+                parse_number(parts[0])
+                quantity_str = parts[0]
+                unit = ''
+            except:
+                quantity_str = ''
+                unit = parts[0]
+        else:
+            quantity_str = ''
+            unit = ''
+        
+        unit = unit.lower()
+        name = str(item.get('name_vi') or item.get('vietnamese_name') or item.get('name') or '').strip().lower()
+        
+        if not quantity_str or quantity_str == '':
+            # Normalize gr to g
+            normalized_unit = 'g' if unit == 'gr' else unit
+            return {'unit': normalized_unit or 'tùy thích'}
         
         try:
-            qty_value = parse_quantity(quantity)
+            qty_value = parse_quantity(quantity_str)
         except:
-            return {'quantity': quantity, 'unit': unit}
+            # Normalize gr to g in combined string
+            normalized_combined = combined_unit.replace(' gr', ' g').replace(' gr,', ' g,')
+            return {'unit': normalized_combined}
         
         if (not unit) or (unit in self.count_units):
-            return {'quantity': quantity, 'unit': unit or 'tùy thích'}
+            return {'unit': f"{quantity_str} {unit}".strip() if unit else quantity_str}
 
         is_liquid = any(keyword in name for keyword in self.liquid_keywords)
         
+        # Normalize gr to g
+        if unit == 'gr':
+            unit = 'g'
+        
         if unit in self.weight_to_gram:
             converted_qty = qty_value * self.weight_to_gram[unit]
-            return {
-                'quantity': str(int(converted_qty)) if converted_qty.is_integer() else str(round(converted_qty, 1)),
-                'unit': 'g'
-            }
+            qty_str = str(int(converted_qty)) if converted_qty.is_integer() else str(round(converted_qty, 1))
+            return {'unit': f"{qty_str} g"}
         
         if unit in self.volume_to_ml:
             converted_qty = qty_value * self.volume_to_ml[unit]
-            return {
-                'quantity': str(int(converted_qty)) if converted_qty.is_integer() else str(round(converted_qty, 1)),
-                'unit': 'ml'
-            }
+            qty_str = str(int(converted_qty)) if converted_qty.is_integer() else str(round(converted_qty, 1))
+            return {'unit': f"{qty_str} ml"}
         
         if unit in ['củ', 'cây', 'quả', 'trái']:
             for key, (est_unit, est_gram, est_target) in self.count_estimation.items():
                 if key in name and unit == est_unit:
                     converted_qty = qty_value * est_gram
-                    return {
-                        'quantity': str(int(converted_qty)),
-                        'unit': est_target
-                    }
-            return {'quantity': quantity, 'unit': unit}
+                    qty_str = str(int(converted_qty))
+                    return {'unit': f"{qty_str} {est_target}"}
+            return {'unit': f"{quantity_str} {unit}"}
         
         if unit in ['củ', 'cây', 'quả', 'trái', 'miếng', 'lát', 'lá', 'nhánh', 'bó', 'gói']:
-            return {'quantity': quantity, 'unit': unit}
+            return {'unit': f"{quantity_str} {unit}"}
         
         if is_liquid:
-            return {'quantity': quantity, 'unit': 'ml'}
+            return {'unit': f"{quantity_str} ml"}
         else:
-            return {'quantity': quantity, 'unit': 'g'}
+            return {'unit': f"{quantity_str} g"}

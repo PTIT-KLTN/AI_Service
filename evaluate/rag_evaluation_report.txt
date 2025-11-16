@@ -1,0 +1,2290 @@
+========================================================================================================================
+📊 TỔNG QUAN KẾT QUẢ ĐÁNH GIÁ RAG
+========================================================================================================================
+
+Tổng số món: 30
+Timestamp: 2025-11-14T17:15:27.241355
+Source: popular_dishes_30.json
+
+📈 MICRO-AVERAGE METRICS (ID-based exact matching):
+   F1-Score:  0.6959 (69.59%)
+   Precision: 0.7202 (72.02%)
+   Recall:    0.6731 (67.31%)
+
+📊 OVERALL COUNTS:
+   Total TP (Matched):       278
+   Total FN (Missed):        135
+   Total FP (Extra):         108
+
+🎯 PERFORMANCE DISTRIBUTION:
+   🎯 Perfect (F1=100%):       2 món (  6.7%)
+   ✅ Good (F1≥80%):           7 món ( 23.3%)
+   ⚠️  Fair (F1=50-80%):      17 món ( 56.7%)
+   🔴 Poor (F1<50%):           4 món ( 13.3%)
+
+⚠️  Món có tên khác nhau (GT vs RAG): 1 món
+
+🔴 TOP 5 WORST PERFORMING DISHES:
+   #1. Nấu lẩu bằng nồi cơm điện
+       F1: 0.00% | P: 0.00% | R: 0.00%
+       GT: 20 | RAG: 6 | FN: 20 | FP: 6
+   #2. Nem nướng Nha Trang bằng nồi chiên không dầu
+       F1: 12.12% | P: 15.38% | R: 10.00%
+       GT: 20 | RAG: 13 | FN: 18 | FP: 11
+   #3. Bánh khoai mì nướng bằng nồi cơm điện
+       F1: 22.22% | P: 33.33% | R: 16.67%
+       GT: 12 | RAG: 6 | FN: 10 | FP: 4
+   #4. Bún măng vịt  bằng nồi cơm điện tử
+       F1: 45.45% | P: 45.45% | R: 45.45%
+       GT: 11 | RAG: 11 | FN: 6 | FP: 6
+   #5. Thịt lợn xào khoai tây su hào
+       F1: 58.33% | P: 58.33% | R: 58.33%
+       GT: 12 | RAG: 12 | FN: 5 | FP: 5
+
+========================================================================================================================
+
+========================================================================================================================
+MÓN #1/30: Nấu lẩu bằng nồi cơm điện
+========================================================================================================================
+✅ Tên món: Nấu lẩu bằng nồi cơm điện
+📂 Category: mon lau
+
+📊 METRICS:
+   F1:        0.00%
+   Precision: 0.00%
+   Recall:    0.00%
+   GT:        20 nguyên liệu
+   RAG:       6 nguyên liệu
+   ✅ TP:     0 (matched)
+   ❌ FN:     20 (missed - thiếu)
+   ⚠️  FP:     6 (extra - thừa/sai)
+
+📋 GROUND TRUTH (20 ingredients):
+      1. Bún khô                                  500.0 gr             (grains_staples) [imp=3]
+      2. Mực                                      1.0 con              (seafood_&_fish_balls) [imp=3]
+      3. Bạch tuộc nhỏ                            1.0 con              (seafood_&_fish_balls) [imp=3]
+      4. Thịt bò                                  100.0 gr             (fresh_meat) [imp=3]
+      5. Tôm                                      2.0 con              (seafood_&_fish_balls) [imp=3]
+      6. Nấm mỡ trắng                             20.0 gr              (others) [imp=3]
+      7. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+      8. Bắp Mỹ                                   1.0 trái             (vegetables) [imp=2]
+      9. Măng tây                                 50.0 gr              (vegetables) [imp=2]
+     10. Cà chua                                  2.0 trái             (vegetables) [imp=2]
+     11. Giá đỗ                                   30.0 gr              (vegetables) [imp=2]
+     12. Sả                                       3.0 cây              (vegetables) [imp=2]
+     13. Tỏi băm                                  0.25 muỗng canh      (seasonings) [imp=2]
+     14. Gừng băm                                 0.25 muỗng canh      (seasonings) [imp=2]
+     15. Hành tím băm                             0.25 muỗng canh      (seasonings) [imp=1]
+     16. Dầu ăn                                   2.0 muỗng canh       (others) [imp=1]
+     17. Giấm                                     0.5 muỗng canh       (seasonings) [imp=1]
+     18. Tương ớt                                 0.3333333333333333 muỗng canh (seasonings) [imp=1]
+     19. Nước mắm                                 0.6666666666666666 muỗng canh (seasonings) [imp=1]
+     20. Hạt nêm/ đường                           1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (6 ingredients):
+      1. Gà                                       3 con                (fresh_meat)
+      2. Bột nghệ                                 3 muỗng canh         (seasonings)
+      3. Gừng                                     1 nhánh              (vegetables)
+      4. Muối                                     1 ít                 (seasonings)
+      5. Đường                                    1 ít                 (seasonings)
+      6. Hạt nêm                                  1 ít                 (seasonings)
+
+❌ MISSED - False Negatives (20 ingredients):
+   Importance 3 (6 ingredients):
+      1. Bún khô                                  500.0 gr             (grains_staples) [imp=3]
+      2. Mực                                      1.0 con              (seafood_&_fish_balls) [imp=3]
+      3. Bạch tuộc nhỏ                            1.0 con              (seafood_&_fish_balls) [imp=3]
+      4. Thịt bò                                  100.0 gr             (fresh_meat) [imp=3]
+      5. Tôm                                      2.0 con              (seafood_&_fish_balls) [imp=3]
+      6. Nấm mỡ trắng                             20.0 gr              (others) [imp=3]
+   Importance 2 (8 ingredients):
+      1. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+      2. Bắp Mỹ                                   1.0 trái             (vegetables) [imp=2]
+      3. Măng tây                                 50.0 gr              (vegetables) [imp=2]
+      4. Cà chua                                  2.0 trái             (vegetables) [imp=2]
+      5. Giá đỗ                                   30.0 gr              (vegetables) [imp=2]
+      6. Sả                                       3.0 cây              (vegetables) [imp=2]
+      7. Tỏi băm                                  0.25 muỗng canh      (seasonings) [imp=2]
+      8. Gừng băm                                 0.25 muỗng canh      (seasonings) [imp=2]
+   Importance 1 (6 ingredients):
+      1. Hành tím băm                             0.25 muỗng canh      (seasonings) [imp=1]
+      2. Dầu ăn                                   2.0 muỗng canh       (others) [imp=1]
+      3. Giấm                                     0.5 muỗng canh       (seasonings) [imp=1]
+      4. Tương ớt                                 0.3333333333333333 muỗng canh (seasonings) [imp=1]
+      5. Nước mắm                                 0.6666666666666666 muỗng canh (seasonings) [imp=1]
+      6. Hạt nêm/ đường                           1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (6 ingredients):
+      1. Gà                                       3 con                (fresh_meat)
+      2. Bột nghệ                                 3 muỗng canh         (seasonings)
+      3. Gừng                                     1 nhánh              (vegetables)
+      4. Muối                                     1 ít                 (seasonings)
+      5. Đường                                    1 ít                 (seasonings)
+      6. Hạt nêm                                  1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   🔴 POOR - F1 < 50%
+   🚨 Thiếu >50% nguyên liệu → Có thể retrieval sai hoặc generation quá conservative
+   🚨 FP > TP → RAG đang hallucinate hoặc retrieve sai món
+
+========================================================================================================================
+MÓN #2/30: Nem nướng Nha Trang bằng nồi chiên không dầu
+========================================================================================================================
+✅ Tên món: Nem nướng Nha Trang bằng nồi chiên không dầu
+📂 Category: mon nuong
+
+📊 METRICS:
+   F1:        12.12%
+   Precision: 15.38%
+   Recall:    10.00%
+   GT:        20 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     2 (matched)
+   ❌ FN:     18 (missed - thiếu)
+   ⚠️  FP:     11 (extra - thừa/sai)
+
+📋 GROUND TRUTH (20 ingredients):
+      1. Giò sống                                 200.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      2. Thịt heo xay                             550.0 gr             (fresh_meat) [imp=3]
+      3. Thịt mỡ                                  100.0 gr             (fresh_meat) [imp=3]
+      4. Gan heo                                  50.0 gr              (fresh_meat) [imp=3]
+      5. Tôm                                      4.0 con              (seafood_&_fish_balls) [imp=3]
+      6. Gạo nếp                                  100.0 gr             (grains_staples) [imp=3]
+      7. Bột năng                                 2.0 thìa canh        (grains_staples) [imp=2]
+      8. Đậu phộng rang                           1.0 ít               (snacks) [imp=2]
+      9. Bánh tráng cuốn                          200.0 gr             (snacks) [imp=2]
+     10. Sả tươi                                  500.0 gr             (vegetables) [imp=2]
+     11. Tỏi băm                                  2.0 thìa cà phê      (seasonings) [imp=2]
+     12. Hành tím băm                             2.0 thìa cà phê      (seasonings) [imp=2]
+     13. Tương đậu nành                           1.0 thìa cà phê      (seasonings) [imp=2]
+     14. Dầu hào                                  2.0 thìa cà phê      (seasonings) [imp=2]
+     15. Dầu điều                                 3.0 thìa cà phê      (others) [imp=1]
+     16. Nước mắm                                 2.5 thìa canh        (seasonings) [imp=1]
+     17. Dầu ăn                                   300.0 ml             (others) [imp=1]
+     18. Muối                                     1.0 ít               (seasonings) [imp=1]
+     19. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+     20. Đường                                    1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Thịt heo                                 500 gram             (fresh_meat)
+      2. Tôm                                      200 gram             (seafood_&_fish_balls)
+      3. Mực                                      200 gram             (seafood_&_fish_balls)
+      4. Nước mắm                                 2 muỗng canh         (others)
+      5. Tỏi                                      2 tép                (seasonings)
+      6. Hành lá                                  1 nhánh              (vegetables)
+      7. Ớt                                       1 trái               (seasonings)
+      8. Nước tương                               1 muỗng canh         (seasonings)
+      9. Đường                                    1 muỗng canh         (seasonings)
+     10. Rượu trắng                               1 muỗng canh         (alcoholic_beverages)
+     11. Bột báng                                 2 muỗng canh         (others)
+     12. Nước                                     200 ml               (beverages)
+     13. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+
+✅ MATCHED (2 ingredients):
+      1. Tôm                                      4.0 con              (seafood_&_fish_balls) [imp=3]
+      2. Đường                                    1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (18 ingredients):
+   Importance 3 (5 ingredients):
+      1. Giò sống                                 200.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      2. Thịt heo xay                             550.0 gr             (fresh_meat) [imp=3]
+      3. Thịt mỡ                                  100.0 gr             (fresh_meat) [imp=3]
+      4. Gan heo                                  50.0 gr              (fresh_meat) [imp=3]
+      5. Gạo nếp                                  100.0 gr             (grains_staples) [imp=3]
+   Importance 2 (8 ingredients):
+      1. Bột năng                                 2.0 thìa canh        (grains_staples) [imp=2]
+      2. Đậu phộng rang                           1.0 ít               (snacks) [imp=2]
+      3. Bánh tráng cuốn                          200.0 gr             (snacks) [imp=2]
+      4. Sả tươi                                  500.0 gr             (vegetables) [imp=2]
+      5. Tỏi băm                                  2.0 thìa cà phê      (seasonings) [imp=2]
+      6. Hành tím băm                             2.0 thìa cà phê      (seasonings) [imp=2]
+      7. Tương đậu nành                           1.0 thìa cà phê      (seasonings) [imp=2]
+      8. Dầu hào                                  2.0 thìa cà phê      (seasonings) [imp=2]
+   Importance 1 (5 ingredients):
+      1. Dầu điều                                 3.0 thìa cà phê      (others) [imp=1]
+      2. Nước mắm                                 2.5 thìa canh        (seasonings) [imp=1]
+      3. Dầu ăn                                   300.0 ml             (others) [imp=1]
+      4. Muối                                     1.0 ít               (seasonings) [imp=1]
+      5. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (11 ingredients):
+      1. Thịt heo                                 500 gram             (fresh_meat)
+      2. Mực                                      200 gram             (seafood_&_fish_balls)
+      3. Nước mắm                                 2 muỗng canh         (others)
+      4. Tỏi                                      2 tép                (seasonings)
+      5. Hành lá                                  1 nhánh              (vegetables)
+      6. Ớt                                       1 trái               (seasonings)
+      7. Nước tương                               1 muỗng canh         (seasonings)
+      8. Rượu trắng                               1 muỗng canh         (alcoholic_beverages)
+      9. Bột báng                                 2 muỗng canh         (others)
+     10. Nước                                     200 ml               (beverages)
+   ... và 1 nguyên liệu khác
+
+💡 ANALYSIS:
+   🔴 POOR - F1 < 50%
+   🚨 Thiếu >50% nguyên liệu → Có thể retrieval sai hoặc generation quá conservative
+   🚨 FP > TP → RAG đang hallucinate hoặc retrieve sai món
+
+========================================================================================================================
+MÓN #3/30: Bánh khoai mì nướng bằng nồi cơm điện
+========================================================================================================================
+⚠️  TÊN MÓN KHÁC NHAU:
+   GT:  'Bánh khoai mì nướng bằng nồi cơm điện'
+   RAG: 'Bánh khoai mì nướng bằng nồi cơm điện'
+📂 Category: mon banh
+
+📊 METRICS:
+   F1:        22.22%
+   Precision: 33.33%
+   Recall:    16.67%
+   GT:        12 nguyên liệu
+   RAG:       6 nguyên liệu
+   ✅ TP:     2 (matched)
+   ❌ FN:     10 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (12 ingredients):
+      1. Khoai mì                                 1.0 kg               (vegetables) [imp=3]
+      2. Đậu xanh cà vỏ                           50.0 gr              (grains_staples) [imp=3]
+      3. Trứng gà                                 1.0 quả              (seasonings) [imp=3]
+      4. Tinh chất vanilla                        1.0 muỗng cà phê     (seasonings) [imp=2]
+      5. Bột bắp                                  30.0 gr              (grains_staples) [imp=2]
+      6. Bột năng                                 130.0 gr             (grains_staples) [imp=2]
+      7. Đường cát vàng                           100.0 gr             (seasonings) [imp=2]
+      8. Sữa đặc                                  150.0 gr             (milk) [imp=2]
+      9. Muối                                     1.0 ít               (seasonings) [imp=1]
+     10. Nước cốt dừa                             400.0 ml             (beverages) [imp=1]
+     11. Bơ lạt                                   20.0 gr              (others) [imp=1]
+     12. Dầu ăn                                   1.0 ít               (others) [imp=1]
+
+🤖 RAG PREDICTIONS (6 ingredients):
+      1. Khoai mì                                 400 gr               (vegetables)
+      2. Nước cốt dừa                             200 ml               (beverages)
+      3. Mè rang                                  1 muỗng cà phê       (snacks)
+      4. Đường                                    200 gr               (seasonings)
+      5. Vani                                     1 ống                (seasonings)
+      6. Muối                                     0.5 muỗng cà phê     (seasonings)
+
+✅ MATCHED (2 ingredients):
+      1. Nước cốt dừa                             400.0 ml             (beverages) [imp=1]
+      2. Khoai mì                                 1.0 kg               (vegetables) [imp=3]
+
+❌ MISSED - False Negatives (10 ingredients):
+   Importance 3 (2 ingredients):
+      1. Đậu xanh cà vỏ                           50.0 gr              (grains_staples) [imp=3]
+      2. Trứng gà                                 1.0 quả              (seasonings) [imp=3]
+   Importance 2 (5 ingredients):
+      1. Tinh chất vanilla                        1.0 muỗng cà phê     (seasonings) [imp=2]
+      2. Bột bắp                                  30.0 gr              (grains_staples) [imp=2]
+      3. Bột năng                                 130.0 gr             (grains_staples) [imp=2]
+      4. Đường cát vàng                           100.0 gr             (seasonings) [imp=2]
+      5. Sữa đặc                                  150.0 gr             (milk) [imp=2]
+   Importance 1 (3 ingredients):
+      1. Muối                                     1.0 ít               (seasonings) [imp=1]
+      2. Bơ lạt                                   20.0 gr              (others) [imp=1]
+      3. Dầu ăn                                   1.0 ít               (others) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Mè rang                                  1 muỗng cà phê       (snacks)
+      2. Đường                                    200 gr               (seasonings)
+      3. Vani                                     1 ống                (seasonings)
+      4. Muối                                     0.5 muỗng cà phê     (seasonings)
+
+💡 ANALYSIS:
+   🔴 POOR - F1 < 50%
+   🚨 Thiếu >50% nguyên liệu → Có thể retrieval sai hoặc generation quá conservative
+   🚨 FP > TP → RAG đang hallucinate hoặc retrieve sai món
+   ⚠️  Tên món khác nhau → Retrieval có thể sai!
+
+========================================================================================================================
+MÓN #4/30: Bún măng vịt  bằng nồi cơm điện tử
+========================================================================================================================
+✅ Tên món: Bún măng vịt  bằng nồi cơm điện tử
+📂 Category: mon nuoc
+
+📊 METRICS:
+   F1:        45.45%
+   Precision: 45.45%
+   Recall:    45.45%
+   GT:        11 nguyên liệu
+   RAG:       11 nguyên liệu
+   ✅ TP:     5 (matched)
+   ❌ FN:     6 (missed - thiếu)
+   ⚠️  FP:     6 (extra - thừa/sai)
+
+📋 GROUND TRUTH (11 ingredients):
+      1. Vịt                                      0.5 con              (fresh_meat) [imp=3]
+      2. Măng muối chua                           500.0 gr             (others) [imp=3]
+      3. Rau thơm ăn kèm                          1.0 ít               (vegetables) [imp=3]
+      4. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      5. Gừng                                     2.0 củ               (seasonings) [imp=2]
+      6. Bún tươi                                 1.0 kg               (grains_staples) [imp=2]
+      7. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=2]
+      8. Dầu ăn                                   2.0 muỗng canh       (others) [imp=1]
+      9. Hạt nêm                                  5.0 muỗng canh       (seasonings) [imp=1]
+     10. Muối                                     1.0 ít               (seasonings) [imp=1]
+     11. Giấm                                     1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (11 ingredients):
+      1. Vịt                                      0.5 con              (fresh_meat)
+      2. Măng muối chua                           500 gr               (others)
+      3. Rau thơm ăn kèm                          1 ít                 (vegetables)
+      4. Hành tím                                 2 củ                 (vegetables)
+      5. Gừng                                     2 củ                 (vegetables)
+      6. Bún tươi                                 1 kg                 (grains_staples)
+      7. Nước mắm                                 2 muỗng canh         (others)
+      8. Dầu ăn                                   2 muỗng canh         (fresh_fruits)
+      9. Hạt nêm                                  5 muỗng canh         (seasonings)
+     10. Muối                                     1 ít                 (seasonings)
+     11. Giấm                                     1 ít                 (others)
+
+✅ MATCHED (5 ingredients):
+      1. Rau thơm ăn kèm                          1.0 ít               (vegetables) [imp=3]
+      2. Bún tươi                                 1.0 kg               (grains_staples) [imp=2]
+      3. Măng muối chua                           500.0 gr             (others) [imp=3]
+      4. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      5. Vịt                                      0.5 con              (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (6 ingredients):
+   Importance 2 (2 ingredients):
+      1. Gừng                                     2.0 củ               (seasonings) [imp=2]
+      2. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=2]
+   Importance 1 (4 ingredients):
+      1. Dầu ăn                                   2.0 muỗng canh       (others) [imp=1]
+      2. Hạt nêm                                  5.0 muỗng canh       (seasonings) [imp=1]
+      3. Muối                                     1.0 ít               (seasonings) [imp=1]
+      4. Giấm                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (6 ingredients):
+      1. Gừng                                     2 củ                 (vegetables)
+      2. Nước mắm                                 2 muỗng canh         (others)
+      3. Dầu ăn                                   2 muỗng canh         (fresh_fruits)
+      4. Hạt nêm                                  5 muỗng canh         (seasonings)
+      5. Muối                                     1 ít                 (seasonings)
+      6. Giấm                                     1 ít                 (others)
+
+💡 ANALYSIS:
+   🔴 POOR - F1 < 50%
+   🚨 Thiếu >50% nguyên liệu → Có thể retrieval sai hoặc generation quá conservative
+   🚨 FP > TP → RAG đang hallucinate hoặc retrieve sai món
+
+========================================================================================================================
+MÓN #5/30: Thịt lợn xào khoai tây su hào
+========================================================================================================================
+✅ Tên món: Thịt lợn xào khoai tây su hào
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        58.33%
+   Precision: 58.33%
+   Recall:    58.33%
+   GT:        12 nguyên liệu
+   RAG:       12 nguyên liệu
+   ✅ TP:     7 (matched)
+   ❌ FN:     5 (missed - thiếu)
+   ⚠️  FP:     5 (extra - thừa/sai)
+
+📋 GROUND TRUTH (12 ingredients):
+      1. Thịt nạc heo                             400.0 gr             (fresh_meat) [imp=3]
+      2. Khoai tây                                300.0 gr             (vegetables) [imp=3]
+      3. Su hào                                   200.0 gr             (vegetables) [imp=3]
+      4. Rau mùi tàu                              3.0 cây              (vegetables) [imp=2]
+      5. Hành lá                                  3.0 cây              (vegetables) [imp=2]
+      6. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      7. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      8. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+      9. Nước mắm                                 1.0 muỗng cà phê     (seasonings) [imp=1]
+     10. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     11. Muối                                     1.0 ít               (seasonings) [imp=1]
+     12. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (12 ingredients):
+      1. Thịt nạc heo                             400 gr               (fresh_meat)
+      2. Khoai tây                                300 gr               (vegetables)
+      3. Su hào                                   200 gr               (vegetables)
+      4. Rau mùi tàu                              3 cây                (vegetables)
+      5. Hành lá                                  3 cây                (vegetables)
+      6. Hành tím                                 2 củ                 (vegetables)
+      7. Tỏi                                      4 tép                (seasonings)
+      8. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      9. Nước mắm                                 1 muỗng cà phê       (others)
+     10. Hạt nêm                                  1 ít                 (seasonings)
+     11. Muối                                     1 ít                 (seasonings)
+     12. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (7 ingredients):
+      1. Su hào                                   200.0 gr             (vegetables) [imp=3]
+      2. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      3. Khoai tây                                300.0 gr             (vegetables) [imp=3]
+      4. Rau mùi tàu                              3.0 cây              (vegetables) [imp=2]
+      5. Hành lá                                  3.0 cây              (vegetables) [imp=2]
+      6. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      7. Thịt nạc heo                             400.0 gr             (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (5 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+   Importance 1 (4 ingredients):
+      1. Nước mắm                                 1.0 muỗng cà phê     (seasonings) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      3. Muối                                     1.0 ít               (seasonings) [imp=1]
+      4. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (5 ingredients):
+      1. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      2. Nước mắm                                 1 muỗng cà phê       (others)
+      3. Hạt nêm                                  1 ít                 (seasonings)
+      4. Muối                                     1 ít                 (seasonings)
+      5. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #6/30: Bún xào rau cải thịt heo
+========================================================================================================================
+✅ Tên món: Bún xào rau cải thịt heo
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        60.00%
+   Precision: 60.00%
+   Recall:    60.00%
+   GT:        10 nguyên liệu
+   RAG:       10 nguyên liệu
+   ✅ TP:     6 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (10 ingredients):
+      1. Bún gạo                                  350.0 gr             (grains_staples) [imp=3]
+      2. Thịt nạc heo                             300.0 gr             (fresh_meat) [imp=3]
+      3. Rau cải ngọt                             200.0 gr             (vegetables) [imp=3]
+      4. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      5. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      6. Nước tương                               3.0 muỗng canh       (seasonings) [imp=2]
+      7. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+      8. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+      9. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     10. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (10 ingredients):
+      1. Bún gạo                                  350 gr               (grains_staples)
+      2. Thịt nạc heo                             300 gr               (fresh_meat)
+      3. Rau cải ngọt                             200 gr               (vegetables)
+      4. Cà rốt                                   1 củ                 (vegetables)
+      5. Tỏi                                      4 tép                (seasonings)
+      6. Nước tương                               3 muỗng canh         (seasonings)
+      7. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      8. Bột ngọt                                 1 ít                 (others)
+      9. Hạt nêm                                  1 ít                 (seasonings)
+     10. Muối                                     1 ít                 (seasonings)
+
+✅ MATCHED (6 ingredients):
+      1. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      2. Rau cải ngọt                             200.0 gr             (vegetables) [imp=3]
+      3. Bún gạo                                  350.0 gr             (grains_staples) [imp=3]
+      4. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      5. Nước tương                               3.0 muỗng canh       (seasonings) [imp=2]
+      6. Thịt nạc heo                             300.0 gr             (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+   Importance 1 (3 ingredients):
+      1. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      3. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      2. Bột ngọt                                 1 ít                 (others)
+      3. Hạt nêm                                  1 ít                 (seasonings)
+      4. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #7/30: Cách làm đậu hũ xào thịt sốt cà chua đơn giản, bắt cơm
+========================================================================================================================
+✅ Tên món: Cách làm đậu hũ xào thịt sốt cà chua đơn giản, bắt cơm
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        66.67%
+   Precision: 66.67%
+   Recall:    66.67%
+   GT:        12 nguyên liệu
+   RAG:       12 nguyên liệu
+   ✅ TP:     8 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (12 ingredients):
+      1. Thịt heo                                 300.0 gr             (fresh_meat) [imp=3]
+      2. Đậu hũ chiên sẵn                         4.0 miếng            (snacks) [imp=3]
+      3. Cà chua                                  3.0 trái             (vegetables) [imp=3]
+      4. Tỏi băm                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+      5. Hành tím băm                             1.0 muỗng cà phê     (seasonings) [imp=2]
+      6. Hành lá                                  2.0 nhánh            (vegetables) [imp=2]
+      7. Ngò rí                                   1.0 ít               (vegetables) [imp=2]
+      8. Dầu ăn                                   0.5 muỗng canh       (others) [imp=2]
+      9. Muối                                     1.0 ít               (seasonings) [imp=1]
+     10. Đường                                    1.0 ít               (seasonings) [imp=1]
+     11. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     12. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (12 ingredients):
+      1. Thịt heo                                 300 gr               (fresh_meat)
+      2. Đậu hũ chiên sẵn                         4 miếng              (snacks)
+      3. Cà chua                                  3 trái               (vegetables)
+      4. Tỏi băm                                  1 muỗng cà phê       (seasonings)
+      5. Hành tím băm                             1 muỗng cà phê       (seasonings)
+      6. Hành lá                                  2 nhánh              (vegetables)
+      7. Ngò rí                                   1 ít                 (vegetables)
+      8. Dầu ăn                                   0.5 muỗng canh       (fresh_fruits)
+      9. Muối                                     1 ít                 (seasonings)
+     10. Đường                                    1 ít                 (seasonings)
+     11. Hạt nêm                                  1 ít                 (seasonings)
+     12. Tiêu xay                                 1 ít                 (seasonings)
+
+✅ MATCHED (8 ingredients):
+      1. Thịt heo                                 300.0 gr             (fresh_meat) [imp=3]
+      2. Đậu hũ chiên sẵn                         4.0 miếng            (snacks) [imp=3]
+      3. Đường                                    1.0 ít               (seasonings) [imp=1]
+      4. Ngò rí                                   1.0 ít               (vegetables) [imp=2]
+      5. Tỏi băm                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+      6. Cà chua                                  3.0 trái             (vegetables) [imp=3]
+      7. Hành lá                                  2.0 nhánh            (vegetables) [imp=2]
+      8. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 2 (2 ingredients):
+      1. Hành tím băm                             1.0 muỗng cà phê     (seasonings) [imp=2]
+      2. Dầu ăn                                   0.5 muỗng canh       (others) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Muối                                     1.0 ít               (seasonings) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Hành tím băm                             1 muỗng cà phê       (seasonings)
+      2. Dầu ăn                                   0.5 muỗng canh       (fresh_fruits)
+      3. Muối                                     1 ít                 (seasonings)
+      4. Hạt nêm                                  1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #8/30: Gỏi mực xoài xanh chiên giòn
+========================================================================================================================
+✅ Tên món: Gỏi mực xoài xanh chiên giòn
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        68.42%
+   Precision: 68.42%
+   Recall:    68.42%
+   GT:        19 nguyên liệu
+   RAG:       19 nguyên liệu
+   ✅ TP:     13 (matched)
+   ❌ FN:     6 (missed - thiếu)
+   ⚠️  FP:     6 (extra - thừa/sai)
+
+📋 GROUND TRUTH (19 ingredients):
+      1. Mực                                      1.0 con              (seafood_&_fish_balls) [imp=3]
+      2. Xoài keo xanh                            1.0 trái             (fresh_fruits) [imp=3]
+      3. Tôm khô                                  100.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Bột gạo                                  50.0 gr              (grains_staples) [imp=3]
+      5. Húng lũi                                 5.0 nhánh            (vegetables) [imp=3]
+      6. Cần tây                                  3.0 nhánh            (vegetables) [imp=2]
+      7. Ngò gai                                  3.0 nhánh            (others) [imp=2]
+      8. Hành tím                                 5.0 củ               (vegetables) [imp=2]
+      9. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+     10. Chanh                                    3.0 quả              (fresh_fruits) [imp=2]
+     11. Ớt sừng                                  2.0 quả              (seasonings) [imp=2]
+     12. Ớt hiểm                                  4.0 quả              (seasonings) [imp=2]
+     13. Bột nghệ                                 1.0 muỗng canh       (seasonings) [imp=2]
+     14. Ớt bột                                   1.0 muỗng canh       (seasonings) [imp=1]
+     15. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=1]
+     16. Dầu ăn                                   5.0 muỗng canh       (others) [imp=1]
+     17. Muối                                     1.0 ít               (seasonings) [imp=1]
+     18. Đường                                    1.0 ít               (seasonings) [imp=1]
+     19. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (19 ingredients):
+      1. Mực                                      1 con                (seafood_&_fish_balls)
+      2. Xoài keo xanh                            1 trái               (fresh_fruits)
+      3. Tôm khô                                  100 gr               (seafood_&_fish_balls)
+      4. Bột gạo                                  50 gr                (grains_staples)
+      5. Húng lũi                                 5 nhánh              (vegetables)
+      6. Cần tây                                  3 nhánh              (vegetables)
+      7. Ngò gai                                  3 nhánh              (others)
+      8. Hành tím                                 5 củ                 (vegetables)
+      9. Tỏi                                      5 tép                (seasonings)
+     10. Chanh                                    3 quả                (fresh_fruits)
+     11. Ớt sừng                                  2 quả                (seasonings)
+     12. Ớt hiểm                                  4 quả                (seasonings)
+     13. Bột nghệ                                 1 muỗng canh         (seasonings)
+     14. Ớt bột                                   1 muỗng canh         (seasonings)
+     15. Nước mắm                                 2 muỗng canh         (others)
+     16. Dầu ăn                                   5 muỗng canh         (fresh_fruits)
+     17. Muối                                     1 ít                 (seasonings)
+     18. Đường                                    1 ít                 (seasonings)
+     19. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (13 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Húng lũi                                 5.0 nhánh            (vegetables) [imp=3]
+      3. Tôm khô                                  100.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Bột gạo                                  50.0 gr              (grains_staples) [imp=3]
+      5. Ớt hiểm                                  4.0 quả              (seasonings) [imp=2]
+      6. Ngò gai                                  3.0 nhánh            (others) [imp=2]
+      7. Cần tây                                  3.0 nhánh            (vegetables) [imp=2]
+      8. Xoài keo xanh                            1.0 trái             (fresh_fruits) [imp=3]
+      9. Bột nghệ                                 1.0 muỗng canh       (seasonings) [imp=2]
+     10. Mực                                      1.0 con              (seafood_&_fish_balls) [imp=3]
+     11. Hành tím                                 5.0 củ               (vegetables) [imp=2]
+     12. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+     13. Chanh                                    3.0 quả              (fresh_fruits) [imp=2]
+
+❌ MISSED - False Negatives (6 ingredients):
+   Importance 2 (1 ingredients):
+      1. Ớt sừng                                  2.0 quả              (seasonings) [imp=2]
+   Importance 1 (5 ingredients):
+      1. Ớt bột                                   1.0 muỗng canh       (seasonings) [imp=1]
+      2. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=1]
+      3. Dầu ăn                                   5.0 muỗng canh       (others) [imp=1]
+      4. Muối                                     1.0 ít               (seasonings) [imp=1]
+      5. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (6 ingredients):
+      1. Ớt sừng                                  2 quả                (seasonings)
+      2. Ớt bột                                   1 muỗng canh         (seasonings)
+      3. Nước mắm                                 2 muỗng canh         (others)
+      4. Dầu ăn                                   5 muỗng canh         (fresh_fruits)
+      5. Muối                                     1 ít                 (seasonings)
+      6. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #9/30: Phở xào tim gà
+========================================================================================================================
+✅ Tên món: Phở xào tim gà
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        69.23%
+   Precision: 69.23%
+   Recall:    69.23%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     9 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Bánh phở                                 1.0 kg               (grains_staples) [imp=3]
+      2. Tim gà                                   500.0 gr             (fresh_meat) [imp=3]
+      3. Nấm hải sản                              300.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      5. Hành tây                                 1.0 củ               (vegetables) [imp=2]
+      6. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+      7. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+      8. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      9. Bột sắn dây                              2.0 muỗng canh       (grains_staples) [imp=2]
+     10. Giấm                                     1.0 muỗng canh       (seasonings) [imp=1]
+     11. Dầu ăn                                   4.0 muỗng canh       (others) [imp=1]
+     12. Hạt nêm                                  2.0 muỗng cà phê     (seasonings) [imp=1]
+     13. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Bánh phở                                 1 kg                 (grains_staples)
+      2. Tim gà                                   500 gr               (fresh_meat)
+      3. Nấm hải sản                              300 gr               (seafood_&_fish_balls)
+      4. Cà rốt                                   1 củ                 (vegetables)
+      5. Hành tây                                 1 củ                 (vegetables)
+      6. Cần tây                                  50 gr                (vegetables)
+      7. Tỏi                                      5 tép                (seasonings)
+      8. Hành tím                                 2 củ                 (vegetables)
+      9. Bột sắn dây                              2 muỗng canh         (grains_staples)
+     10. Giấm                                     1 muỗng canh         (others)
+     11. Dầu ăn                                   4 muỗng canh         (fresh_fruits)
+     12. Hạt nêm                                  2 muỗng cà phê       (seasonings)
+     13. Muối                                     1 ít                 (seasonings)
+
+✅ MATCHED (9 ingredients):
+      1. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      2. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+      3. Hành tây                                 1.0 củ               (vegetables) [imp=2]
+      4. Bột sắn dây                              2.0 muỗng canh       (grains_staples) [imp=2]
+      5. Bánh phở                                 1.0 kg               (grains_staples) [imp=3]
+      6. Tim gà                                   500.0 gr             (fresh_meat) [imp=3]
+      7. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      8. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+      9. Nấm hải sản                              300.0 gr             (seafood_&_fish_balls) [imp=3]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 1 (4 ingredients):
+      1. Giấm                                     1.0 muỗng canh       (seasonings) [imp=1]
+      2. Dầu ăn                                   4.0 muỗng canh       (others) [imp=1]
+      3. Hạt nêm                                  2.0 muỗng cà phê     (seasonings) [imp=1]
+      4. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Giấm                                     1 muỗng canh         (others)
+      2. Dầu ăn                                   4 muỗng canh         (fresh_fruits)
+      3. Hạt nêm                                  2 muỗng cà phê       (seasonings)
+      4. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #10/30: Bún gạo xào lòng gà
+========================================================================================================================
+✅ Tên món: Bún gạo xào lòng gà
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        69.23%
+   Precision: 69.23%
+   Recall:    69.23%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     9 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Bún gạo khô                              200.0 gr             (grains_staples) [imp=3]
+      2. Trứng gà                                 1.0 quả              (seasonings) [imp=3]
+      3. Lòng gà                                  500.0 gr             (fresh_meat) [imp=3]
+      4. Cà rốt                                   3.0 củ               (vegetables) [imp=2]
+      5. Hành lá                                  3.0 nhánh            (vegetables) [imp=2]
+      6. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      7. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      8. Dầu hào                                  1.0 muỗng canh       (seasonings) [imp=2]
+      9. Dầu ăn                                   4.0 muỗng canh       (others) [imp=2]
+     10. Nước mắm                                 1.0 muỗng cà phê     (seasonings) [imp=1]
+     11. Muối                                     1.0 ít               (seasonings) [imp=1]
+     12. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+     13. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Bún gạo khô                              200 gr               (grains_staples)
+      2. Trứng gà                                 1 quả                (seasonings)
+      3. Lòng gà                                  500 gr               (fresh_meat)
+      4. Cà rốt                                   3 củ                 (vegetables)
+      5. Hành lá                                  3 nhánh              (vegetables)
+      6. Hành tím                                 2 củ                 (vegetables)
+      7. Tỏi                                      4 tép                (seasonings)
+      8. Dầu hào                                  1 muỗng canh         (seasonings)
+      9. Dầu ăn                                   4 muỗng canh         (fresh_fruits)
+     10. Nước mắm                                 1 muỗng cà phê       (others)
+     11. Muối                                     1 ít                 (seasonings)
+     12. Tiêu                                     1 ít                 (seasonings)
+     13. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (9 ingredients):
+      1. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+      2. Cà rốt                                   3.0 củ               (vegetables) [imp=2]
+      3. Hành lá                                  3.0 nhánh            (vegetables) [imp=2]
+      4. Dầu hào                                  1.0 muỗng canh       (seasonings) [imp=2]
+      5. Trứng gà                                 1.0 quả              (seasonings) [imp=3]
+      6. Bún gạo khô                              200.0 gr             (grains_staples) [imp=3]
+      7. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      8. Tỏi                                      4.0 tép              (seasonings) [imp=2]
+      9. Lòng gà                                  500.0 gr             (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   4.0 muỗng canh       (others) [imp=2]
+   Importance 1 (3 ingredients):
+      1. Nước mắm                                 1.0 muỗng cà phê     (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+      3. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Dầu ăn                                   4 muỗng canh         (fresh_fruits)
+      2. Nước mắm                                 1 muỗng cà phê       (others)
+      3. Muối                                     1 ít                 (seasonings)
+      4. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #11/30: Gỏi rau diếp cá thịt bò
+========================================================================================================================
+✅ Tên món: Gỏi rau diếp cá thịt bò
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        70.00%
+   Precision: 70.00%
+   Recall:    70.00%
+   GT:        10 nguyên liệu
+   RAG:       10 nguyên liệu
+   ✅ TP:     7 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (10 ingredients):
+      1. Rau diếp cá                              400.0 gr             (vegetables) [imp=3]
+      2. Thịt bò                                  500.0 gr             (fresh_meat) [imp=3]
+      3. Hành boaro                               1.0 nhánh            (vegetables) [imp=3]
+      4. Hành tây                                 0.5 củ               (vegetables) [imp=2]
+      5. Tỏi băm                                  2.0 muỗng cà phê     (seasonings) [imp=2]
+      6. Ớt băm                                   1.0 muỗng cà phê     (seasonings) [imp=2]
+      7. Dầu ăn                                   3.0 muỗng canh       (others) [imp=2]
+      8. Muối                                     1.0 ít               (seasonings) [imp=1]
+      9. Đường                                    1.0 ít               (seasonings) [imp=1]
+     10. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (10 ingredients):
+      1. Rau diếp cá                              400 gr               (vegetables)
+      2. Thịt bò                                  500 gr               (fresh_meat)
+      3. Hành boaro                               1 nhánh              (vegetables)
+      4. Hành tây                                 0.5 củ               (vegetables)
+      5. Tỏi băm                                  2 muỗng cà phê       (seasonings)
+      6. Ớt băm                                   1 muỗng cà phê       (seasonings)
+      7. Dầu ăn                                   3 muỗng canh         (fresh_fruits)
+      8. Muối                                     1 ít                 (seasonings)
+      9. Đường                                    1 ít                 (seasonings)
+     10. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (7 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Rau diếp cá                              400.0 gr             (vegetables) [imp=3]
+      3. Tỏi băm                                  2.0 muỗng cà phê     (seasonings) [imp=2]
+      4. Hành tây                                 0.5 củ               (vegetables) [imp=2]
+      5. Thịt bò                                  500.0 gr             (fresh_meat) [imp=3]
+      6. Hành boaro                               1.0 nhánh            (vegetables) [imp=3]
+      7. Ớt băm                                   1.0 muỗng cà phê     (seasonings) [imp=2]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   3.0 muỗng canh       (others) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Muối                                     1.0 ít               (seasonings) [imp=1]
+      2. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Dầu ăn                                   3 muỗng canh         (fresh_fruits)
+      2. Muối                                     1 ít                 (seasonings)
+      3. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #12/30: Cơm chiên bò xào
+========================================================================================================================
+✅ Tên món: Cơm chiên bò xào
+📂 Category: mon chien
+
+📊 METRICS:
+   F1:        70.59%
+   Precision: 70.59%
+   Recall:    70.59%
+   GT:        17 nguyên liệu
+   RAG:       17 nguyên liệu
+   ✅ TP:     12 (matched)
+   ❌ FN:     5 (missed - thiếu)
+   ⚠️  FP:     5 (extra - thừa/sai)
+
+📋 GROUND TRUTH (17 ingredients):
+      1. Cơm nguội                                3.0 chén             (instant_foods) [imp=3]
+      2. Trứng vịt tươi                           3.0 quả              (fresh_meat) [imp=3]
+      3. Thịt bò                                  300.0 gr             (fresh_meat) [imp=3]
+      4. Hành tây                                 0.5 củ               (vegetables) [imp=3]
+      5. Cà chua                                  1.0 trái             (vegetables) [imp=3]
+      6. Dưa leo                                  0.5 trái             (vegetables) [imp=2]
+      7. Hành lá/ tỏi/ ớt                         1.0 ít               (seasonings) [imp=2]
+      8. Bột tỏi                                  0.3333333333333333 muỗng cà phê (seasonings) [imp=2]
+      9. Ớt bột                                   0.5 muỗng cà phê     (seasonings) [imp=2]
+     10. Dầu hào                                  0.25 muỗng canh      (seasonings) [imp=2]
+     11. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=2]
+     12. Đường                                    1.0 ít               (seasonings) [imp=1]
+     13. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+     14. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     15. Nước mắm                                 1.0 ít               (seasonings) [imp=1]
+     16. Dầu ăn                                   1.0 ít               (others) [imp=1]
+     17. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (17 ingredients):
+      1. Cơm nguội                                3 chén               (instant_foods)
+      2. Trứng vịt tươi                           3 quả                (fresh_meat)
+      3. Thịt bò                                  300 gr               (fresh_meat)
+      4. Hành tây                                 0.5 củ               (vegetables)
+      5. Cà chua                                  1 trái               (vegetables)
+      6. Dưa leo                                  0.5 trái             (vegetables)
+      7. Hành lá/ tỏi/ ớt                         1 ít                 (seasonings)
+      8. Bột tỏi                                  0.3333333333333333 muỗng cà phê (seasonings)
+      9. Ớt bột                                   0.5 muỗng cà phê     (seasonings)
+     10. Dầu hào                                  0.25 muỗng canh      (seasonings)
+     11. Tương ớt                                 1 muỗng canh         (seasonings)
+     12. Đường                                    1 ít                 (seasonings)
+     13. Bột ngọt                                 1 ít                 (others)
+     14. Hạt nêm                                  1 ít                 (seasonings)
+     15. Nước mắm                                 1 ít                 (others)
+     16. Dầu ăn                                   1 ít                 (fresh_fruits)
+     17. Tiêu xay                                 1 ít                 (seasonings)
+
+✅ MATCHED (12 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Hành lá/ tỏi/ ớt                         1.0 ít               (seasonings) [imp=2]
+      3. Dưa leo                                  0.5 trái             (vegetables) [imp=2]
+      4. Bột tỏi                                  0.3333333333333333 muỗng cà phê (seasonings) [imp=2]
+      5. Hành tây                                 0.5 củ               (vegetables) [imp=3]
+      6. Cơm nguội                                3.0 chén             (instant_foods) [imp=3]
+      7. Trứng vịt tươi                           3.0 quả              (fresh_meat) [imp=3]
+      8. Thịt bò                                  300.0 gr             (fresh_meat) [imp=3]
+      9. Dầu hào                                  0.25 muỗng canh      (seasonings) [imp=2]
+     10. Cà chua                                  1.0 trái             (vegetables) [imp=3]
+     11. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=2]
+     12. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (5 ingredients):
+   Importance 2 (1 ingredients):
+      1. Ớt bột                                   0.5 muỗng cà phê     (seasonings) [imp=2]
+   Importance 1 (4 ingredients):
+      1. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      3. Nước mắm                                 1.0 ít               (seasonings) [imp=1]
+      4. Dầu ăn                                   1.0 ít               (others) [imp=1]
+
+⚠️  EXTRA - False Positives (5 ingredients):
+      1. Ớt bột                                   0.5 muỗng cà phê     (seasonings)
+      2. Bột ngọt                                 1 ít                 (others)
+      3. Hạt nêm                                  1 ít                 (seasonings)
+      4. Nước mắm                                 1 ít                 (others)
+      5. Dầu ăn                                   1 ít                 (fresh_fruits)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #13/30: Cánh gà nướng muối ớt bằng nồi chiên không dầu
+========================================================================================================================
+✅ Tên món: Cánh gà nướng muối ớt bằng nồi chiên không dầu
+📂 Category: mon nuong
+
+📊 METRICS:
+   F1:        70.59%
+   Precision: 70.59%
+   Recall:    70.59%
+   GT:        17 nguyên liệu
+   RAG:       17 nguyên liệu
+   ✅ TP:     12 (matched)
+   ❌ FN:     5 (missed - thiếu)
+   ⚠️  FP:     5 (extra - thừa/sai)
+
+📋 GROUND TRUTH (17 ingredients):
+      1. Cánh gà                                  1.0 kg               (fresh_meat) [imp=3]
+      2. Hành tím                                 4.0 củ               (vegetables) [imp=3]
+      3. Tỏi                                      4.0 tép              (seasonings) [imp=3]
+      4. Ớt tươi                                  1.0 trái             (seasonings) [imp=3]
+      5. Dưa leo                                  1.0 trái             (vegetables) [imp=3]
+      6. Cà chua                                  1.0 quả              (vegetables) [imp=2]
+      7. Mè trắng rang                            1.0 muỗng canh       (snacks) [imp=2]
+      8. Sữa tươi                                 4.0 muỗng canh       (milk) [imp=2]
+      9. Mật ong                                  1.0 muỗng cà phê     (others) [imp=2]
+     10. Muối ớt                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+     11. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=2]
+     12. Dầu mè                                   1.0 muỗng cà phê     (others) [imp=1]
+     13. Dầu ăn                                   1.0 muỗng cà phê     (others) [imp=1]
+     14. Muối                                     1.0 ít               (seasonings) [imp=1]
+     15. Đường                                    1.0 ít               (seasonings) [imp=1]
+     16. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+     17. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (17 ingredients):
+      1. Cánh gà                                  1 kg                 (fresh_meat)
+      2. Hành tím                                 4 củ                 (vegetables)
+      3. Tỏi                                      4 tép                (seasonings)
+      4. Ớt tươi                                  1 trái               (seasonings)
+      5. Dưa leo                                  1 trái               (vegetables)
+      6. Cà chua                                  1 quả                (vegetables)
+      7. Mè trắng rang                            1 muỗng canh         (snacks)
+      8. Sữa tươi                                 4 muỗng canh         (fresh_fruits)
+      9. Mật ong                                  1 muỗng cà phê       (others)
+     10. Muối ớt                                  1 muỗng cà phê       (seasonings)
+     11. Tương ớt                                 1 muỗng canh         (seasonings)
+     12. Dầu mè                                   1 muỗng cà phê       (others)
+     13. Dầu ăn                                   1 muỗng cà phê       (fresh_fruits)
+     14. Muối                                     1 ít                 (seasonings)
+     15. Đường                                    1 ít                 (seasonings)
+     16. Bột ngọt                                 1 ít                 (others)
+     17. Hạt nêm                                  1 ít                 (seasonings)
+
+✅ MATCHED (12 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Cánh gà                                  1.0 kg               (fresh_meat) [imp=3]
+      3. Muối ớt                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+      4. Ớt tươi                                  1.0 trái             (seasonings) [imp=3]
+      5. Hành tím                                 4.0 củ               (vegetables) [imp=3]
+      6. Mật ong                                  1.0 muỗng cà phê     (others) [imp=2]
+      7. Mè trắng rang                            1.0 muỗng canh       (snacks) [imp=2]
+      8. Cà chua                                  1.0 quả              (vegetables) [imp=2]
+      9. Dầu mè                                   1.0 muỗng cà phê     (others) [imp=1]
+     10. Tỏi                                      4.0 tép              (seasonings) [imp=3]
+     11. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=2]
+     12. Dưa leo                                  1.0 trái             (vegetables) [imp=3]
+
+❌ MISSED - False Negatives (5 ingredients):
+   Importance 2 (1 ingredients):
+      1. Sữa tươi                                 4.0 muỗng canh       (milk) [imp=2]
+   Importance 1 (4 ingredients):
+      1. Dầu ăn                                   1.0 muỗng cà phê     (others) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+      3. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+      4. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (5 ingredients):
+      1. Sữa tươi                                 4 muỗng canh         (fresh_fruits)
+      2. Dầu ăn                                   1 muỗng cà phê       (fresh_fruits)
+      3. Muối                                     1 ít                 (seasonings)
+      4. Bột ngọt                                 1 ít                 (others)
+      5. Hạt nêm                                  1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #14/30: Lẩu bò nướng hầm sả
+========================================================================================================================
+✅ Tên món: Lẩu bò nướng hầm sả
+📂 Category: mon lau
+
+📊 METRICS:
+   F1:        71.43%
+   Precision: 71.43%
+   Recall:    71.43%
+   GT:        14 nguyên liệu
+   RAG:       14 nguyên liệu
+   ✅ TP:     10 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (14 ingredients):
+      1. Chân bò                                  2.0 kg               (fresh_meat) [imp=3]
+      2. Cải trắng                                2.0 củ               (vegetables) [imp=3]
+      3. Hành tây                                 1.0 củ               (vegetables) [imp=3]
+      4. Sả                                       7.0 cây              (vegetables) [imp=3]
+      5. Gừng                                     1.0 củ               (seasonings) [imp=2]
+      6. Ớt sừng                                  1.0 trái             (seasonings) [imp=2]
+      7. Ớt hiểm                                  1.0 trái             (seasonings) [imp=2]
+      8. Ớt xiêm                                  4.0 trái             (seasonings) [imp=2]
+      9. Chanh                                    0.5 trái             (fresh_fruits) [imp=2]
+     10. Đường phèn                               100.0 gr             (seasonings) [imp=1]
+     11. Muối                                     1.0 ít               (seasonings) [imp=1]
+     12. Đường                                    1.0 ít               (seasonings) [imp=1]
+     13. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+     14. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (14 ingredients):
+      1. Chân bò                                  2 kg                 (fresh_meat)
+      2. Cải trắng                                2 củ                 (vegetables)
+      3. Hành tây                                 1 củ                 (vegetables)
+      4. Sả                                       7 cây                (vegetables)
+      5. Gừng                                     1 củ                 (vegetables)
+      6. Ớt sừng                                  1 trái               (seasonings)
+      7. Ớt hiểm                                  1 trái               (seasonings)
+      8. Ớt xiêm                                  4 trái               (seasonings)
+      9. Chanh                                    0.5 trái             (fresh_fruits)
+     10. Đường phèn                               100 gr               (seasonings)
+     11. Muối                                     1 ít                 (seasonings)
+     12. Đường                                    1 ít                 (seasonings)
+     13. Tiêu                                     1 ít                 (seasonings)
+     14. Hạt nêm                                  1 ít                 (seasonings)
+
+✅ MATCHED (10 ingredients):
+      1. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+      2. Đường                                    1.0 ít               (seasonings) [imp=1]
+      3. Ớt hiểm                                  1.0 trái             (seasonings) [imp=2]
+      4. Hành tây                                 1.0 củ               (vegetables) [imp=3]
+      5. Sả                                       7.0 cây              (vegetables) [imp=3]
+      6. Đường phèn                               100.0 gr             (seasonings) [imp=1]
+      7. Ớt xiêm                                  4.0 trái             (seasonings) [imp=2]
+      8. Chanh                                    0.5 trái             (fresh_fruits) [imp=2]
+      9. Cải trắng                                2.0 củ               (vegetables) [imp=3]
+     10. Chân bò                                  2.0 kg               (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 2 (2 ingredients):
+      1. Gừng                                     1.0 củ               (seasonings) [imp=2]
+      2. Ớt sừng                                  1.0 trái             (seasonings) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Muối                                     1.0 ít               (seasonings) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Gừng                                     1 củ                 (vegetables)
+      2. Ớt sừng                                  1 trái               (seasonings)
+      3. Muối                                     1 ít                 (seasonings)
+      4. Hạt nêm                                  1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #15/30: Canh ngót cá cơm
+========================================================================================================================
+✅ Tên món: Canh ngót cá cơm
+📂 Category: mon canh
+
+📊 METRICS:
+   F1:        72.73%
+   Precision: 72.73%
+   Recall:    72.73%
+   GT:        11 nguyên liệu
+   RAG:       11 nguyên liệu
+   ✅ TP:     8 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (11 ingredients):
+      1. Cá cơm                                   150.0 gr             (seafood_&_fish_balls) [imp=3]
+      2. Thơm                                     0.5 trái             (vegetables) [imp=3]
+      3. Cà chua                                  3.0 trái             (vegetables) [imp=3]
+      4. Hành lá                                  3.0 nhánh            (vegetables) [imp=2]
+      5. Cần tây                                  5.0 nhánh            (vegetables) [imp=2]
+      6. Hành tím                                 1.0 củ               (vegetables) [imp=2]
+      7. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+      8. Bột canh                                 0.5 muỗng canh       (grains_staples) [imp=1]
+      9. Đường                                    1.0 ít               (seasonings) [imp=1]
+     10. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     11. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (11 ingredients):
+      1. Cá cơm                                   150 gr               (seafood_&_fish_balls)
+      2. Thơm                                     0.5 trái             (vegetables)
+      3. Cà chua                                  3 trái               (vegetables)
+      4. Hành lá                                  3 nhánh              (vegetables)
+      5. Cần tây                                  5 nhánh              (vegetables)
+      6. Hành tím                                 1 củ                 (vegetables)
+      7. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      8. Bột canh                                 0.5 muỗng canh       (grains_staples)
+      9. Đường                                    1 ít                 (seasonings)
+     10. Hạt nêm                                  1 ít                 (seasonings)
+     11. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (8 ingredients):
+      1. Cá cơm                                   150.0 gr             (seafood_&_fish_balls) [imp=3]
+      2. Đường                                    1.0 ít               (seasonings) [imp=1]
+      3. Bột canh                                 0.5 muỗng canh       (grains_staples) [imp=1]
+      4. Hành lá                                  3.0 nhánh            (vegetables) [imp=2]
+      5. Cần tây                                  5.0 nhánh            (vegetables) [imp=2]
+      6. Cà chua                                  3.0 trái             (vegetables) [imp=3]
+      7. Hành tím                                 1.0 củ               (vegetables) [imp=2]
+      8. Thơm                                     0.5 trái             (vegetables) [imp=3]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   1.0 muỗng canh       (others) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      2. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Dầu ăn                                   1 muỗng canh         (fresh_fruits)
+      2. Hạt nêm                                  1 ít                 (seasonings)
+      3. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #16/30: Gỏi bò nướng chua ngọt
+========================================================================================================================
+✅ Tên món: Gỏi bò nướng chua ngọt
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        72.73%
+   Precision: 72.73%
+   Recall:    72.73%
+   GT:        11 nguyên liệu
+   RAG:       11 nguyên liệu
+   ✅ TP:     8 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (11 ingredients):
+      1. Tiêu xay                                 1.0 muỗng canh       (seasonings) [imp=3]
+      2. Nước tương                               2.0 muỗng canh       (seasonings) [imp=3]
+      3. Thính gạo                                1.0 muỗng canh       (grains_staples) [imp=3]
+      4. Nước mắm:                                2.0 muỗng canh       (seasonings) [imp=2]
+      5. Đường                                    1.0 muỗng canh       (seasonings) [imp=2]
+      6. Ớt bột                                   1.0 muỗng canh       (seasonings) [imp=2]
+      7. Nước cốt chanh                           2.0 muỗng canh       (beverages) [imp=2]
+      8. Hành lá                                  3.0 cây              (vegetables) [imp=1]
+      9. Rau húng lủi                             10.0 gr              (vegetables) [imp=1]
+     10. Đậu phộng                                100.0 gr             (snacks) [imp=1]
+     11. Bánh phồng tôm chiên                     10.0 cái             (snacks) [imp=1]
+
+🤖 RAG PREDICTIONS (11 ingredients):
+      1. Tiêu xay                                 1 muỗng canh         (seasonings)
+      2. Nước tương                               2 muỗng canh         (seasonings)
+      3. Thính gạo                                1 muỗng canh         (grains_staples)
+      4. Nước mắm                                 2 muỗng canh         (others)
+      5. Đường                                    1 muỗng canh         (seasonings)
+      6. Ớt bột                                   1 muỗng canh         (seasonings)
+      7. Nước cốt chanh                           2 muỗng canh         (beverages)
+      8. Hành lá                                  3 cây                (vegetables)
+      9. Rau húng lủi                             10 gr                (vegetables)
+     10. Đậu phộng                                100 gr               (snacks)
+     11. Bánh phồng tôm chiên                     10 cái               (snacks)
+
+✅ MATCHED (8 ingredients):
+      1. Đường                                    1.0 muỗng canh       (seasonings) [imp=2]
+      2. Tiêu xay                                 1.0 muỗng canh       (seasonings) [imp=3]
+      3. Bánh phồng tôm chiên                     10.0 cái             (snacks) [imp=1]
+      4. Thính gạo                                1.0 muỗng canh       (grains_staples) [imp=3]
+      5. Nước cốt chanh                           2.0 muỗng canh       (beverages) [imp=2]
+      6. Hành lá                                  3.0 cây              (vegetables) [imp=1]
+      7. Nước tương                               2.0 muỗng canh       (seasonings) [imp=3]
+      8. Đậu phộng                                100.0 gr             (snacks) [imp=1]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (2 ingredients):
+      1. Nước mắm:                                2.0 muỗng canh       (seasonings) [imp=2]
+      2. Ớt bột                                   1.0 muỗng canh       (seasonings) [imp=2]
+   Importance 1 (1 ingredients):
+      1. Rau húng lủi                             10.0 gr              (vegetables) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Nước mắm                                 2 muỗng canh         (others)
+      2. Ớt bột                                   1 muỗng canh         (seasonings)
+      3. Rau húng lủi                             10 gr                (vegetables)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #17/30: Chả quế thịt gà
+========================================================================================================================
+✅ Tên món: Chả quế thịt gà
+📂 Category: mon chien
+
+📊 METRICS:
+   F1:        72.73%
+   Precision: 72.73%
+   Recall:    72.73%
+   GT:        11 nguyên liệu
+   RAG:       11 nguyên liệu
+   ✅ TP:     8 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (11 ingredients):
+      1. Thịt ức gà                               800.0 gr             (fresh_meat) [imp=3]
+      2. Giò sống                                 200.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      3. Bột khoai tây                            20.0 gr              (snacks) [imp=3]
+      4. Bột nở                                   1.0 muỗng cà phê     (seasonings) [imp=2]
+      5. Bột quế                                  5.0 gr               (seasonings) [imp=2]
+      6. Màu thực phẩm                            0.5 muỗng cà phê     (others) [imp=2]
+      7. Dầu ăn                                   230.0 ml             (others) [imp=2]
+      8. Nước mắm                                 1.0 muỗng canh       (seasonings) [imp=1]
+      9. Muối                                     1.0 ít               (seasonings) [imp=1]
+     10. Đường                                    1.0 ít               (seasonings) [imp=1]
+     11. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (11 ingredients):
+      1. Thịt ức gà                               800 gr               (fresh_meat)
+      2. Giò sống                                 200 gr               (cold_cuts:_sausages_&_ham)
+      3. Bột khoai tây                            20 gr                (snacks)
+      4. Bột nở                                   1 muỗng cà phê       (seasonings)
+      5. Bột quế                                  5 gr                 (seasonings)
+      6. Màu thực phẩm                            0.5 muỗng cà phê     (others)
+      7. Dầu ăn                                   230 ml               (fresh_fruits)
+      8. Nước mắm                                 1 muỗng canh         (others)
+      9. Muối                                     1 ít                 (seasonings)
+     10. Đường                                    1 ít                 (seasonings)
+     11. Tiêu xay                                 1 ít                 (seasonings)
+
+✅ MATCHED (8 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Thịt ức gà                               800.0 gr             (fresh_meat) [imp=3]
+      3. Bột quế                                  5.0 gr               (seasonings) [imp=2]
+      4. Bột nở                                   1.0 muỗng cà phê     (seasonings) [imp=2]
+      5. Giò sống                                 200.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      6. Bột khoai tây                            20.0 gr              (snacks) [imp=3]
+      7. Màu thực phẩm                            0.5 muỗng cà phê     (others) [imp=2]
+      8. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Dầu ăn                                   230.0 ml             (others) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Nước mắm                                 1.0 muỗng canh       (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Dầu ăn                                   230 ml               (fresh_fruits)
+      2. Nước mắm                                 1 muỗng canh         (others)
+      3. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #18/30: Gỏi cá cơm tươi
+========================================================================================================================
+✅ Tên món: Gỏi cá cơm tươi
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        73.33%
+   Precision: 73.33%
+   Recall:    73.33%
+   GT:        15 nguyên liệu
+   RAG:       15 nguyên liệu
+   ✅ TP:     11 (matched)
+   ❌ FN:     4 (missed - thiếu)
+   ⚠️  FP:     4 (extra - thừa/sai)
+
+📋 GROUND TRUTH (15 ingredients):
+      1. Cá cơm                                   200.0 gr             (seafood_&_fish_balls) [imp=3]
+      2. Xoài xanh                                1.0 quả              (fresh_fruits) [imp=3]
+      3. Hành tây                                 0.5 củ               (vegetables) [imp=3]
+      4. Chanh                                    2.0 quả              (fresh_fruits) [imp=3]
+      5. Tỏi                                      6.0 tép              (seasonings) [imp=2]
+      6. Ớt                                       4.0 quả              (seasonings) [imp=2]
+      7. Rau kinh giới                            1.0 ít               (vegetables) [imp=2]
+      8. Ngò rí                                   5.0 nhánh            (vegetables) [imp=2]
+      9. Ớt bột                                   0.5 muỗng canh       (seasonings) [imp=2]
+     10. Đậu phộng rang                           1.0 ít               (snacks) [imp=2]
+     11. Nước mắm                                 1.0 muỗng canh       (seasonings) [imp=1]
+     12. Muối                                     1.0 ít               (seasonings) [imp=1]
+     13. Đường                                    1.0 ít               (seasonings) [imp=1]
+     14. Bột canh                                 1.0 ít               (grains_staples) [imp=1]
+     15. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (15 ingredients):
+      1. Cá cơm                                   200 gr               (seafood_&_fish_balls)
+      2. Xoài xanh                                1 quả                (fresh_fruits)
+      3. Hành tây                                 0.5 củ               (vegetables)
+      4. Chanh                                    2 quả                (fresh_fruits)
+      5. Tỏi                                      6 tép                (seasonings)
+      6. Ớt                                       4 quả                (seasonings)
+      7. Rau kinh giới                            1 ít                 (vegetables)
+      8. Ngò rí                                   5 nhánh              (vegetables)
+      9. Ớt bột                                   0.5 muỗng canh       (seasonings)
+     10. Đậu phộng rang                           1 ít                 (snacks)
+     11. Nước mắm                                 1 muỗng canh         (others)
+     12. Muối                                     1 ít                 (seasonings)
+     13. Đường                                    1 ít                 (seasonings)
+     14. Bột canh                                 1 ít                 (grains_staples)
+     15. Bột ngọt                                 1 ít                 (others)
+
+✅ MATCHED (11 ingredients):
+      1. Cá cơm                                   200.0 gr             (seafood_&_fish_balls) [imp=3]
+      2. Đường                                    1.0 ít               (seasonings) [imp=1]
+      3. Ngò rí                                   5.0 nhánh            (vegetables) [imp=2]
+      4. Bột canh                                 1.0 ít               (grains_staples) [imp=1]
+      5. Hành tây                                 0.5 củ               (vegetables) [imp=3]
+      6. Rau kinh giới                            1.0 ít               (vegetables) [imp=2]
+      7. Đậu phộng rang                           1.0 ít               (snacks) [imp=2]
+      8. Ớt                                       4.0 quả              (seasonings) [imp=2]
+      9. Tỏi                                      6.0 tép              (seasonings) [imp=2]
+     10. Xoài xanh                                1.0 quả              (fresh_fruits) [imp=3]
+     11. Chanh                                    2.0 quả              (fresh_fruits) [imp=3]
+
+❌ MISSED - False Negatives (4 ingredients):
+   Importance 2 (1 ingredients):
+      1. Ớt bột                                   0.5 muỗng canh       (seasonings) [imp=2]
+   Importance 1 (3 ingredients):
+      1. Nước mắm                                 1.0 muỗng canh       (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+      3. Bột ngọt                                 1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (4 ingredients):
+      1. Ớt bột                                   0.5 muỗng canh       (seasonings)
+      2. Nước mắm                                 1 muỗng canh         (others)
+      3. Muối                                     1 ít                 (seasonings)
+      4. Bột ngọt                                 1 ít                 (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #19/30: Khoai tây xào thịt bò
+========================================================================================================================
+✅ Tên món: Khoai tây xào thịt bò
+📂 Category: mon xao
+
+📊 METRICS:
+   F1:        75.00%
+   Precision: 75.00%
+   Recall:    75.00%
+   GT:        12 nguyên liệu
+   RAG:       12 nguyên liệu
+   ✅ TP:     9 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (12 ingredients):
+      1. Thịt bò                                  350.0 gr             (fresh_meat) [imp=3]
+      2. Khoai tây cỡ vừa                         3.0 củ               (vegetables) [imp=3]
+      3. Hành lá                                  1.0 cây              (vegetables) [imp=3]
+      4. Tỏi bằm                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+      5. Dầu hào                                  20.0 ml              (seasonings) [imp=2]
+      6. Dầu ăn                                   25.0 ml              (others) [imp=2]
+      7. Tiêu xay                                 0.125 muỗng cà phê   (seasonings) [imp=2]
+      8. Nước mắm                                 0.5 muỗng cà phê     (seasonings) [imp=2]
+      9. Nước                                     3.0 muỗng canh       (beverages) [imp=1]
+     10. Xì dầu                                   1.0 muỗng canh       (seasonings) [imp=1]
+     11. Đường                                    1.0 muỗng cà phê     (seasonings) [imp=1]
+     12. Bột bắp                                  0.5 muỗng cà phê     (grains_staples) [imp=1]
+
+🤖 RAG PREDICTIONS (12 ingredients):
+      1. Thịt bò                                  350 gr               (fresh_meat)
+      2. Khoai tây cỡ vừa                         3 củ                 (vegetables)
+      3. Hành lá                                  1 cây                (vegetables)
+      4. Tỏi bằm                                  1 muỗng cà phê       (seasonings)
+      5. Dầu hào                                  20 ml                (seasonings)
+      6. Dầu ăn                                   25 ml                (fresh_fruits)
+      7. Tiêu xay                                 0.125 muỗng cà phê   (seasonings)
+      8. Nước mắm                                 0.5 muỗng cà phê     (others)
+      9. Nước                                     3 muỗng canh         (beverages)
+     10. Xì dầu                                   1 muỗng canh         (seasonings)
+     11. Đường                                    1 muỗng cà phê       (seasonings)
+     12. Bột bắp                                  0.5 muỗng cà phê     (grains_staples)
+
+✅ MATCHED (9 ingredients):
+      1. Khoai tây cỡ vừa                         3.0 củ               (vegetables) [imp=3]
+      2. Đường                                    1.0 muỗng cà phê     (seasonings) [imp=1]
+      3. Bột bắp                                  0.5 muỗng cà phê     (grains_staples) [imp=1]
+      4. Thịt bò                                  350.0 gr             (fresh_meat) [imp=3]
+      5. Dầu hào                                  20.0 ml              (seasonings) [imp=2]
+      6. Xì dầu                                   1.0 muỗng canh       (seasonings) [imp=1]
+      7. Hành lá                                  1.0 cây              (vegetables) [imp=3]
+      8. Nước                                     3.0 muỗng canh       (beverages) [imp=1]
+      9. Tiêu xay                                 0.125 muỗng cà phê   (seasonings) [imp=2]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (3 ingredients):
+      1. Tỏi bằm                                  1.0 muỗng cà phê     (seasonings) [imp=2]
+      2. Dầu ăn                                   25.0 ml              (others) [imp=2]
+      3. Nước mắm                                 0.5 muỗng cà phê     (seasonings) [imp=2]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Tỏi bằm                                  1 muỗng cà phê       (seasonings)
+      2. Dầu ăn                                   25 ml                (fresh_fruits)
+      3. Nước mắm                                 0.5 muỗng cà phê     (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #20/30: Gỏi khoai môn tôm thịt
+========================================================================================================================
+✅ Tên món: Gỏi khoai môn tôm thịt
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        75.00%
+   Precision: 75.00%
+   Recall:    75.00%
+   GT:        12 nguyên liệu
+   RAG:       12 nguyên liệu
+   ✅ TP:     9 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (12 ingredients):
+      1. Khoai môn                                600.0 gr             (vegetables) [imp=3]
+      2. Tôm                                      400.0 gr             (seafood_&_fish_balls) [imp=3]
+      3. Mũi heo                                  500.0 gr             (fresh_meat) [imp=3]
+      4. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      5. Tỏi ớt băm                               2.0 muỗng canh       (seasonings) [imp=2]
+      6. Hành tây                                 1.0 củ               (vegetables) [imp=2]
+      7. Rau răm                                  4.0 nhánh            (vegetables) [imp=2]
+      8. Tắc                                      4.0 trái             (vegetables) [imp=2]
+      9. Dầu ăn                                   300.0 ml             (others) [imp=1]
+     10. Nước mắm                                 3.0 muỗng canh       (seasonings) [imp=1]
+     11. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=1]
+     12. Đường                                    4.0 muỗng canh       (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (12 ingredients):
+      1. Khoai môn                                600 gr               (vegetables)
+      2. Tôm                                      400 gr               (seafood_&_fish_balls)
+      3. Mũi heo                                  500 gr               (fresh_meat)
+      4. Cà rốt                                   1 củ                 (vegetables)
+      5. Tỏi ớt băm                               2 muỗng canh         (seasonings)
+      6. Hành tây                                 1 củ                 (vegetables)
+      7. Rau răm                                  4 nhánh              (vegetables)
+      8. Tắc                                      4 trái               (vegetables)
+      9. Dầu ăn                                   300 ml               (fresh_fruits)
+     10. Nước mắm                                 3 muỗng canh         (others)
+     11. Tương ớt                                 1 muỗng canh         (seasonings)
+     12. Đường                                    4 muỗng canh         (seasonings)
+
+✅ MATCHED (9 ingredients):
+      1. Khoai môn                                600.0 gr             (vegetables) [imp=3]
+      2. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      3. Đường                                    4.0 muỗng canh       (seasonings) [imp=1]
+      4. Tỏi ớt băm                               2.0 muỗng canh       (seasonings) [imp=2]
+      5. Hành tây                                 1.0 củ               (vegetables) [imp=2]
+      6. Mũi heo                                  500.0 gr             (fresh_meat) [imp=3]
+      7. Tôm                                      400.0 gr             (seafood_&_fish_balls) [imp=3]
+      8. Tắc                                      4.0 trái             (vegetables) [imp=2]
+      9. Tương ớt                                 1.0 muỗng canh       (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Rau răm                                  4.0 nhánh            (vegetables) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Dầu ăn                                   300.0 ml             (others) [imp=1]
+      2. Nước mắm                                 3.0 muỗng canh       (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Rau răm                                  4 nhánh              (vegetables)
+      2. Dầu ăn                                   300 ml               (fresh_fruits)
+      3. Nước mắm                                 3 muỗng canh         (others)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #21/30: Gỏi bông súng tôm thịt
+========================================================================================================================
+✅ Tên món: Gỏi bông súng tôm thịt
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        76.92%
+   Precision: 76.92%
+   Recall:    76.92%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     10 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Bông súng                                500.0 gr             (vegetables) [imp=3]
+      2. Thịt bò                                  200.0 gr             (fresh_meat) [imp=3]
+      3. Tôm                                      200.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      5. Rau ăn kèm                               1.0 ít               (vegetables) [imp=2]
+      6. Dầu mè                                   1.0 muỗng cà phê     (others) [imp=2]
+      7. Giấm                                     300.0 ml             (seasonings) [imp=2]
+      8. Dầu tỏi                                  1.0 muỗng canh       (others) [imp=2]
+      9. Muối hạt                                 1.0 muỗng cà phê     (seasonings) [imp=2]
+     10. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     11. Muối                                     1.0 ít               (seasonings) [imp=1]
+     12. Đường                                    1.0 ít               (seasonings) [imp=1]
+     13. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Bông súng                                500 gr               (vegetables)
+      2. Thịt bò                                  200 gr               (fresh_meat)
+      3. Tôm                                      200 gr               (seafood_&_fish_balls)
+      4. Cà rốt                                   1 ă                  (vegetables)
+      5. Rau ăn kèm                               1 ít                 (vegetables)
+      6. Dầu mè                                   1 muông cà phê       (others)
+      7. Giấm                                     300 ml               (others)
+      8. Dầu tỏi                                  1 muông canh         (others)
+      9. Muối hạt                                 1 muông cà phê       (seasonings)
+     10. Hạt nêm                                  1 ít                 (seasonings)
+     11. Muối                                     1 ít                 (seasonings)
+     12. Đường                                    1 ít                 (seasonings)
+     13. Tiêu xay                                 1 ít                 (seasonings)
+
+✅ MATCHED (10 ingredients):
+      1. Muối hạt                                 1.0 muỗng cà phê     (seasonings) [imp=2]
+      2. Cà rốt                                   1.0 củ               (vegetables) [imp=2]
+      3. Đường                                    1.0 ít               (seasonings) [imp=1]
+      4. Bông súng                                500.0 gr             (vegetables) [imp=3]
+      5. Thịt bò                                  200.0 gr             (fresh_meat) [imp=3]
+      6. Tôm                                      200.0 gr             (seafood_&_fish_balls) [imp=3]
+      7. Dầu tỏi                                  1.0 muỗng canh       (others) [imp=2]
+      8. Rau ăn kèm                               1.0 ít               (vegetables) [imp=2]
+      9. Dầu mè                                   1.0 muỗng cà phê     (others) [imp=2]
+     10. Tiêu xay                                 1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Giấm                                     300.0 ml             (seasonings) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Giấm                                     300 ml               (others)
+      2. Hạt nêm                                  1 ít                 (seasonings)
+      3. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ⚠️  FAIR - F1 50-80%
+
+========================================================================================================================
+MÓN #22/30: Gỏi cuốn thịt gà đơn giản
+========================================================================================================================
+✅ Tên món: Gỏi cuốn thịt gà đơn giản
+📂 Category: mon cuon - tron
+
+📊 METRICS:
+   F1:        81.25%
+   Precision: 81.25%
+   Recall:    81.25%
+   GT:        16 nguyên liệu
+   RAG:       16 nguyên liệu
+   ✅ TP:     13 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (16 ingredients):
+      1. Ức gà                                    230.0 gr             (fresh_meat) [imp=3]
+      2. Hành lá                                  2.0 nhánh            (vegetables) [imp=3]
+      3. Gừng                                     30.0 gr              (seasonings) [imp=3]
+      4. Dưa leo                                  2.0 trái             (vegetables) [imp=3]
+      5. Bánh tráng                               10.0 cái             (snacks) [imp=2]
+      6. Xà lách mỡ                               5.0 lá               (vegetables) [imp=2]
+      7. Ngò rí                                   50.0 gr              (vegetables) [imp=2]
+      8. Lá bạc hà                                50.0 gr              (vegetables) [imp=2]
+      9. Hạt mè trắng đã rang                     2.0 muỗng canh       (snacks) [imp=2]
+     10. Tỏi                                      2.0 tép              (seasonings) [imp=2]
+     11. Rượu trắng                               2.0 muỗng canh       (alcoholic_beverages) [imp=2]
+     12. Nước tương                               3.0 muỗng canh       (seasonings) [imp=1]
+     13. Giấm gạo                                 2.0 muỗng canh       (grains_staples) [imp=1]
+     14. Dầu mè                                   2.0 muỗng cà phê     (others) [imp=1]
+     15. Muối                                     1.0 ít               (seasonings) [imp=1]
+     16. Đường                                    1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (16 ingredients):
+      1. Ức gà                                    230 gr               (fresh_meat)
+      2. Hành lá                                  2 nhánh              (vegetables)
+      3. Gừng                                     30 gr                (vegetables)
+      4. Dưa leo                                  2 trái               (vegetables)
+      5. Bánh tráng                               10 cái               (snacks)
+      6. Xà lách mỡ                               5 lá                 (vegetables)
+      7. Ngò rí                                   50 gr                (vegetables)
+      8. Lá bạc hà                                50 gr                (vegetables)
+      9. Hạt mè trắng đã rang                     2 muỗng canh         (snacks)
+     10. Tỏi                                      2 tép                (seasonings)
+     11. Rượu trắng                               2 muỗng canh         (alcoholic_beverages)
+     12. Nước tương                               3 muỗng canh         (seasonings)
+     13. Giấm gạo                                 2 muỗng canh         (grains_staples)
+     14. Dầu mè                                   2 muỗng cà phê       (others)
+     15. Muối                                     1 ít                 (seasonings)
+     16. Đường                                    1 ít                 (seasonings)
+
+✅ MATCHED (13 ingredients):
+      1. Đường                                    1.0 ít               (seasonings) [imp=1]
+      2. Lá bạc hà                                50.0 gr              (vegetables) [imp=2]
+      3. Ngò rí                                   50.0 gr              (vegetables) [imp=2]
+      4. Hành lá                                  2.0 nhánh            (vegetables) [imp=3]
+      5. Xà lách mỡ                               5.0 lá               (vegetables) [imp=2]
+      6. Bánh tráng                               10.0 cái             (snacks) [imp=2]
+      7. Hạt mè trắng đã rang                     2.0 muỗng canh       (snacks) [imp=2]
+      8. Ức gà                                    230.0 gr             (fresh_meat) [imp=3]
+      9. Dầu mè                                   2.0 muỗng cà phê     (others) [imp=1]
+     10. Tỏi                                      2.0 tép              (seasonings) [imp=2]
+     11. Nước tương                               3.0 muỗng canh       (seasonings) [imp=1]
+     12. Dưa leo                                  2.0 trái             (vegetables) [imp=3]
+     13. Giấm gạo                                 2.0 muỗng canh       (grains_staples) [imp=1]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 3 (1 ingredients):
+      1. Gừng                                     30.0 gr              (seasonings) [imp=3]
+   Importance 2 (1 ingredients):
+      1. Rượu trắng                               2.0 muỗng canh       (alcoholic_beverages) [imp=2]
+   Importance 1 (1 ingredients):
+      1. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Gừng                                     30 gr                (vegetables)
+      2. Rượu trắng                               2 muỗng canh         (alcoholic_beverages)
+      3. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #23/30: Canh bún bạch tuộc
+========================================================================================================================
+✅ Tên món: Canh bún bạch tuộc
+📂 Category: mon nuoc
+
+📊 METRICS:
+   F1:        82.35%
+   Precision: 82.35%
+   Recall:    82.35%
+   GT:        17 nguyên liệu
+   RAG:       17 nguyên liệu
+   ✅ TP:     14 (matched)
+   ❌ FN:     3 (missed - thiếu)
+   ⚠️  FP:     3 (extra - thừa/sai)
+
+📋 GROUND TRUTH (17 ingredients):
+      1. Bún                                      500.0 gr             (grains_staples) [imp=3]
+      2. Bạch tuộc                                400.0 gr             (seafood_&_fish_balls) [imp=3]
+      3. Cua đồng xay                             500.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Xương ống                                500.0 gr             (fresh_meat) [imp=3]
+      5. Cà chua                                  300.0 gr             (vegetables) [imp=3]
+      6. Huyết                                    200.0 gr             (others) [imp=2]
+      7. Đậu hũ                                   2.0 miếng            (vegetables) [imp=2]
+      8. Chả quế                                  5.0 cây              (cold_cuts:_sausages_&_ham) [imp=2]
+      9. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=2]
+     10. Màu gạch cua                             1.0 muỗng cà phê     (seafood_&_fish_balls) [imp=2]
+     11. Hành tím                                 10.0 gr              (vegetables) [imp=2]
+     12. Hạt nêm                                  1.5 muỗng canh       (seasonings) [imp=1]
+     13. Đường                                    2.0 muỗng canh       (seasonings) [imp=1]
+     14. Hành lá                                  20.0 gr              (vegetables) [imp=1]
+     15. Rau muống                                300.0 gr             (vegetables) [imp=1]
+     16. Ngò gai                                  10.0 gr              (others) [imp=1]
+     17. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (17 ingredients):
+      1. Bún                                      500 gr               (grains_staples)
+      2. Bạch tuộc                                400 gr               (seafood_&_fish_balls)
+      3. Cua đồng xay                             500 gr               (seafood_&_fish_balls)
+      4. Xương ống                                500 gr               (fresh_meat)
+      5. Cà chua                                  300 gr               (vegetables)
+      6. Huyết                                    200 gr               (others)
+      7. Đậu hũ                                   2 miếng              (vegetables)
+      8. Chả quế                                  5 cây                (cold_cuts:_sausages_&_ham)
+      9. Nước mắm                                 2 muỗng canh         (others)
+     10. Màu gạch cua                             1 muỗng cà phê       (seafood_&_fish_balls)
+     11. Hành tím                                 10 gr                (vegetables)
+     12. Hạt nêm                                  1.5 muỗng canh       (seasonings)
+     13. Đường                                    2 muỗng canh         (seasonings)
+     14. Hành lá                                  20 gr                (vegetables)
+     15. Rau muống                                300 gr               (vegetables)
+     16. Ngò gai                                  10 gr                (others)
+     17. Muối                                     1 ít                 (seasonings)
+
+✅ MATCHED (14 ingredients):
+      1. Đường                                    2.0 muỗng canh       (seasonings) [imp=1]
+      2. Huyết                                    200.0 gr             (others) [imp=2]
+      3. Hành tím                                 10.0 gr              (vegetables) [imp=2]
+      4. Đậu hũ                                   2.0 miếng            (vegetables) [imp=2]
+      5. Ngò gai                                  10.0 gr              (others) [imp=1]
+      6. Cua đồng xay                             500.0 gr             (seafood_&_fish_balls) [imp=3]
+      7. Bạch tuộc                                400.0 gr             (seafood_&_fish_balls) [imp=3]
+      8. Rau muống                                300.0 gr             (vegetables) [imp=1]
+      9. Màu gạch cua                             1.0 muỗng cà phê     (seafood_&_fish_balls) [imp=2]
+     10. Chả quế                                  5.0 cây              (cold_cuts:_sausages_&_ham) [imp=2]
+     11. Cà chua                                  300.0 gr             (vegetables) [imp=3]
+     12. Hành lá                                  20.0 gr              (vegetables) [imp=1]
+     13. Bún                                      500.0 gr             (grains_staples) [imp=3]
+     14. Xương ống                                500.0 gr             (fresh_meat) [imp=3]
+
+❌ MISSED - False Negatives (3 ingredients):
+   Importance 2 (1 ingredients):
+      1. Nước mắm                                 2.0 muỗng canh       (seasonings) [imp=2]
+   Importance 1 (2 ingredients):
+      1. Hạt nêm                                  1.5 muỗng canh       (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (3 ingredients):
+      1. Nước mắm                                 2 muỗng canh         (others)
+      2. Hạt nêm                                  1.5 muỗng canh       (seasonings)
+      3. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #24/30: Chả thịt heo trứng muối
+========================================================================================================================
+✅ Tên món: Chả thịt heo trứng muối
+📂 Category: mon chien
+
+📊 METRICS:
+   F1:        84.62%
+   Precision: 84.62%
+   Recall:    84.62%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     11 (matched)
+   ❌ FN:     2 (missed - thiếu)
+   ⚠️  FP:     2 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Thịt nạc dăm                             100.0 gr             (fresh_meat) [imp=3]
+      2. Giò sống                                 150.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      3. Trứng vịt muối                           5.0 quả              (others) [imp=3]
+      4. Nấm mèo khô                              20.0 gr              (dried_fruits) [imp=2]
+      5. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      6. Tỏi                                      2.0 tép              (seasonings) [imp=2]
+      7. Ngò rí                                   5.0 gr               (vegetables) [imp=2]
+      8. Hành lá                                  5.0 gr               (vegetables) [imp=2]
+      9. Ớt sừng                                  1.0 quả              (seasonings) [imp=2]
+     10. Sốt mayonnaise                           2.0 muỗng canh       (seasonings) [imp=1]
+     11. Dầu ăn                                   100.0 ml             (others) [imp=1]
+     12. Bột ngọt/ tiêu                           1.0 ít               (seasonings) [imp=1]
+     13. Xà lách/ cà chua/ dưa leo                1.0 ít               (vegetables) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Thịt nạc dăm                             100 gr               (fresh_meat)
+      2. Giò sống                                 150 gr               (cold_cuts:_sausages_&_ham)
+      3. Trứng vịt muối                           5 quả                (others)
+      4. Nấm mèo khô                              20 gr                (dried_fruits)
+      5. Hành tím                                 2 củ                 (vegetables)
+      6. Tỏi                                      2 tép                (seasonings)
+      7. Ngò rí                                   5 gr                 (vegetables)
+      8. Hành lá                                  5 gr                 (vegetables)
+      9. Ớt sừng                                  1 quả                (seasonings)
+     10. Sốt mayonnaise                           2 muỗng canh         (seasonings)
+     11. Dầu ăn                                   100 ml               (fresh_fruits)
+     12. Bột ngọt/ tiêu                           1 ít                 (seasonings)
+     13. Xà lách/ cà chua/ dưa leo                1 ít                 (vegetables)
+
+✅ MATCHED (11 ingredients):
+      1. Nấm mèo khô                              20.0 gr              (dried_fruits) [imp=2]
+      2. Ngò rí                                   5.0 gr               (vegetables) [imp=2]
+      3. Hành tím                                 2.0 củ               (vegetables) [imp=2]
+      4. Trứng vịt muối                           5.0 quả              (others) [imp=3]
+      5. Thịt nạc dăm                             100.0 gr             (fresh_meat) [imp=3]
+      6. Sốt mayonnaise                           2.0 muỗng canh       (seasonings) [imp=1]
+      7. Bột ngọt/ tiêu                           1.0 ít               (seasonings) [imp=1]
+      8. Giò sống                                 150.0 gr             (cold_cuts:_sausages_&_ham) [imp=3]
+      9. Hành lá                                  5.0 gr               (vegetables) [imp=2]
+     10. Xà lách/ cà chua/ dưa leo                1.0 ít               (vegetables) [imp=1]
+     11. Tỏi                                      2.0 tép              (seasonings) [imp=2]
+
+❌ MISSED - False Negatives (2 ingredients):
+   Importance 2 (1 ingredients):
+      1. Ớt sừng                                  1.0 quả              (seasonings) [imp=2]
+   Importance 1 (1 ingredients):
+      1. Dầu ăn                                   100.0 ml             (others) [imp=1]
+
+⚠️  EXTRA - False Positives (2 ingredients):
+      1. Ớt sừng                                  1 quả                (seasonings)
+      2. Dầu ăn                                   100 ml               (fresh_fruits)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #25/30: Gỏi nấm tuyết thịt heo chiên
+========================================================================================================================
+✅ Tên món: Gỏi nấm tuyết thịt heo chiên
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        85.71%
+   Precision: 85.71%
+   Recall:    85.71%
+   GT:        14 nguyên liệu
+   RAG:       14 nguyên liệu
+   ✅ TP:     12 (matched)
+   ❌ FN:     2 (missed - thiếu)
+   ⚠️  FP:     2 (extra - thừa/sai)
+
+📋 GROUND TRUTH (14 ingredients):
+      1. Nấm tuyết                                100.0 gr             (vegetables) [imp=3]
+      2. Thịt heo                                 300.0 gr             (fresh_meat) [imp=3]
+      3. Cà rốt                                   1.0 củ               (vegetables) [imp=3]
+      4. Hành tây                                 1.0 củ               (vegetables) [imp=3]
+      5. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+      6. Ớt                                       4.0 quả              (seasonings) [imp=2]
+      7. Chanh                                    1.0 quả              (fresh_fruits) [imp=2]
+      8. Cần tây                                  2.0 nhánh            (vegetables) [imp=2]
+      9. Ngò gai                                  5.0 nhánh            (others) [imp=2]
+     10. Rau quế                                  5.0 nhánh            (vegetables) [imp=1]
+     11. Húng lủi                                 5.0 nhánh            (vegetables) [imp=1]
+     12. Đậu phộng                                100.0 gr             (snacks) [imp=1]
+     13. Nước mắm                                 3.0 muỗng canh       (seasonings) [imp=1]
+     14. Muối/ đường                              1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (14 ingredients):
+      1. Nấm tuyết                                100 gr               (vegetables)
+      2. Thịt heo                                 300 gr               (fresh_meat)
+      3. Cà rốt                                   1 củ                 (vegetables)
+      4. Hành tây                                 1 củ                 (vegetables)
+      5. Tỏi                                      5 tép                (seasonings)
+      6. Ớt                                       4 quả                (seasonings)
+      7. Chanh                                    1 quả                (fresh_fruits)
+      8. Cần tây                                  2 nhánh              (vegetables)
+      9. Ngò gai                                  5 nhánh              (others)
+     10. Rau quế                                  5 nhánh              (vegetables)
+     11. Húng lủi                                 5 nhánh              (vegetables)
+     12. Đậu phộng                                100 gr               (snacks)
+     13. Nước mắm                                 3 muỗng canh         (others)
+     14. Muối/ đường                              1 ít                 (seasonings)
+
+✅ MATCHED (12 ingredients):
+      1. Thịt heo                                 300.0 gr             (fresh_meat) [imp=3]
+      2. Cà rốt                                   1.0 củ               (vegetables) [imp=3]
+      3. Nấm tuyết                                100.0 gr             (vegetables) [imp=3]
+      4. Hành tây                                 1.0 củ               (vegetables) [imp=3]
+      5. Cần tây                                  2.0 nhánh            (vegetables) [imp=2]
+      6. Ngò gai                                  5.0 nhánh            (others) [imp=2]
+      7. Rau quế                                  5.0 nhánh            (vegetables) [imp=1]
+      8. Đậu phộng                                100.0 gr             (snacks) [imp=1]
+      9. Ớt                                       4.0 quả              (seasonings) [imp=2]
+     10. Tỏi                                      5.0 tép              (seasonings) [imp=2]
+     11. Chanh                                    1.0 quả              (fresh_fruits) [imp=2]
+     12. Muối/ đường                              1.0 ít               (seasonings) [imp=1]
+
+❌ MISSED - False Negatives (2 ingredients):
+   Importance 1 (2 ingredients):
+      1. Húng lủi                                 5.0 nhánh            (vegetables) [imp=1]
+      2. Nước mắm                                 3.0 muỗng canh       (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (2 ingredients):
+      1. Húng lủi                                 5 nhánh              (vegetables)
+      2. Nước mắm                                 3 muỗng canh         (others)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #26/30: Salad bí đỏ thịt gà nướng
+========================================================================================================================
+✅ Tên món: Salad bí đỏ thịt gà nướng
+📂 Category: mon goi - salad
+
+📊 METRICS:
+   F1:        86.67%
+   Precision: 86.67%
+   Recall:    86.67%
+   GT:        15 nguyên liệu
+   RAG:       15 nguyên liệu
+   ✅ TP:     13 (matched)
+   ❌ FN:     2 (missed - thiếu)
+   ⚠️  FP:     2 (extra - thừa/sai)
+
+📋 GROUND TRUTH (15 ingredients):
+      1. Đùi gà                                   300.0 gr             (fresh_meat) [imp=3]
+      2. Bí đỏ baby                               150.0 gr             (vegetables) [imp=3]
+      3. Xà lách tím                              50.0 gr              (vegetables) [imp=3]
+      4. Xà lách carol                            100.0 gr             (vegetables) [imp=3]
+      5. Cà chua bi                               50.0 gr              (vegetables) [imp=2]
+      6. Hành tây                                 0.25 củ              (vegetables) [imp=2]
+      7. Bơ lạt                                   20.0 gr              (others) [imp=2]
+      8. Mật ong                                  3.0 muỗng canh       (others) [imp=2]
+      9. Nước cốt chanh                           3.0 muỗng canh       (beverages) [imp=2]
+     10. Dầu oliu                                 2.0 muỗng canh       (others) [imp=2]
+     11. Vỏ chanh vàng bào                        1.0 muỗng canh       (vegetables) [imp=1]
+     12. Sốt ớt tabasco                           0.5 muỗng canh       (seasonings) [imp=1]
+     13. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     14. Muối                                     1.0 ít               (seasonings) [imp=1]
+     15. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (15 ingredients):
+      1. Đùi gà                                   300 gr               (fresh_meat)
+      2. Bí đỏ baby                               150 gr               (vegetables)
+      3. Xà lách tím                              50 gr                (vegetables)
+      4. Xà lách carol                            100 gr               (vegetables)
+      5. Cà chua bi                               50 gr                (vegetables)
+      6. Hành tây                                 0.25 củ              (vegetables)
+      7. Bơ lạt                                   20 gr                (others)
+      8. Mật ong                                  3 muỗng canh         (others)
+      9. Nước cốt chanh                           3 muỗng canh         (beverages)
+     10. Dầu oliu                                 2 muỗng canh         (others)
+     11. Vỏ chanh vàng bào                        1 muỗng canh         (vegetables)
+     12. Sốt ớt tabasco                           0.5 muỗng canh       (seasonings)
+     13. Hạt nêm                                  1 ít                 (seasonings)
+     14. Muối                                     1 ít                 (seasonings)
+     15. Tiêu                                     1 ít                 (seasonings)
+
+✅ MATCHED (13 ingredients):
+      1. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+      2. Vỏ chanh vàng bào                        1.0 muỗng canh       (vegetables) [imp=1]
+      3. Xà lách tím                              50.0 gr              (vegetables) [imp=3]
+      4. Hành tây                                 0.25 củ              (vegetables) [imp=2]
+      5. Xà lách carol                            100.0 gr             (vegetables) [imp=3]
+      6. Mật ong                                  3.0 muỗng canh       (others) [imp=2]
+      7. Sốt ớt tabasco                           0.5 muỗng canh       (seasonings) [imp=1]
+      8. Cà chua bi                               50.0 gr              (vegetables) [imp=2]
+      9. Bí đỏ baby                               150.0 gr             (vegetables) [imp=3]
+     10. Đùi gà                                   300.0 gr             (fresh_meat) [imp=3]
+     11. Nước cốt chanh                           3.0 muỗng canh       (beverages) [imp=2]
+     12. Dầu oliu                                 2.0 muỗng canh       (others) [imp=2]
+     13. Bơ lạt                                   20.0 gr              (others) [imp=2]
+
+❌ MISSED - False Negatives (2 ingredients):
+   Importance 1 (2 ingredients):
+      1. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+      2. Muối                                     1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (2 ingredients):
+      1. Hạt nêm                                  1 ít                 (seasonings)
+      2. Muối                                     1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #27/30: Phở chiên phồng bò xào
+========================================================================================================================
+✅ Tên món: Phở chiên phồng bò xào
+📂 Category: mon chien
+
+📊 METRICS:
+   F1:        87.50%
+   Precision: 87.50%
+   Recall:    87.50%
+   GT:        16 nguyên liệu
+   RAG:       16 nguyên liệu
+   ✅ TP:     14 (matched)
+   ❌ FN:     2 (missed - thiếu)
+   ⚠️  FP:     2 (extra - thừa/sai)
+
+📋 GROUND TRUTH (16 ingredients):
+      1. Bánh phở cuốn                            500.0 gr             (grains_staples) [imp=3]
+      2. Thịt thăn bò                             300.0 gr             (fresh_meat) [imp=3]
+      3. Cà rốt                                   50.0 gr              (vegetables) [imp=3]
+      4. Cải thìa                                 50.0 gr              (vegetables) [imp=3]
+      5. Hành tây                                 50.0 gr              (vegetables) [imp=2]
+      6. Tỏi tây                                  50.0 gr              (vegetables) [imp=2]
+      7. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+      8. Cà chua                                  30.0 gr              (vegetables) [imp=2]
+      9. Hành lá                                  15.0 gr              (vegetables) [imp=2]
+     10. Tỏi                                      10.0 gr              (seasonings) [imp=2]
+     11. Hành tím                                 10.0 gr              (vegetables) [imp=2]
+     12. Dầu ăn                                   220.0 ml             (others) [imp=1]
+     13. Dầu hào                                  2.0 muỗng cà phê     (seasonings) [imp=1]
+     14. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+     15. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+     16. Đường                                    1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (16 ingredients):
+      1. Bánh phở cuốn                            500 gr               (grains_staples)
+      2. Thịt thăn bò                             300 gr               (fresh_meat)
+      3. Cà rốt                                   50 gr                (vegetables)
+      4. Cải thìa                                 50 gr                (vegetables)
+      5. Hành tây                                 50 gr                (vegetables)
+      6. Tỏi tây                                  50 gr                (vegetables)
+      7. Cần tây                                  50 gr                (vegetables)
+      8. Cà chua                                  30 gr                (vegetables)
+      9. Hành lá                                  15 gr                (vegetables)
+     10. Tỏi                                      10 gr                (seasonings)
+     11. Hành tím                                 10 gr                (vegetables)
+     12. Dầu ăn                                   220 ml               (fresh_fruits)
+     13. Dầu hào                                  2 muỗng cà phê       (seasonings)
+     14. Hạt nêm                                  1 ít                 (seasonings)
+     15. Tiêu                                     1 ít                 (seasonings)
+     16. Đường                                    1 ít                 (seasonings)
+
+✅ MATCHED (14 ingredients):
+      1. Tiêu                                     1.0 ít               (seasonings) [imp=1]
+      2. Cà rốt                                   50.0 gr              (vegetables) [imp=3]
+      3. Bánh phở cuốn                            500.0 gr             (grains_staples) [imp=3]
+      4. Đường                                    1.0 ít               (seasonings) [imp=1]
+      5. Tỏi tây                                  50.0 gr              (vegetables) [imp=2]
+      6. Thịt thăn bò                             300.0 gr             (fresh_meat) [imp=3]
+      7. Hành lá                                  15.0 gr              (vegetables) [imp=2]
+      8. Hành tây                                 50.0 gr              (vegetables) [imp=2]
+      9. Cần tây                                  50.0 gr              (vegetables) [imp=2]
+     10. Dầu hào                                  2.0 muỗng cà phê     (seasonings) [imp=1]
+     11. Cà chua                                  30.0 gr              (vegetables) [imp=2]
+     12. Hành tím                                 10.0 gr              (vegetables) [imp=2]
+     13. Tỏi                                      10.0 gr              (seasonings) [imp=2]
+     14. Cải thìa                                 50.0 gr              (vegetables) [imp=3]
+
+❌ MISSED - False Negatives (2 ingredients):
+   Importance 1 (2 ingredients):
+      1. Dầu ăn                                   220.0 ml             (others) [imp=1]
+      2. Hạt nêm                                  1.0 ít               (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (2 ingredients):
+      1. Dầu ăn                                   220 ml               (fresh_fruits)
+      2. Hạt nêm                                  1 ít                 (seasonings)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #28/30: Chả giò tôm thịt cá lóc
+========================================================================================================================
+✅ Tên món: Chả giò tôm thịt cá lóc
+📂 Category: mon chien
+
+📊 METRICS:
+   F1:        92.31%
+   Precision: 92.31%
+   Recall:    92.31%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     12 (matched)
+   ❌ FN:     1 (missed - thiếu)
+   ⚠️  FP:     1 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Cá lóc                                   400.0 gr             (fresh_meat) [imp=3]
+      2. Tôm                                      200.0 gr             (seafood_&_fish_balls) [imp=3]
+      3. Thịt nạc xay                             200.0 gr             (fresh_meat) [imp=3]
+      4. Bột chiên xù                             200.0 gr             (snacks) [imp=2]
+      5. Bột chiên giòn                           200.0 gr             (snacks) [imp=2]
+      6. Trứng gà                                 3.0 quả              (seasonings) [imp=2]
+      7. Trứng vịt bắc thảo                       4.0 quả              (fresh_meat) [imp=2]
+      8. Nấm mèo                                  4.0 cái              (vegetables) [imp=2]
+      9. Bún tàu                                  20.0 gr              (grains_staples) [imp=2]
+     10. Hành lá                                  1.0 cây              (vegetables) [imp=1]
+     11. Cà rốt                                   1.0 củ               (vegetables) [imp=1]
+     12. Hạt tiêu đập dập                         0.3333333333333333 muỗng cà phê (seasonings) [imp=1]
+     13. Hạt nêm                                  1.0 muỗng cà phê     (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Cá lóc                                   400 gr               (fresh_meat)
+      2. Tôm                                      200 gr               (seafood_&_fish_balls)
+      3. Thịt nạc xay                             200 gr               (fresh_meat)
+      4. Bột chiên xù                             200 gr               (snacks)
+      5. Bột chiên giòn                           200 gr               (snacks)
+      6. Trứng gà                                 3 quả                (seasonings)
+      7. Trứng vịt bắc thảo                       4 quả                (fresh_meat)
+      8. Nấm mèo                                  4 cái                (vegetables)
+      9. Bún tàu                                  20 gr                (grains_staples)
+     10. Hành lá                                  1 cây                (vegetables)
+     11. Cà rốt                                   1 củ                 (vegetables)
+     12. Hạt tiêu đập dập                         0.3333333333333333 muỗng cà phê (seasonings)
+     13. Hạt nêm                                  1 muỗng cà phê       (seasonings)
+
+✅ MATCHED (12 ingredients):
+      1. Cá lóc                                   400.0 gr             (fresh_meat) [imp=3]
+      2. Hạt tiêu đập dập                         0.3333333333333333 muỗng cà phê (seasonings) [imp=1]
+      3. Thịt nạc xay                             200.0 gr             (fresh_meat) [imp=3]
+      4. Cà rốt                                   1.0 củ               (vegetables) [imp=1]
+      5. Nấm mèo                                  4.0 cái              (vegetables) [imp=2]
+      6. Bột chiên xù                             200.0 gr             (snacks) [imp=2]
+      7. Trứng vịt bắc thảo                       4.0 quả              (fresh_meat) [imp=2]
+      8. Tôm                                      200.0 gr             (seafood_&_fish_balls) [imp=3]
+      9. Bún tàu                                  20.0 gr              (grains_staples) [imp=2]
+     10. Trứng gà                                 3.0 quả              (seasonings) [imp=2]
+     11. Hành lá                                  1.0 cây              (vegetables) [imp=1]
+     12. Bột chiên giòn                           200.0 gr             (snacks) [imp=2]
+
+❌ MISSED - False Negatives (1 ingredients):
+   Importance 1 (1 ingredients):
+      1. Hạt nêm                                  1.0 muỗng cà phê     (seasonings) [imp=1]
+
+⚠️  EXTRA - False Positives (1 ingredients):
+      1. Hạt nêm                                  1 muỗng cà phê       (seasonings)
+
+💡 ANALYSIS:
+   ✅ GOOD - F1 ≥ 80%
+
+========================================================================================================================
+MÓN #29/30: Bún gỏi dà Sóc Trăng
+========================================================================================================================
+✅ Tên món: Bún gỏi dà Sóc Trăng
+📂 Category: mon nuoc
+
+📊 METRICS:
+   F1:        100.00%
+   Precision: 100.00%
+   Recall:    100.00%
+   GT:        13 nguyên liệu
+   RAG:       13 nguyên liệu
+   ✅ TP:     13 (matched)
+   ❌ FN:     0 (missed - thiếu)
+   ⚠️  FP:     0 (extra - thừa/sai)
+
+📋 GROUND TRUTH (13 ingredients):
+      1. Thịt heo nạc                             1.0 kg               (fresh_meat) [imp=3]
+      2. Xương ống                                700.0 gr             (fresh_meat) [imp=3]
+      3. Tôm                                      500.0 gr             (seafood_&_fish_balls) [imp=3]
+      4. Gừng cắt lát                             15.0 gr              (seasonings) [imp=2]
+      5. Hành tím                                 15.0 gr              (vegetables) [imp=2]
+      6. Hành lá                                  5.0 gr               (vegetables) [imp=2]
+      7. Hành tây                                 100.0 gr             (vegetables) [imp=2]
+      8. Tương ăn phở                             2.0 muỗng canh       (seasonings) [imp=2]
+      9. Tương hột                                2.0 muỗng canh       (seasonings) [imp=2]
+     10. Me                                       10.0 gr              (fresh_fruits) [imp=1]
+     11. Bún                                      1.0 kg               (grains_staples) [imp=1]
+     12. Rau ăn kèm                               1.0 ít               (vegetables) [imp=1]
+     13. Nguyên liệu ăn kèm                       1.0 ít               (others) [imp=1]
+
+🤖 RAG PREDICTIONS (13 ingredients):
+      1. Thịt heo nạc                             1 kg                 (fresh_meat)
+      2. Xương ống                                700 gr               (fresh_meat)
+      3. Tôm                                      500 gr               (seafood_&_fish_balls)
+      4. Gừng cắt lát                             15 gr                (seasonings)
+      5. Hành tím                                 15 gr                (vegetables)
+      6. Hành lá                                  5 gr                 (vegetables)
+      7. Hành tây                                 100 gr               (vegetables)
+      8. Tương ăn phở                             2 muỗng canh         (seasonings)
+      9. Tương hột                                2 muỗng canh         (seasonings)
+     10. Me                                       10 gr                (fresh_fruits)
+     11. Bún                                      1 kg                 (grains_staples)
+     12. Rau ăn kèm                               1 ít                 (vegetables)
+     13. Nguyên liệu ăn kèm                       1 ít                 (others)
+
+✅ MATCHED (13 ingredients):
+      1. Hành tím                                 15.0 gr              (vegetables) [imp=2]
+      2. Gừng cắt lát                             15.0 gr              (seasonings) [imp=2]
+      3. Hành tây                                 100.0 gr             (vegetables) [imp=2]
+      4. Tương hột                                2.0 muỗng canh       (seasonings) [imp=2]
+      5. Tương ăn phở                             2.0 muỗng canh       (seasonings) [imp=2]
+      6. Me                                       10.0 gr              (fresh_fruits) [imp=1]
+      7. Thịt heo nạc                             1.0 kg               (fresh_meat) [imp=3]
+      8. Tôm                                      500.0 gr             (seafood_&_fish_balls) [imp=3]
+      9. Xương ống                                700.0 gr             (fresh_meat) [imp=3]
+     10. Hành lá                                  5.0 gr               (vegetables) [imp=2]
+     11. Bún                                      1.0 kg               (grains_staples) [imp=1]
+     12. Nguyên liệu ăn kèm                       1.0 ít               (others) [imp=1]
+     13. Rau ăn kèm                               1.0 ít               (vegetables) [imp=1]
+
+💡 ANALYSIS:
+   🎯 PERFECT MATCH! Hoàn toàn chính xác.
+
+========================================================================================================================
+MÓN #30/30: Khoai tây nướng phô mai bằng nồi chiên không dầu
+========================================================================================================================
+✅ Tên món: Khoai tây nướng phô mai bằng nồi chiên không dầu
+📂 Category: mon nuong
+
+📊 METRICS:
+   F1:        100.00%
+   Precision: 100.00%
+   Recall:    100.00%
+   GT:        11 nguyên liệu
+   RAG:       11 nguyên liệu
+   ✅ TP:     11 (matched)
+   ❌ FN:     0 (missed - thiếu)
+   ⚠️  FP:     0 (extra - thừa/sai)
+
+📋 GROUND TRUTH (11 ingredients):
+      1. Khoai tây                                1.0 kg               (vegetables) [imp=3]
+      2. Whipping cream                           100.0 ml             (others) [imp=3]
+      3. Cream cheese                             50.0 gr              (ice_cream_&_cheese) [imp=3]
+      4. Phô mai cheddar                          50.0 gr              (ice_cream_&_cheese) [imp=2]
+      5. Phô mai parmesan                         50.0 gr              (ice_cream_&_cheese) [imp=2]
+      6. Tỏi                                      1.0 củ               (seasonings) [imp=2]
+      7. Sốt mayonnaise                           150.0 ml             (seasonings) [imp=2]
+      8. Dầu ô liu                                2.0 muỗng canh       (others) [imp=1]
+      9. Cỏ xạ hương                              3.0 nhánh            (others) [imp=1]
+     10. Bơ lạt                                   100.0 gr             (others) [imp=1]
+     11. Muối/tiêu                                1.0 ít               (seasonings) [imp=1]
+
+🤖 RAG PREDICTIONS (11 ingredients):
+      1. Khoai tây                                1 kg                 (vegetables)
+      2. Whipping cream                           100 ml               (others)
+      3. Cream cheese                             50 gr                (ice_cream_&_cheese)
+      4. Phô mai cheddar                          50 gr                (ice_cream_&_cheese)
+      5. Phô mai parmesan                         50 gr                (ice_cream_&_cheese)
+      6. Tỏi                                      1 củ                 (seasonings)
+      7. Sốt mayonnaise                           150 ml               (seasonings)
+      8. Dầu ô liu                                2 muỗng canh         (others)
+      9. Cỏ xạ hương                              3 nhánh              (others)
+     10. Bơ lạt                                   100 gr               (others)
+     11. Muối/tiêu                                1 ít                 (seasonings)
+
+✅ MATCHED (11 ingredients):
+      1. Dầu ô liu                                2.0 muỗng canh       (others) [imp=1]
+      2. Whipping cream                           100.0 ml             (others) [imp=3]
+      3. Sốt mayonnaise                           150.0 ml             (seasonings) [imp=2]
+      4. Khoai tây                                1.0 kg               (vegetables) [imp=3]
+      5. Muối/tiêu                                1.0 ít               (seasonings) [imp=1]
+      6. Phô mai parmesan                         50.0 gr              (ice_cream_&_cheese) [imp=2]
+      7. Cream cheese                             50.0 gr              (ice_cream_&_cheese) [imp=3]
+      8. Cỏ xạ hương                              3.0 nhánh            (others) [imp=1]
+      9. Tỏi                                      1.0 củ               (seasonings) [imp=2]
+     10. Phô mai cheddar                          50.0 gr              (ice_cream_&_cheese) [imp=2]
+     11. Bơ lạt                                   100.0 gr             (others) [imp=1]
+
+💡 ANALYSIS:
+   🎯 PERFECT MATCH! Hoàn toàn chính xác.
+

@@ -39,20 +39,18 @@ class BedrockKBService:
                 if not isinstance(it, dict):
                     continue
                 name = it.get('name_vi') or it.get('name') or it.get('name_en')
-                qty = it.get('quantity', it.get('qty'))
-                unit = it.get('unit') or it.get('unit_vi') or it.get('unit_en')
+                unit = it.get('unit', '')
                 if name is None:
                     continue
                 items.append({
                     'name': str(name).strip(),
-                    'quantity': parse_number(qty),
                     'unit': unit
                 })
 
         seen = set()
         uniq = []
         for ing in items:
-            k = (norm_text(ing['name']), norm_text(ing.get('unit') or ''), str(ing.get('quantity')))
+            k = (norm_text(ing['name']), norm_text(ing.get('unit') or ''))
             if k in seen:
                 continue
             seen.add(k)
@@ -90,7 +88,7 @@ class BedrockKBService:
             
             # Build context từ các documents được retrieve
             context_parts = []
-            for idx, result in enumerate(retrieval_results[:10], 1):  # Lấy top 10 results
+            for idx, result in enumerate(retrieval_results[:20], 1):  # Lấy top 10 results
                 content = result.get('content', {}).get('text', '')
                 if content:
                     context_parts.append(f"[Tài liệu {idx}]:\n{content}")
@@ -102,11 +100,16 @@ class BedrockKBService:
 
                                 QUAN TRỌNG:
                                 - Chỉ trả về JSON hợp lệ, KHÔNG giải thích thêm
-                                - Chỉ lấy TỐI ĐA 15 nguyên liệu CHÍNH, ưu tiên các nguyên liệu quan trọng nhất
+                                - Trích xuất TỐI ĐA 25 nguyên liệu CHÍNH từ tài liệu
+                                - Ưu tiên nguyên liệu theo thứ tự importance:
+                                  * importance=3: Nguyên liệu CHÍNH tạo nên đặc trưng món (BẮT BUỘC phải có)
+                                  * importance=2: Nguyên liệu QUAN TRỌNG (gia vị chính, nước sốt) (ưu tiên cao)
+                                  * importance=1: Nguyên liệu phụ (chỉ lấy nếu còn slot trong 25 nguyên liệu)
+                                - TUYỆT ĐỐI không bỏ sót nguyên liệu có importance >= 2
+                                - Nếu có nhiều hơn 25 nguyên liệu, chỉ giữ lại 25 nguyên liệu quan trọng nhất
                                 - vietnamese_name: tên tiếng Việt của món ăn hoặc nguyên liệu
                                 - name: tên tiếng Anh của món ăn hoặc nguyên liệu
-                                - quantity là chuỗi số, để rỗng nếu không có
-                                - unit là đơn vị, để rỗng nếu không có
+                                - unit: kết hợp số lượng và đơn vị (VD: "500 g", "2 củ", "1 muỗng canh"), để rỗng nếu không có
                                 - danh sách nguyên liệu không được trùng lặp
                                 """
 
@@ -114,15 +117,15 @@ class BedrockKBService:
 
                                 {context}
 
-                                Trả về JSON với format:
-                                {{"vietnamese_name": "tên món tiếng Việt", "name": "tên món tiếng Anh", "ingredients": [{{"vietnamese_name": "tên nguyên liệu tiếng Việt", "name": "tên nguyên liệu tiếng Anh", "quantity": "số", "unit": "đơn vị"}}]}}"""
+                                Trả về JSON với format (tối đa 25 nguyên liệu quan trọng nhất):
+                                {{"vietnamese_name": "tên món tiếng Việt", "name": "tên món tiếng Anh", "ingredients": [{{"vietnamese_name": "tên nguyên liệu tiếng Việt", "name": "tên nguyên liệu tiếng Anh", "unit": "số lượng và đơn vị"}}]}}"""
 
             # Gọi Nova model với max_tokens đủ lớn
             answer = self.bedrock_model_service.invoke_nova_for_rag(
                 prompt=user_prompt,
                 system_prompt=system_prompt,
-                temperature=0.1, 
-                max_tokens=3000 
+                temperature=0.1,  
+                max_tokens=4096 
             )
             
             if not answer:
@@ -135,7 +138,7 @@ class BedrockKBService:
                     if '```' in line:
                         in_code = not in_code
                         continue
-                    if in_code:
+                    if in_code: 
                         buf.append(line)
                 answer = "\n".join(buf).strip()
             
@@ -178,19 +181,10 @@ class BedrockKBService:
                     if not vietnamese_name or not str(vietnamese_name).strip():
                         continue
                     
-                    # Parse quantity 
-                    qty_raw = it.get('quantity')
-                    qty_str = ''
-                    if qty_raw is not None:
-                        qty_num = parse_number(qty_raw)
-                        if qty_num is not None:
-                            qty_str = str(qty_num) if isinstance(qty_num, int) else str(float(qty_num)).rstrip('0').rstrip('.')
-                    
                     cleaned.append({
                         'vietnamese_name': str(vietnamese_name).strip(),
                         'name': str(name_en).strip() if name_en else '',
-                        'quantity': qty_str,
-                        'unit': it.get('unit') or it.get('unit_vi') or it.get('unit_en') or ''
+                        'unit': it.get('unit', '')
                     })
                 
                 parsed['ingredients'] = cleaned

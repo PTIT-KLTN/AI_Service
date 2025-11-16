@@ -668,7 +668,7 @@ class OptimizedShoppingCartPipeline:
             'error': error_messages.get(error_type, 'Unknown error'),
             'error_type': error_type,
             's3_url': s3_url or '',
-            'dish': {'name': dish_name},
+            'dish': {'vietnamese_name': dish_name, 'name': ''},
             'cart': None,
             'suggestions': [],
             'similar_dishes': [],
