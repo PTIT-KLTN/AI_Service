@@ -9,7 +9,7 @@ import time
 import os
 from typing import Dict, Any
 
-from app.main import ShoppingCartPipeline
+from app.main_optimized import OptimizedShoppingCartPipeline
 from app.schemas import RecipeAnalysisRequest, RecipeAnalysisResponse
 from app.services.s3_image_service import get_s3_image_service
 
@@ -18,33 +18,21 @@ logger = logging.getLogger(__name__)
 
 class RecipeAnalysisProcessor:
     
-    def __init__(self, use_optimized: bool = False):
+    def __init__(self, use_optimized: bool = True):
         """Initialize processor với pipeline và services."""
         try:
             self.use_optimized = use_optimized
             
-            if use_optimized:
-                # Import optimized pipeline
-                try:
-                    from app.main_optimized import OptimizedShoppingCartPipeline
-                    
-                    cache_ttl = int(os.getenv('RECIPE_CACHE_TTL', '3600'))
-                    cache_maxsize = int(os.getenv('RECIPE_CACHE_MAXSIZE', '1000'))
-                    max_workers = int(os.getenv('OPTIMIZED_MAX_WORKERS', '3'))
-                    
-                    self.pipeline = OptimizedShoppingCartPipeline(
-                        max_workers=max_workers,
-                        recipe_cache_ttl=cache_ttl
-                    )
-                    logger.info(f"✅ Optimized pipeline initialized (TTL={cache_ttl}s, MaxSize={cache_maxsize}, Workers={max_workers})")
-                except ImportError as e:
-                    logger.error(f"Failed to import OptimizedShoppingCartPipeline: {e}")
-                    logger.info("Falling back to original pipeline")
-                    self.pipeline = ShoppingCartPipeline()
-                    self.use_optimized = False
-            else:
-                self.pipeline = ShoppingCartPipeline()
-                logger.info("✅ Original pipeline initialized")
+            # Always use optimized pipeline (main.py is deleted)
+            cache_ttl = int(os.getenv('RECIPE_CACHE_TTL', '3600'))
+            cache_maxsize = int(os.getenv('RECIPE_CACHE_MAXSIZE', '1000'))
+            max_workers = int(os.getenv('OPTIMIZED_MAX_WORKERS', '3'))
+            
+            self.pipeline = OptimizedShoppingCartPipeline(
+                max_workers=max_workers,
+                recipe_cache_ttl=cache_ttl
+            )
+            logger.info(f"✅ Optimized pipeline initialized (TTL={cache_ttl}s, MaxSize={cache_maxsize}, Workers={max_workers})")
             
             self.s3_service = get_s3_image_service()
             logger.info("RecipeAnalysisProcessor initialized successfully")
@@ -53,20 +41,7 @@ class RecipeAnalysisProcessor:
             raise
     
     def process_request(self, request_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Xử lý request và trả về response.
-        
-        Args:
-            request_data: Request payload từ RabbitMQ
-            
-        Returns:
-            Response dict với format:
-            {
-                'success': bool,
-                'result': dict,  # nếu success
-                'error': str,    # nếu fail
-            }
-        """
+
         start_time = time.time()
         start_time = time.time()
         
@@ -167,16 +142,7 @@ class RecipeAnalysisProcessor:
             }
     
     def _process_image(self, s3_url: str, description: str = "") -> Dict[str, Any]:
-        """
-        Process image từ S3.
-        
-        Args:
-            s3_url: S3 URL của ảnh
-            description: Mô tả bổ sung (optional)
-            
-        Returns:
-            Result dict từ pipeline
-        """
+
         try:
             # Download image từ S3
             image_data = self.s3_service.download_image_as_base64(s3_url)
@@ -223,15 +189,7 @@ class RecipeAnalysisProcessor:
             }
     
     def _process_text(self, user_input: str) -> Dict[str, Any]:
-        """
-        Process text input.
-        
-        Args:
-            user_input: User input text
-            
-        Returns:
-            Result dict từ pipeline
-        """
+
         try:
             logger.info(f"Processing text with pipeline...")
             result = self.pipeline.process(user_input)

@@ -42,8 +42,7 @@ class ValidationService:
         
         for ing_id, ing in required_ids.items():
             if ing_id in user_ids:
-                available.append({**ing, 'user_quantity': user_ids[ing_id].get('quantity'), 
-                                'user_unit': user_ids[ing_id].get('unit')})
+                available.append({**ing, 'user_unit': user_ids[ing_id].get('unit')})
             else:
                 missing.append(ing)
         

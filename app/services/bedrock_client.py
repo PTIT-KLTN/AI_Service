@@ -1,7 +1,4 @@
-"""
-AWS Bedrock Client with Guardrails Support.
-Main orchestration class that delegates to specialized handlers.
-"""
+
 import logging
 import os
 from typing import Any, Dict, Optional
