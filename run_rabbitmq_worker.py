@@ -65,7 +65,7 @@ def main():
         
         # Initialize configuration
         config = RabbitMQConfig(
-            amqp_url=os.getenv("AMQP_URL")  # Support AMQP_URL or individual params
+            amqp_url=os.getenv("AMQP_URL")  
         )
         
         # Validate configuration

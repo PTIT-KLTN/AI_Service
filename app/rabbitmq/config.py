@@ -24,11 +24,11 @@ class RabbitMQConfig:
             self.amqp_url = amqp_url
             # Pika sẽ parse URL này
         else:
-            self.host = host or os.getenv("RABBITMQ_HOST", "localhost")
-            self.port = port or int(os.getenv("RABBITMQ_PORT", "5672"))
-            self.username = username or os.getenv("RABBITMQ_USERNAME", "guest")
-            self.password = password or os.getenv("RABBITMQ_PASSWORD", "guest")
-            self.virtual_host = virtual_host or os.getenv("RABBITMQ_VIRTUAL_HOST", "/")
+            self.host = host or os.getenv("RABBITMQ_HOST")
+            self.port = port or int(os.getenv("RABBITMQ_PORT"))
+            self.username = username or os.getenv("RABBITMQ_USERNAME")
+            self.password = password or os.getenv("RABBITMQ_PASSWORD")
+            self.virtual_host = virtual_host or os.getenv("RABBITMQ_VIRTUAL_HOST")
             self.amqp_url = None
         
         # Queue configuration
