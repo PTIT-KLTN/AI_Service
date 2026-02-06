@@ -1,0 +1,18 @@
+{
+  "dataset_name": "Replacement Constraint Set",
+  "dataset_version": "v1",
+  "created_at": "2026-02-06T14:57:58.834861Z",
+  "repo_commit": "e0a7ebe7",
+  "seed": 2026,
+  "source_files": {
+    "conflict_rules": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\conflict\\ingredient_conflict.json",
+    "ingredient_kb": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\knowledge_base\\ingredient_knowledge_base.json"
+  },
+  "total_cases": 700,
+  "category_resolved_rate": 1.0,
+  "valid_replacement_exists_rate": 1.0,
+  "edge_case_rate": 0.0,
+  "max_suggestions_distribution": {
+    "3": 700
+  }
+}
