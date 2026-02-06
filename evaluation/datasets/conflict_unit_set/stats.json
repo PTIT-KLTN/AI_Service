@@ -1,0 +1,29 @@
+{
+  "dataset_name": "Conflict Unit Set",
+  "dataset_version": "v1",
+  "created_at": "2026-02-06T14:57:58.834861Z",
+  "repo_commit": "e0a7ebe7",
+  "seed": 2025,
+  "source_files": {
+    "conflict_rules": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\conflict\\ingredient_conflict.json",
+    "ingredient_kb": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\knowledge_base\\ingredient_knowledge_base.json"
+  },
+  "total_cases": 800,
+  "tag_distribution": {
+    "single_pair": 480,
+    "severity_low": 450,
+    "severity_medium": 30,
+    "multi_pair": 320
+  },
+  "format_distribution": {
+    "name": 303,
+    "id": 300,
+    "mixed": 197
+  },
+  "severity_distribution": {
+    "low": 1214,
+    "medium": 81
+  },
+  "avg_conflicts_per_case": 1.61875,
+  "resolution_rate": 1.0
+}

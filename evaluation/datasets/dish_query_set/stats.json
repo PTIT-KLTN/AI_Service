@@ -1,0 +1,36 @@
+{
+  "dataset_name": "Dish Query Set",
+  "dataset_version": "v1",
+  "created_at": "2026-02-06T14:57:58.834861Z",
+  "repo_commit": "e0a7ebe7",
+  "seed": 2024,
+  "source_files": {
+    "dish_kb": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\knowledge_base\\dish_knowledge_base.json",
+    "ingredient_kb": "d:\\DOAN_BT\\THUCTAP\\AI_Service\\app\\data\\knowledge_base\\ingredient_knowledge_base.json"
+  },
+  "in_kb": {
+    "split": "in_kb",
+    "total_cases": 750,
+    "tag_distribution": {
+      "base": 300,
+      "excluded": 200,
+      "extra": 200,
+      "excluded+extra": 50
+    },
+    "excluded_resolution_rate": 1.0,
+    "extra_resolution_rate": 1.0,
+    "avg_gt_ingredient_count": 9.978666666666667,
+    "avg_core_ingredient_count": 6.538666666666667
+  },
+  "out_kb": {
+    "split": "out_kb",
+    "total_cases": 750,
+    "tag_distribution": {
+      "paraphrased": 750
+    },
+    "excluded_resolution_rate": 0,
+    "extra_resolution_rate": 0,
+    "avg_gt_ingredient_count": 10.02,
+    "avg_core_ingredient_count": 6.569333333333334
+  }
+}
