@@ -1,24 +1,108 @@
 import json
 import boto3
 import os
+import re
 from dotenv import load_dotenv
 import base64
 from typing import Optional
 
 from app.services.bedrock_client import GuardrailedBedrockClient
+from app.services.ollama_client import OllamaClient
 from app.utils.json_utils import parse_json_content
 
 load_dotenv()
 
+RECIPE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "dish_id": {"type": ["string", "null"]},
+        "vietnamese_name": {"type": "string"},
+        "name": {"type": "string"},
+        "ingredients": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "ingredient_id": {"type": ["string", "null"]},
+                    "vietnamese_name": {"type": "string"},
+                    "name": {"type": "string"},
+                    "unit": {"type": "string"},
+                },
+                "required": ["vietnamese_name", "name"],
+            },
+        },
+    },
+    "required": ["vietnamese_name", "ingredients"],
+}
+
+DISH_EXTRACTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "dish_name": {"type": ["string", "null"]},
+        "ingredients": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "unit": {"type": "string"},
+                },
+                "required": ["name"],
+            },
+        },
+        "excluded_ingredients": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "reason": {"type": "string"},
+                },
+                "required": ["name"],
+            },
+        },
+    },
+    "required": ["dish_name", "ingredients", "excluded_ingredients"],
+}
+
+VISION_EXTRACTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "dish_name": {"type": ["string", "null"]},
+        "ingredients": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                },
+                "required": ["name"],
+            },
+        },
+    },
+    "required": ["dish_name", "ingredients"],
+}
+
 class BedrockModelService:
     def __init__(self, region: str | None = None, bedrock_client: Optional[GuardrailedBedrockClient] = None):
+        self.provider = (os.getenv("LLM_PROVIDER", "bedrock") or "bedrock").lower()
+        self.ollama = OllamaClient()
         self.bedrock_client = bedrock_client or GuardrailedBedrockClient(region=region)
         self.model_id = os.getenv('INVOKE_MODEL_ID')  
         self.vision_model_id = os.getenv('VISION_MODEL_ID')
         self.bedrock_model_id = os.getenv('BEDROCK_MODEL_ID')  
 
-    def extract_dish_name(self, description: str) -> dict:
+    def _extract_json(self, text: str) -> str:
+        text = text.strip()
+        if text.startswith("```"):
+            text = "\n".join(text.splitlines()[1:-1]).strip()
+        start, end = text.find("{"), text.rfind("}")
+        if start >= 0 and end > start:
+            text = text[start : end + 1]
+        text = re.sub(r",(\s*[}\]])", r"\1", text)
+        return text
 
+    def extract_dish_name(self, description: str) -> dict:
         # Guardrails check
         raw_input_check = self.bedrock_client.check_raw_input(description)
         if raw_input_check:
@@ -45,7 +129,7 @@ class BedrockModelService:
                     → {{"dish_name": "Canh cua chua", "ingredients": [{{"name": "Cam"}}], "excluded_ingredients": []}}
 
                     - "Công thức món sầu riêng ăn kèm với rượu"
-                    → {{"dish_name": NULL, "ingredients": [{{"name": "Rượu", "Sầu riêng"}}], "excluded_ingredients": []}}
+                    → {{"dish_name": null, "ingredients": [{{"name": "Rượu"}}, {{"name": "Sầu riêng"}}], "excluded_ingredients": []}}
 
                     - "Làm món trứng chiên ăn kèm sữa đậu nành cho bữa sáng"
                     → {{"dish_name": "Trứng chiên", "ingredients": [{{"name": "Sữa đậu nành"}}], "excluded_ingredients": []}}
@@ -68,9 +152,19 @@ class BedrockModelService:
                         "excluded_ingredients": [{{"name": "nguyên liệu cần loại trừ", "reason": "lý do (dị ứng/không thích/...)"}}]
                     }}"""
 
-        # Format request dựa vào model type
+        # Switch provider
+        if self.provider == "ollama":
+            text = self.ollama.chat(
+                prompt=prompt,
+                system=None,
+                json_schema=DISH_EXTRACTION_SCHEMA,
+                temperature=0.1,
+            )
+            parsed = parse_json_content(text)
+            return parsed
+
+        # Bedrock path
         if 'claude' in self.model_id.lower():
-            # Claude format
             body = json.dumps({
                 "anthropic_version": "bedrock-2023-05-31",
                 "max_tokens": 1024,
@@ -81,7 +175,6 @@ class BedrockModelService:
                 }]
             })
         else:
-            # Nova format
             body = json.dumps({
                 "messages": [{
                     "role": "user",
@@ -96,7 +189,7 @@ class BedrockModelService:
         response = self.bedrock_client.invoke_model(model_id=self.model_id, body=body)
         resp_json = json.loads(response['body'].read() or b'{}')
 
-        # Nova response format
+        text = ""
         output = resp_json.get('output', {})
         message = output.get('message', {})
         content_arr = message.get('content', [])
@@ -119,9 +212,6 @@ class BedrockModelService:
         return parsed
     
     def extract_dish_from_image(self, image_data, description: str = "", image_mime: str = "image/png") -> dict:
-        if not self.vision_model_id:
-            raise ValueError('VISION_MODEL_ID environment variable is not configured')
-
         if not image_data:
             return {"dish_name": None, "ingredients": []}
 
@@ -138,12 +228,40 @@ class BedrockModelService:
                 }
 
         image_b64 = self._ensure_base64(image_data)
-        body = json.dumps(_build_vision_request_nova(description, image_b64, image_mime))
+        
+        # Build prompt
+        prompt = "Nhận diện món ăn hoặc nguyên liệu từ ảnh. Trả về JSON theo format đã hướng dẫn."
+        if description:
+            prompt += f'\nGợi ý: "{description}"'
+        
+        system_prompt = (
+            "Nhận diện món ăn hoặc nguyên liệu từ ảnh. "
+            "Trả về JSON: {\"dish_name\": <string|null>, \"ingredients\": []}.\n"
+            "- Nếu là MÓN ĂN hoàn chỉnh: dish_name = tên món tiếng Việt có dấu (VD: \"Phở bò\"), ingredients = []\n"
+            "- Nếu là NGUYÊN LIỆU thô: dish_name = null, ingredients = [{\"name\": \"tên nguyên liệu\"}]\n"
+            "- Nếu KHÔNG RÕ/KHÁC: dish_name = null, ingredients = []"
+        )
+        
+        # Switch provider
+        if self.provider == "ollama":
+            text = self.ollama.chat_with_image_b64(
+                prompt=prompt,
+                image_b64=image_b64,
+                system=system_prompt,
+                json_schema=VISION_EXTRACTION_SCHEMA,
+                temperature=0.1,
+            )
+            parsed = parse_json_content(text)
+            return parsed
 
+        # Bedrock path
+        if not self.vision_model_id:
+            raise ValueError('VISION_MODEL_ID environment variable is not configured')
+            
+        body = json.dumps(_build_vision_request_nova(description, image_b64, image_mime))
         response = self.bedrock_client.invoke_model(model_id=self.vision_model_id, body=body)
         resp_json = json.loads(response['body'].read() or b'{}')
         
-        # Parse response theo format của Nova
         text = ""
         output = resp_json.get('output', {})
         message = output.get('message', {})
@@ -175,62 +293,86 @@ class BedrockModelService:
             return base64.b64encode(image_data).decode('utf-8')
         raise TypeError('image_data must be base64 string or bytes-like object')
     
-    def invoke_nova_for_rag(self, prompt: str, system_prompt: str = None, temperature: float = 0.7, max_tokens: int = 1024) -> str:
+    def _invoke_bedrock_model(
+        self,
+        prompt: str,
+        system_prompt: str = None,
+        temperature: float = 0.7,
+        max_tokens: int = 1024,
+        **kwargs,
+    ) -> str:
         if not self.bedrock_model_id:
             raise ValueError('BEDROCK_MODEL_ID environment variable is not configured')
-        
+
         # Xây dựng request body theo format của Amazon Nova
         request_body = {
             "messages": [
                 {
                     "role": "user",
                     "content": [
-                        {
-                            "text": prompt
-                        }
-                    ]
+                        {"text": prompt}
+                    ],
                 }
             ],
             "inferenceConfig": {
-                "maxTokens": max_tokens, 
+                "maxTokens": max_tokens,
                 "temperature": temperature,
-                "topP": 0.9
-            }
+                "topP": 0.9,
+            },
         }
-        
-        # Thêm system prompt 
+
+        # Thêm system prompt
         if system_prompt:
-            request_body["system"] = [
-                {
-                    "text": system_prompt
-                }
-            ]
-        
+            request_body["system"] = [{"text": system_prompt}]
+
         body = json.dumps(request_body)
-        
+
         # Gọi model
-        response = self.bedrock_client.invoke_model(
-            model_id=self.bedrock_model_id, 
-            body=body
-        )
-        
+        response = self.bedrock_client.invoke_model(model_id=self.bedrock_model_id, body=body)
+
         # Parse response
         resp_json = json.loads(response['body'].read() or b'{}')
-        
+
         text = ""
         output = resp_json.get('output', {})
         message = output.get('message', {})
         content = message.get('content', [])
-        
+
         if isinstance(content, list) and content:
             first_content = content[0]
             if isinstance(first_content, dict):
                 text = first_content.get('text', '').strip()
-        
+
         if not text:
             text = json.dumps(resp_json, ensure_ascii=False)
-        
+
         return text
+
+    def invoke_nova_for_rag(
+        self,
+        prompt: str,
+        system_prompt: str = None,
+        temperature: float = 0.7,
+        max_tokens: int = 1024,
+        **kwargs,
+    ) -> str:
+        # Đây là nơi trước đó bạn gọi Nova/Nova Lite/Pro
+        if self.provider == "ollama":
+            return self.ollama.chat(
+                prompt=prompt,
+                system=system_prompt,
+                json_schema=RECIPE_SCHEMA,  # ép ra JSON đúng schema
+                temperature=kwargs.get("temperature", temperature if temperature is not None else 0.1),
+            )
+
+        # else: fallback old Bedrock invoke (giữ nguyên code cũ)
+        return self._invoke_bedrock_model(
+            prompt=prompt,
+            system_prompt=system_prompt,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            **kwargs,
+        )
     
 
 VISION_SYSTEM_PROMPT = (

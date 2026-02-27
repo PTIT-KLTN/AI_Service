@@ -2,7 +2,7 @@ import boto3
 import os
 import json
 import logging
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from dotenv import load_dotenv
 
 from app.utils.string_utils import norm_text
@@ -16,10 +16,20 @@ logger = logging.getLogger(__name__)
 
 class BedrockKBService:
     def __init__(self, region: str = 'us-east-1'):
+        self.provider = (os.getenv("LLM_PROVIDER", "bedrock") or "bedrock").lower()
+        self.kb_source = (os.getenv("KB_SOURCE", "bedrock") or "bedrock").lower()
+        
         self.bedrock_agent = boto3.client('bedrock-agent-runtime', region_name=region)
         self.kb_id = os.getenv('BEDROCK_KB_ID')
         self.bedrock_model_id = os.getenv('BEDROCK_MODEL_ID') 
         self.bedrock_model_service = BedrockModelService(region=region)
+        
+        # Initialize Pinecone if configured
+        self.pinecone_service = None
+        if self.kb_source == "pinecone":
+            from app.services.pinecone_kb_service import PineconeKBService
+            self.pinecone_service = PineconeKBService()
+            logger.info("Pinecone KB service initialized successfully")
 
     def _extract_ingredients_from_json(self, j: Dict[str, Any]) -> List[Dict[str, Any]]:
         candidates: List[Any] = []
@@ -58,42 +68,32 @@ class BedrockKBService:
         return uniq
 
     def get_dish_recipe(self, dish_name: str) -> dict:
-
-        query = f"Tìm đúng món: {dish_name}"
-
         try:
-            # Retrieve relevant documents từ KB
-            retrieve_response = self.bedrock_agent.retrieve(
-                knowledgeBaseId=self.kb_id,
-                retrievalQuery={'text': query},
-                retrievalConfiguration={
-                    'vectorSearchConfiguration': {
-                        'overrideSearchType': 'SEMANTIC',  
-                        'numberOfResults': 20,
-                        'filter': {
-                            'equals': {
-                                'key': 'type',
-                                'value': 'dish'
-                            }
-                        }
-                    }
-                }
-            )
-
-            # Extract context từ retrieved documents
-            retrieval_results = retrieve_response.get('retrievalResults', [])
+            # Use Pinecone only
+            if self.kb_source != "pinecone" or not self.pinecone_service:
+                raise ValueError(f"KB_SOURCE must be 'pinecone'. Current: {self.kb_source}")
             
-            if not retrieval_results:
+            logger.info(f"Using Pinecone KB for dish: {dish_name}")
+            
+            # Add filter type for faster and more accurate search
+            filter_dict = None
+            use_filter = os.getenv("PINECONE_FILTER_TYPE", "false").lower() in ("true", "1", "yes")
+            if use_filter:
+                filter_dict = {"type": "dish"}
+                logger.info(f"Applying Pinecone filter: {filter_dict}")
+            
+            matches = self.pinecone_service.search_dishes(
+                query=dish_name,
+                top_k=5,
+                filter_dict=filter_dict
+            )
+            
+            if not matches:
+                logger.warning(f"No matches found in Pinecone for: {dish_name}")
                 return {'dish_name': dish_name, 'ingredients': []}
             
-            # Build context từ các documents được retrieve
-            context_parts = []
-            for idx, result in enumerate(retrieval_results[:20], 1):  # Lấy top 10 results
-                content = result.get('content', {}).get('text', '')
-                if content:
-                    context_parts.append(f"[Tài liệu {idx}]:\n{content}")
-            
-            context = "\n\n".join(context_parts)
+            logger.info(f"Found {len(matches)} matches in Pinecone, top score: {matches[0]['score']:.2f}")
+            context = self.pinecone_service.build_context_from_matches(matches)
             
             # Step 2: Sử dụng Nova model để generate response
             system_prompt = """Bạn là chuyên gia ẩm thực Việt Nam. Nhiệm vụ của bạn là trích xuất thông tin công thức món ăn từ tài liệu được cung cấp.
